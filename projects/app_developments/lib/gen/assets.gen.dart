@@ -22,6 +22,14 @@ class $AssetsImagesGen {
 class $AssetsImagesPngGen {
   const $AssetsImagesPngGen();
 
+  /// File path: assets/images/png/Saly-1.png
+  AssetGenImage get saly1 =>
+      const AssetGenImage('assets/images/png/Saly-1.png');
+
+  /// File path: assets/images/png/Saly-2.png
+  AssetGenImage get saly2 =>
+      const AssetGenImage('assets/images/png/Saly-2.png');
+
   /// File path: assets/images/png/character_meditating.png
   AssetGenImage get characterMeditating =>
       const AssetGenImage('assets/images/png/character_meditating.png');
@@ -37,9 +45,20 @@ class $AssetsImagesPngGen {
   /// File path: assets/images/png/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/png/logo.png');
 
+  /// File path: assets/images/png/online_shopping.png
+  AssetGenImage get onlineShopping =>
+      const AssetGenImage('assets/images/png/online_shopping.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [characterMeditating, characterQuestionMark, characterThinking, logo];
+  List<AssetGenImage> get values => [
+        saly1,
+        saly2,
+        characterMeditating,
+        characterQuestionMark,
+        characterThinking,
+        logo,
+        onlineShopping
+      ];
 }
 
 class $AssetsImagesSvgGen {

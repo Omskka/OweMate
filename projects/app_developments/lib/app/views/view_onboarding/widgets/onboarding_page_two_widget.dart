@@ -22,8 +22,7 @@ class OnboardingPageTwoWidget extends StatelessWidget {
               height: context.dynamicHeight(0.1),
               width: context.dynamicWidth(1),
             ),
-            Container(
-              //color: Colors.pinkAccent,
+            SizedBox(
               height: context.dynamicHeight(0.4),
               width: context.dynamicWidth(1),
               child: Center(
@@ -72,7 +71,7 @@ class OnboardingPageTwoWidget extends StatelessWidget {
               onPressed: () {
                 viewModel.add(
                   OnboardingNavigateToNextPageEvent(
-                      selectedPage: 2, context: context),
+                      selectedPage: 3, context: context),
                 );
               },
             ),
