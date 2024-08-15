@@ -5,8 +5,10 @@ final class AppLightColorConstants {
   const AppLightColorConstants._();
 
   //base color
-  static const Color primaryColor = Color(0xFF5063BF);
-  static const Color secondaryColor = Color(0xFFFDD835);
+  static const Color primaryColor = Color(0xFF004AAD);
+  static const Color secondaryColor = Color(0xFF8edfeb);
+  static const Color ThirdColor = Color(0xFFFF3131);
+  static const Color hueShadow = Color(0xFF00BF63);
   static const Color errorColor = Color(0xFFF44336);
   static const Color successColor = Color(0xFF43A048);
   static const Color warningColor = Color(0xffFB8A00);

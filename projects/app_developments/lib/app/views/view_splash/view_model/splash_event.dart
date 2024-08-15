@@ -5,7 +5,10 @@ abstract class SplashEvent {
 }
 
 class SplashInitialEvent extends SplashEvent {
-  SplashInitialEvent();
+  final BuildContext context;
+  SplashInitialEvent({
+    required this.context,
+  });
 }
 
 class SplashSelectedPageEvent extends SplashEvent {
