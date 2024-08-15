@@ -115,10 +115,10 @@ extension RadiusExtension on BuildContext {
 }
 
 extension SizedBoxNum on BuildContext {
-  SizedBox get sizedHeightBoxLow => SizedBox(height: constLowValue);
-  SizedBox get sizedHeightBoxNormal => SizedBox(height: constNormalValue);
-  SizedBox get sizedHeightBoxMedium => const SizedBox(height: 24);
-  SizedBox get sizedHeightBoxHigh => const SizedBox(height: 32);
+  SizedBox get sizedHeightBoxLow => SizedBox(height: height * 0.03);
+  SizedBox get sizedHeightBoxNormal => SizedBox(height: height * 0.04);
+  SizedBox get sizedHeightBoxMedium => SizedBox(height: height * 0.07);
+  SizedBox get sizedHeightBoxHigh => SizedBox(height: height * 0.1);
 
   SizedBox get sizedWidthBoxLow => const SizedBox(width: 8);
   SizedBox get sizedWidthBoxNormal => const SizedBox(width: 16);
@@ -128,9 +128,29 @@ extension SizedBoxNum on BuildContext {
 
 extension TextStyleExtension on BuildContext {
   TextStyle textStyleH1(BuildContext context) => const TextStyle(
-      fontSize: 52,
-      fontWeight: FontWeight.w600,
-      color: AppLightColorConstants.primaryColor);
+        fontSize: 64,
+        fontWeight: FontWeight.w600,
+        color: AppLightColorConstants.primaryColor,
+        fontFamily: 'Barlow Semi Condensed bold',
+      );
 
-      
+  TextStyle textStyleH2(BuildContext context) => const TextStyle(
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+        color: AppLightColorConstants.ThirdColor,
+        fontFamily: 'Barlow Semi Condensed bold',
+      );
+
+  TextStyle textStyleGrey(BuildContext context) => const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppLightColorConstants.contentTeritaryColor,
+        fontFamily: 'San Francisco',
+      );
+  TextStyle textStyleGreyBarlow(BuildContext context) => const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppLightColorConstants.contentTeritaryColor,
+        fontFamily: 'Barlow Semi Condensed bold',
+      );
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_splash/view_model/splash_event.dart';
 import 'package:app_developments/app/views/view_splash/view_model/splash_state.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashViewModel extends Bloc<SplashEvent, SplashState> {
@@ -11,7 +13,10 @@ class SplashViewModel extends Bloc<SplashEvent, SplashState> {
   }
 
   FutureOr<void> _initial(SplashInitialEvent event, Emitter<SplashState> emit) {
-    print("Splash Ayağa Kalktı");
+    // change pages after 3 seconds
+    Timer(const Duration(seconds: 3), () {
+      event.context.router.push(const OnboardingViewRoute()); // routing for OnboardingViewRoute
+    }); 
   }
 
   FutureOr<void> _selectedPage(
