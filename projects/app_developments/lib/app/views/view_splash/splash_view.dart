@@ -22,52 +22,7 @@ class SplashView extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
-              body: SizedBox(
-                width: context.width,
-                height: context.height,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: context.width,
-                      height: context.height * 0.45,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                              top: 255,
-                              left: 120,
-                              child: SvgPicture.asset(
-                                  Assets.images.svg.ellipse127)),
-                          Positioned(
-                              top: 255,
-                              left: 172,
-                              child: SvgPicture.asset(
-                                  Assets.images.svg.ellipse128)),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "TransferMe",
-                      style: context.textStyleH1(context),
-                    ),
-                    Text(L10n.of(context)?.bestMoneyTransfer ?? "",
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: AppLightColorConstants.primaryColor)),
-                    const Spacer(),
-                    Padding(
-                      padding: context.onlyBottomPaddingMedium,
-                      child: const Text(
-                        "Secured by TransferMe.",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: AppLightColorConstants.primaryColor),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              body: SizedBox(),
             ),
           );
         },

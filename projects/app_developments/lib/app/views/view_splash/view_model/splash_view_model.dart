@@ -11,7 +11,7 @@ class SplashViewModel extends Bloc<SplashEvent, SplashState> {
   }
 
   FutureOr<void> _initial(SplashInitialEvent event, Emitter<SplashState> emit) {
-    print("Splash Ayağa Kalktı");
+
   }
 
   FutureOr<void> _selectedPage(
