@@ -10,6 +10,9 @@
 class FontFamily {
   FontFamily._();
 
+  /// Font family: Barlow Semi Condensed bold
+  static const String barlowSemiCondensedBold = 'Barlow Semi Condensed bold';
+
   /// Font family: Barlow Semi Condensed regular
   static const String barlowSemiCondensedRegular =
       'Barlow Semi Condensed regular';

@@ -20,7 +20,7 @@ class OnboardingPageOneWidget extends StatelessWidget {
         return Column(
           children: [
             SizedBox(
-              height: context.dynamicHeight(0.06),
+              height: context.dynamicHeight(0.07),
               width: context.dynamicWidth(1),
             ),
             SizedBox(

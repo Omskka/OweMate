@@ -19,18 +19,61 @@ class OnboardingPageFourWidget extends StatelessWidget {
         return Column(
           children: [
             SizedBox(
-              height: context.dynamicHeight(0.1),
+              height: context.dynamicHeight(0.05),
               width: context.dynamicWidth(1),
             ),
-            Container(
-              //color: Colors.pinkAccent,
-              height: context.dynamicHeight(0.4),
+            SizedBox(
+              height: context.dynamicHeight(0.45),
               width: context.dynamicWidth(1),
-              child: Center(
-                child: Image.asset(
-                  Assets.images.png.characterMeditating.path,
-                  width: context.dynamicWidth(0.65),
-                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final maxWidth = constraints.maxWidth;
+                  final maxHeight = constraints.maxHeight;
+
+                  double leftPositionImage1;
+                  double leftPositionImage2;
+                  double topPositionImage2;
+
+                  // Check screen size and adjust positions and sizes accordingly
+                  if (maxWidth <= 600) {
+                    // Small screens
+                    leftPositionImage1 = maxWidth * 0;
+                    leftPositionImage2 = maxWidth * 0.38;
+                    topPositionImage2 = maxHeight * 0.25;
+                  } else if (maxWidth <= 1200) {
+                    // Medium screens
+                    leftPositionImage1 = maxWidth * 0.08;
+                    leftPositionImage2 = maxWidth * 0.28;
+                    topPositionImage2 = maxHeight * 0.25;
+                  } else {
+                    // Large screens
+                    leftPositionImage1 = maxWidth * 0.13;
+                    leftPositionImage2 = maxWidth * 0.28;
+                    topPositionImage2 = maxHeight * 0.2;
+                  }
+
+                  return Stack(
+                    children: [
+                      Positioned(
+                        top: topPositionImage2,
+                        left: leftPositionImage1,
+                        child: Image.asset(
+                          Assets.images.png.saly1.path,
+                          width: context.dynamicWidth(0.6),
+                          height: context.dynamicHeight(0.3),
+                        ),
+                      ),
+                      Positioned(
+                        left: leftPositionImage2,
+                        child: Image.asset(
+                          Assets.images.png.saly2.path,
+                          width: context.dynamicWidth(0.6),
+                          height: context.dynamicHeight(0.3),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             // Title
@@ -41,7 +84,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Peace of Mind',
+                    'Settle Up Quickly',
                     style: context.textStyleH2(context),
                   ),
                 ),
@@ -55,7 +98,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Say goodbye to awkward reminders and hello to a\nstress-free, peaceful way of managing who owes what.',
+                    'Easily settle debts and balances with friends and family,\nfinancial interactions smooth and stress-free.',
                     style: context.textStyleGrey(context),
                     textAlign: TextAlign.center,
                   ),
@@ -64,7 +107,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
             ),
             context.sizedHeightBoxNormal,
             // Carousel Slider
-            const CarouselDots(selectedPage: 2),
+            const CarouselDots(selectedPage: 4),
             context.sizedHeightBoxNormal,
             // Custom continue Button
             CustomContinueButton(
@@ -72,7 +115,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
               onPressed: () {
                 viewModel.add(
                   OnboardingNavigateToNextPageEvent(
-                      selectedPage: 2, context: context),
+                      selectedPage: 1, context: context),
                 );
               },
             ),

@@ -28,7 +28,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
               width: context.dynamicWidth(1),
               child: Center(
                 child: Image.asset(
-                  Assets.images.png.characterMeditating.path,
+                  Assets.images.png.onlineShopping.path,
                   width: context.dynamicWidth(0.65),
                 ),
               ),
@@ -41,7 +41,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Peace of Mind',
+                    'Effortless Requests',
                     style: context.textStyleH2(context),
                   ),
                 ),
@@ -55,7 +55,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Say goodbye to awkward reminders and hello to a\nstress-free, peaceful way of managing who owes what.',
+                    'Easily request payments or remind others,\nkeeping everything clear and stress-free.',
                     style: context.textStyleGrey(context),
                     textAlign: TextAlign.center,
                   ),
@@ -64,7 +64,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
             ),
             context.sizedHeightBoxNormal,
             // Carousel Slider
-            const CarouselDots(selectedPage: 2),
+            const CarouselDots(selectedPage: 3),
             context.sizedHeightBoxNormal,
             // Custom continue Button
             CustomContinueButton(
@@ -72,7 +72,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
               onPressed: () {
                 viewModel.add(
                   OnboardingNavigateToNextPageEvent(
-                      selectedPage: 2, context: context),
+                      selectedPage: 4, context: context),
                 );
               },
             ),

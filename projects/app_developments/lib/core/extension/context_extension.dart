@@ -142,13 +142,13 @@ extension TextStyleExtension on BuildContext {
       );
 
   TextStyle textStyleGrey(BuildContext context) => const TextStyle(
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppLightColorConstants.contentTeritaryColor,
         fontFamily: 'San Francisco',
       );
   TextStyle textStyleGreyBarlow(BuildContext context) => const TextStyle(
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppLightColorConstants.contentTeritaryColor,
         fontFamily: 'Barlow Semi Condensed bold',
