@@ -1,3 +1,4 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_event.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_state.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_view_model.dart';
@@ -5,6 +6,7 @@ import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/carousel_dots.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/gen/assets.gen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -113,10 +115,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
             CustomContinueButton(
               buttonText: 'Continue',
               onPressed: () {
-                viewModel.add(
-                  OnboardingNavigateToNextPageEvent(
-                      selectedPage: 1, context: context),
-                );
+                context.router.push(const SignupViewRoute());
               },
             ),
           ],

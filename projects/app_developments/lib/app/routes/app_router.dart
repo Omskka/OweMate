@@ -1,4 +1,5 @@
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
+import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,6 @@ class AppRouter extends _$AppRouter {
   final List<AutoRoute> routes = [
     AutoRoute(page: SplashViewRoute.page, initial: true),
     AutoRoute(page: OnboardingViewRoute.page),
-
-    // AutoRoute(page: HomeViewRoute.page),
+    AutoRoute(page: SignupViewRoute.page),
   ];
 }

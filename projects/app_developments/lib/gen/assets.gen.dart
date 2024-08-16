@@ -64,20 +64,11 @@ class $AssetsImagesPngGen {
 class $AssetsImagesSvgGen {
   const $AssetsImagesSvgGen();
 
-  /// File path: assets/images/svg/character_meditating.svg
-  String get characterMeditating =>
-      'assets/images/svg/character_meditating.svg';
-
-  /// File path: assets/images/svg/character_question_mark.svg
-  String get characterQuestionMark =>
-      'assets/images/svg/character_question_mark.svg';
-
-  /// File path: assets/images/svg/character_thinking.svg
-  String get characterThinking => 'assets/images/svg/character_thinking.svg';
+  /// File path: assets/images/svg/google.svg
+  String get google => 'assets/images/svg/google.svg';
 
   /// List of all assets
-  List<String> get values =>
-      [characterMeditating, characterQuestionMark, characterThinking];
+  List<String> get values => [google];
 }
 
 class Assets {
