@@ -3,12 +3,14 @@
 import 'dart:async';
 
 import 'package:app_developments/app/l10n/app_localizations.dart';
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_state.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/auth/exceptions/sign_up_with_email_and_password_failure.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,7 +72,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
           .flutterToast();
 
       // navigate to the next screen
-      //event.context.router.push(const ProfileUpdateViewRoute());
+      event.context.router.push(const LoginViewRoute());
 
       // Handle error if user creation failed (createUserWithEmailAndPassword should throw an exception on failure)
     } // Handle the custom exceptions thrown by the repository

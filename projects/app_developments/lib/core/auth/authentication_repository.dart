@@ -32,7 +32,7 @@ class AuthenticationRepository {
     }
   }
 
-/*   /// Signs in with the provided [email] and [password].
+  /// Signs in with the provided [email] and [password].
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception
   Future<String?> signInWithEmailAndPassword({
     required String email,
@@ -51,7 +51,7 @@ class AuthenticationRepository {
     } catch (e) {
       throw const LogInWithEmailAndPasswordFailure();
     }
-  } */
+  }
 
   /// Signs out the current user which will emit
   /// [User.empty] from the [user] Stream.
