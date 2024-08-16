@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_login/login_view.dart';
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
 import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
@@ -39,5 +40,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: SplashViewRoute.page, initial: true),
     AutoRoute(page: OnboardingViewRoute.page),
     AutoRoute(page: SignupViewRoute.page),
+    AutoRoute(page: LoginViewRoute.page),
   ];
 }

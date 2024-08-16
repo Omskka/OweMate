@@ -1,5 +1,7 @@
 import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/views/view_login/view_model/login_event.dart';
+import 'package:app_developments/app/views/view_login/view_model/login_view_model.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -15,12 +17,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SignupPageWidget extends StatelessWidget {
-  const SignupPageWidget({super.key});
+class LoginPageWidget extends StatelessWidget {
+  const LoginPageWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = BlocProvider.of<SignupViewModel>(context);
+    final viewModel = BlocProvider.of<LoginViewModel>(context);
 
     return SingleChildScrollView(
       child: LayoutBuilder(
@@ -30,49 +32,49 @@ class SignupPageWidget extends StatelessWidget {
 
           // Determine height and width based on screen width
           double containerHeight;
-          double googleContainerWidth;
+          double pinContainerWidth;
           double googleContainerHeight;
           EdgeInsets leftPadding;
 
           // Height
-          if (maxHeight <= 680) {
+          if (maxHeight <= 600) {
             // Small screens
-            containerHeight = context.dynamicHeight(0.5);
+            containerHeight = context.dynamicHeight(0.1);
           } else if (maxHeight <= 800) {
             // Small screens
-            containerHeight = context.dynamicHeight(0.48);
+            containerHeight = context.dynamicHeight(0.2);
           } else if (maxHeight <= 900) {
             // Medium screens
-            containerHeight = context.dynamicHeight(0.435);
+            containerHeight = context.dynamicHeight(0.3);
           } else if (maxHeight <= 1080) {
             // Medium screens
             containerHeight = context.dynamicHeight(0.4);
           } else {
             // Large screens
-            containerHeight = context.dynamicHeight(0.43);
+            containerHeight = context.dynamicHeight(0.35);
           }
 
           // Width
           if (maxWidth <= 600) {
             // very Small screens
             leftPadding = context.onlyLeftPaddingMedium;
-            googleContainerWidth = context.dynamicWidth(0.65);
+            pinContainerWidth = context.dynamicWidth(0.65);
           } else if (maxWidth <= 800) {
             // Small screens
             leftPadding = context.onlyLeftPaddingMedium;
-            googleContainerWidth = context.dynamicWidth(0.45);
+            pinContainerWidth = context.dynamicWidth(0.45);
           } else if (maxWidth <= 900) {
             // Medium screens
             leftPadding = context.onlyLeftPaddingMedium;
-            googleContainerWidth = context.dynamicWidth(0.3);
+            pinContainerWidth = context.dynamicWidth(0.3);
           } else if (maxWidth <= 1080) {
             // Medium Large screens
-            leftPadding = context.onlyLeftPaddingMedium;
-            googleContainerWidth = context.dynamicWidth(0.3);
+            leftPadding = context.onlyLeftPaddingHigh;
+            pinContainerWidth = context.dynamicWidth(0.3);
           } else {
             // Large screens
             leftPadding = context.onlyLeftPaddingHigh;
-            googleContainerWidth = context.dynamicWidth(0.3);
+            pinContainerWidth = context.dynamicWidth(0.3);
           }
 
           return SingleChildScrollView(
@@ -102,7 +104,7 @@ class SignupPageWidget extends StatelessWidget {
                                       ),
                                 ),
                                 TextSpan(
-                                    text: 'Up',
+                                    text: 'In',
                                     style: context.textStyleH2(context)),
                               ],
                             ),
@@ -173,28 +175,6 @@ class SignupPageWidget extends StatelessWidget {
                             controller: viewModel.passwordController,
                           ),
                           context.sizedHeightBoxMedium,
-                          // Confirm password text
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'Confirm Password',
-                              style: context.textStyleGrey(context),
-                            ),
-                          ),
-                          // Custom text field with visibility toggle
-                          CustomTextField(
-                            hintText: '',
-                            textInputAction: TextInputAction.done,
-                            validator: (value) =>
-                                SignUpValidation().checkConfirmPasswordErrors(
-                              value,
-                              context,
-                              viewModel.passwordController,
-                              viewModel.confirmPasswordController,
-                            ),
-                            showVisibilityToggle: true,
-                            controller: viewModel.confirmPasswordController,
-                          ),
                         ],
                       ),
                     ),
@@ -202,17 +182,20 @@ class SignupPageWidget extends StatelessWidget {
                   // Sign up button
                   Center(
                     child: CustomContinueButton(
-                        buttonText: 'Sign Up',
-                        onPressed: () {
+                      buttonText: 'Sign In',
+                      onPressed: () {
+                        if (viewModel.formKey.currentState!.validate()) {
+                          // If the form is valid sign In user
                           if (viewModel.formKey.currentState!.validate()) {
-                            // If the form is valid sign up new user
-                            context.read<SignupViewModel>().add(
-                                  SignupUserEvent(context: context),
-                                );
+                            context
+                                .read<LoginViewModel>()
+                                .add(LoginSignInEvent(context: context));
                           }
-                        }),
+                        }
+                      },
+                    ),
                   ),
-                  context.sizedHeightBoxLow,
+                  context.sizedHeightBoxNormal,
                   // Or
                   Row(
                     children: <Widget>[
@@ -260,7 +243,7 @@ class SignupPageWidget extends StatelessWidget {
                       onTap: () {},
                       child: Container(
                         height: context.dynamicHeight(0.08),
-                        width: googleContainerWidth,
+                        width: pinContainerWidth,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(context.normalRadius),
                           border: Border.all(
@@ -271,10 +254,8 @@ class SignupPageWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(Assets.images.svg.google),
-                            context.sizedWidthBoxLow,
                             Text(
-                              'Sign Up With Google',
+                              'Sign In with pin code',
                               style: context
                                   .textStyleGreyBarlow(context)
                                   .copyWith(
@@ -287,18 +268,19 @@ class SignupPageWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+                  context.sizedHeightBoxNormal,
                   context.sizedHeightBoxLow,
                   Center(
                     child: RichText(
                       text: TextSpan(
-                        text: 'Already have an account? ',
+                        text: 'Don\'t have an account? ',
                         style: DefaultTextStyle.of(context).style.copyWith(
                               color:
                                   AppLightColorConstants.contentTeritaryColor,
                             ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Login',
+                            text: 'SignUp',
                             style: context
                                 .textStyleGreyBarlow(context)
                                 .copyWith(
@@ -308,7 +290,7 @@ class SignupPageWidget extends StatelessWidget {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 // Route to LoginViewRoute on tap
-                                context.router.push(const LoginViewRoute());
+                                context.router.push(const SignupViewRoute());
                               },
                           ),
                         ],
