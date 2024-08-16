@@ -1,3 +1,4 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_event.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_state.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_view_model.dart';
@@ -6,6 +7,7 @@ import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/carousel_dots.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/gen/assets.gen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -150,9 +152,16 @@ class OnboardingPageOneWidget extends StatelessWidget {
             context.sizedHeightBoxLow,
             FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(
-                'Skip Introduction',
-                style: context.textStyleGreyBarlow(context),
+              child: GestureDetector(
+                onTap: () {
+                  context.router.push(const SignupViewRoute());
+                },
+                child: Text(
+                  'Skip Introduction',
+                  style: context.textStyleGreyBarlow(context).copyWith(
+                        fontSize: 18,
+                      ),
+                ),
               ),
             )
           ],

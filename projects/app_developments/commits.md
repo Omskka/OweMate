@@ -19,5 +19,3 @@
 - [ ] copy ©️ – when copying a file, function, method, variable, and so on
 - [ ] security 🔒 – in case of vulnerabilities
 - [ ] version 🔏 – in case of changes vesion
-
-- signed by the author @gurkanfikretgunak
