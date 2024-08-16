@@ -1,4 +1,3 @@
-import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_view_model.dart';
@@ -6,7 +5,6 @@ import 'package:app_developments/core/constants/ligth_theme_color_constants.dart
 import 'package:app_developments/core/constants/validation/sign_up_validation.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
-import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:app_developments/core/widgets/custom_text_field.dart';
 import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
@@ -31,7 +29,6 @@ class SignupPageWidget extends StatelessWidget {
           // Determine height and width based on screen width
           double containerHeight;
           double googleContainerWidth;
-          double googleContainerHeight;
           EdgeInsets leftPadding;
 
           // Height
