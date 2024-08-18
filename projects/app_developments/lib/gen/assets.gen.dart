@@ -9,6 +9,19 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsAnimationsGen {
+  const $AssetsAnimationsGen();
+
+  /// File path: assets/animations/checkmark.json
+  String get checkmark => 'assets/animations/checkmark.json';
+
+  /// File path: assets/animations/checkmark_icon.riv
+  String get checkmarkIcon => 'assets/animations/checkmark_icon.riv';
+
+  /// List of all assets
+  List<String> get values => [checkmark, checkmarkIcon];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -67,13 +80,20 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/google.svg
   String get google => 'assets/images/svg/google.svg';
 
+  /// File path: assets/images/svg/profile_circle.svg
+  String get profileCircle => 'assets/images/svg/profile_circle.svg';
+
+  /// File path: assets/images/svg/success.svg
+  String get success => 'assets/images/svg/success.svg';
+
   /// List of all assets
-  List<String> get values => [google];
+  List<String> get values => [google, profileCircle, success];
 }
 
 class Assets {
   Assets._();
 
+  static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

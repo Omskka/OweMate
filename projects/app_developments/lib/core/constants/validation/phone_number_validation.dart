@@ -1,4 +1,4 @@
-/* import 'package:app_developments/app/l10n/app_localizations.dart';
+import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class PhoneNumberValidation {
@@ -25,19 +25,18 @@ class PhoneNumberValidation {
       );
     });
 
-    // Regular expression to match the phone number format 
+    // Regular expression to match the phone number format
     final RegExp phoneRegExp = RegExp(r'^(\d{3}) (\d{3}) (\d{4})$');
 
     // Check if textfield is empty
     if (phoneNumberController.text.isEmpty) {
-      return L10n.of(context)?.valueRequired;
+      return 'Value Required';
     }
 
     // Check if the phone number format is valid
     if (!phoneRegExp.hasMatch(phoneNumberController.text)) {
-      return L10n.of(context)?.invalidNumber;
+      return 'Invalid phone number format';
     }
     return null;
   }
 }
- */

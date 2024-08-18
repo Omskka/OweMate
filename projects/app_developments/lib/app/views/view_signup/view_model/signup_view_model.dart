@@ -72,7 +72,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
           .flutterToast();
 
       // navigate to the next screen
-      event.context.router.push(const LoginViewRoute());
+      event.context.router.push(const ProfileUpdateViewRoute());
 
       // Handle error if user creation failed (createUserWithEmailAndPassword should throw an exception on failure)
     } // Handle the custom exceptions thrown by the repository
