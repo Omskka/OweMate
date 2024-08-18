@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rive/rive.dart';
 
 class ProfileUpdateSuccessPageWidget extends StatelessWidget {
   const ProfileUpdateSuccessPageWidget({super.key});
