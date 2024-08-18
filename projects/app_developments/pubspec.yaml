@@ -16,7 +16,6 @@ dependencies:
   firebase_crashlytics: ^4.0.3
   image_picker: ^0.8.5+3 
   lottie: ^3.1.2
-  rive: ^0.13.12
 
   # bloc
   flutter_bloc: ^8.1.3
@@ -88,4 +87,3 @@ flutter:
     - assets/images/png/
     - assets/images/svg/
     - assets/
-    - assets/animations
