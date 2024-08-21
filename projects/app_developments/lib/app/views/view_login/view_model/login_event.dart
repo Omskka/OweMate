@@ -7,7 +7,8 @@ abstract class LoginEvent {
 
 // Event representing the initial state of the login process
 class LoginInitialEvent extends LoginEvent {
-  LoginInitialEvent();
+  final BuildContext context;
+  LoginInitialEvent({required this.context});
 }
 
 // Event triggered when the user attempts to sign in

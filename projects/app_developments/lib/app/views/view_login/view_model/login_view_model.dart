@@ -9,10 +9,10 @@ import 'package:app_developments/core/constants/ligth_theme_color_constants.dart
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final TextEditingController emailController = TextEditingController();
@@ -27,15 +27,23 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     on<LoginSignInEvent>(_loginSignInEvent);
   }
 
-  FutureOr<void> _initial(LoginInitialEvent event, Emitter<LoginState> emit) {
-    // Initial setup if any
+  // Initial method to check if user is already logged in
+  FutureOr<void> _initial(
+      LoginInitialEvent event, Emitter<LoginState> emit) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isLoggedIn = prefs.getBool('isLoggedIn');
+
+    if (isLoggedIn ?? false) {
+      // User is already logged in, navigate to HomeView
+      event.context.router.push(const HomeViewRoute());
+    }
   }
 
   // Function to sign in user
   FutureOr<String?> _loginSignInEvent(
       LoginSignInEvent event, Emitter<LoginState> emit) async {
     try {
-      // Loading circle
+      // Show loading circle
       showDialog(
         context: event.context,
         builder: (context) {
@@ -52,16 +60,20 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       // If SignIn method completes without throwing an exception,
       // it indicates successful SignIn.
 
+      // Save login state
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
       // Emit a success state and display FlutterToast
       emit(LoginSuccessState());
       CustomFlutterToast(
               backgroundColor: AppLightColorConstants.successColor,
               context: event.context,
-              msg: 'Login Successfull')
+              msg: 'Login Successful')
           .flutterToast();
 
-      // navigate to the next screen
-      event.context.router.push(const OnboardingViewRoute());
+      // Navigate to the next screen
+      event.context.router.push(const HomeViewRoute());
     }
 
     // Handle the custom exceptions thrown by the repository
@@ -71,7 +83,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       // Display a fluttertoast with the error message
       CustomFlutterToast(
         context: event.context,
-        msg: e.message ?? 'Invalid Credentails',
+        msg: e.message ?? 'Invalid Credentials',
       ).flutterToast();
     }
     return null;

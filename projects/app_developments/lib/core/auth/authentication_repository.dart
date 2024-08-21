@@ -5,6 +5,7 @@ import 'package:app_developments/core/auth/exceptions/log_in_with_email_and_pass
 import 'package:app_developments/core/auth/exceptions/log_out_failure.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_developments/core/auth/exceptions/sign_up_with_email_and_password_failure.dart';
 import 'package:flutter/material.dart';
 
@@ -60,13 +61,17 @@ class AuthenticationRepository {
     required BuildContext context,
   }) async {
     try {
-      await Future.wait(
-        [
-          _firebaseAuth.signOut(),
-        ],
-      );
-      // Navigate to to signup screen
-      context.router.push(const SignupViewRoute());
+      // Sign out from Firebase Authentication
+      await _firebaseAuth.signOut();
+
+      // Optionally, clear SharedPreferences or any other local storage data
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear(); // Clears all stored data
+      // Alternatively, you can clear specific keys:
+      // await prefs.remove('isLoggedIn');
+
+      // Navigate to the sign-up screen
+      context.router.replace(const SignupViewRoute());
     } catch (e) {
       throw const LogOutFailure();
     }

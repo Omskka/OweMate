@@ -15,21 +15,23 @@ class FetchUserData {
       throw Exception("User data not found");
     }
 
-    String firstName = userDoc['firstName'];
-    String lastName = userDoc['lastName'];
+    String name = userDoc['name'];
     String profileImageUrl = userDoc['profile_image_url'];
     String phoneNumber = userDoc['phoneNumber'];
-    String schoolName = userDoc['schoolName'];
+    String gender = userDoc['gender'];
     String email = FirebaseAuth.instance.currentUser?.email ??
         ''; // Fetch email from FirebaseAuth
 
-    return {
-      'firstName': firstName,
-      'lastName': lastName,
+    // Create the map of user data
+    Map<String, String> userData = {
+      'firstName': name,
       'profileImageUrl': profileImageUrl,
       'phoneNumber': phoneNumber,
-      'schoolName': schoolName,
+      'gender': gender,
       'email': email,
     };
+
+    // Return the user data
+    return userData;
   }
 }

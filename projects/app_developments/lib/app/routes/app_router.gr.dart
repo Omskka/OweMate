@@ -15,6 +15,18 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CustomNavbarRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CustomNavbar(),
+      );
+    },
+    HomeViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeView(),
+      );
+    },
     LoginViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -46,6 +58,34 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [CustomNavbar]
+class CustomNavbarRoute extends PageRouteInfo<void> {
+  const CustomNavbarRoute({List<PageRouteInfo>? children})
+      : super(
+          CustomNavbarRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CustomNavbarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeView]
+class HomeViewRoute extends PageRouteInfo<void> {
+  const HomeViewRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

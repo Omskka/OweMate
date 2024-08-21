@@ -1,4 +1,6 @@
-/* import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
+import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_indicator.dart';
@@ -23,17 +25,17 @@ class _CustomNavbarState extends State<CustomNavbar> {
       create: (context) => HomeViewModel(),
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
-          // Debug statement to print the current state
           return AutoTabsScaffold(
-            backgroundColor: AppLightColorConstants.bg,
+            backgroundColor: AppLightColorConstants.bgDark,
             extendBody: false,
             resizeToAvoidBottomInset: true,
             extendBodyBehindAppBar: false,
             routes: const [
               HomeViewRoute(),
-              CardDetailsViewRoute(),
-              ActivityViewRoute(),
-              ProfileViewRoute()
+              HomeViewRoute(),
+              HomeViewRoute(),
+              HomeViewRoute(),
+              // Add other routes as needed
             ],
             bottomNavigationBuilder: (_, tabsRouter) {
               return state is! HomeDrawerOpenedState
@@ -53,17 +55,22 @@ class _CustomNavbarState extends State<CustomNavbar> {
                           },
                           destinations: [
                             _navigationDestination(
-                                activeIcon: Assets.images.svg.homeIcon,
-                                icon: Assets.images.svg.homeIcon),
+                              activeIcon: Assets.images.svg.home,
+                              icon: Assets.images.svg.home,
+                            ),
                             _navigationDestination(
-                                activeIcon: Assets.images.svg.walletIcon,
-                                icon: Assets.images.svg.walletIcon),
+                              activeIcon: Assets.images.svg.wallet,
+                              icon: Assets.images.svg.wallet,
+                            ),
                             _navigationDestination(
-                                activeIcon: Assets.images.svg.chartIcon,
-                                icon: Assets.images.svg.chartIcon),
+                              activeIcon: Assets.images.svg.chart,
+                              icon: Assets.images.svg.chart,
+                            ),
                             _navigationDestination(
-                                activeIcon: Assets.images.svg.profileIcon,
-                                icon: Assets.images.svg.profileIcon),
+                              activeIcon: Assets.images.svg.friends,
+                              icon: Assets.images.svg.friends,
+                            ),
+                            // Add more NavigationDestinations here
                           ],
                         ),
                       ),
@@ -81,19 +88,20 @@ class _CustomNavbarState extends State<CustomNavbar> {
     required String icon,
   }) {
     return NavigationDestination(
-      icon: _svgPictureIcon(icon, AppLightColorConstants.secondaryColor),
+      icon: _svgPictureIcon(icon),
       selectedIcon: _svgPictureIcon(activeIcon, AppLightColorConstants.bgLight),
       label: '',
     );
   }
 
-  SvgPicture _svgPictureIcon(String icon, Color color) {
+  SvgPicture _svgPictureIcon(String icon, [Color? color]) {
     return SvgPicture.asset(
       icon,
       height: 25,
       width: 25,
-      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+      colorFilter: color != null
+          ? ColorFilter.mode(color, BlendMode.srcIn)
+          : null, // No color filter if color is null
     );
   }
 }
- */

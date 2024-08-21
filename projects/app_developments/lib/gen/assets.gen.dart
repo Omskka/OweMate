@@ -9,19 +9,6 @@
 
 import 'package:flutter/widgets.dart';
 
-class $AssetsAnimationsGen {
-  const $AssetsAnimationsGen();
-
-  /// File path: assets/animations/checkmark.json
-  String get checkmark => 'assets/animations/checkmark.json';
-
-  /// File path: assets/animations/checkmark_icon.riv
-  String get checkmarkIcon => 'assets/animations/checkmark_icon.riv';
-
-  /// List of all assets
-  List<String> get values => [checkmark, checkmarkIcon];
-}
-
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -77,8 +64,17 @@ class $AssetsImagesPngGen {
 class $AssetsImagesSvgGen {
   const $AssetsImagesSvgGen();
 
+  /// File path: assets/images/svg/chart.svg
+  String get chart => 'assets/images/svg/chart.svg';
+
+  /// File path: assets/images/svg/friends.svg
+  String get friends => 'assets/images/svg/friends.svg';
+
   /// File path: assets/images/svg/google.svg
   String get google => 'assets/images/svg/google.svg';
+
+  /// File path: assets/images/svg/home.svg
+  String get home => 'assets/images/svg/home.svg';
 
   /// File path: assets/images/svg/profile_circle.svg
   String get profileCircle => 'assets/images/svg/profile_circle.svg';
@@ -86,14 +82,17 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/success.svg
   String get success => 'assets/images/svg/success.svg';
 
+  /// File path: assets/images/svg/wallet.svg
+  String get wallet => 'assets/images/svg/wallet.svg';
+
   /// List of all assets
-  List<String> get values => [google, profileCircle, success];
+  List<String> get values =>
+      [chart, friends, google, home, profileCircle, success, wallet];
 }
 
 class Assets {
   Assets._();
 
-  static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
