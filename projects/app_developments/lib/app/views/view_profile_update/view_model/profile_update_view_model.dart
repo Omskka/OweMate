@@ -67,8 +67,8 @@ class ProfileUpdateViewModel
       // upload the inputs to firebase
       String? userid = AuthenticationRepository().getCurrentUserId();
       await FirebaseFirestore.instance.collection('users').doc(userid).set({
-        'Name': firstnameController.text.trim(),
-        'Gender': genderController.text.trim(),
+        'name': firstnameController.text.trim(),
+        'gender': genderController.text.trim(),
       });
 
       // Upload the image to Firebase Storage

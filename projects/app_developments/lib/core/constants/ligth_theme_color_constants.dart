@@ -7,7 +7,7 @@ final class AppLightColorConstants {
   //base color
   static const Color primaryColor = Color(0xFF004AAD);
   static const Color secondaryColor = Color(0xFF8edfeb);
-  static const Color ThirdColor = Color(0xFFFF3131);
+  static const Color thirdColor = Color(0xFFFF3131);
   static const Color hueShadow = Color(0xFF00BF63);
   static const Color errorColor = Color(0xFFF44336);
   static const Color successColor = Color(0xFF43A048);
@@ -21,7 +21,8 @@ final class AppLightColorConstants {
   static const Color buttonErrorColor = Color(0xFFF44336);
   //background color
 
-  static const Color bgLight = Color(0xfff7f7f7);
+  static const Color bgLight = Color(0xFFFFFFFF);
+  static const Color bgDark = Color(0xF7F5F5F5);
   static const Color bgInverse = Color(0xFF121212);
   static const Color bgAccent = Color(0xFF304FFE);
   static const Color bgSecondary = Color(0xFFFDD835);

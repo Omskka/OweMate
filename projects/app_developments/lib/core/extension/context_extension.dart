@@ -115,6 +115,7 @@ extension RadiusExtension on BuildContext {
 }
 
 extension SizedBoxNum on BuildContext {
+  SizedBox get sizedHeightBoxLower => SizedBox(height: height * 0.015);
   SizedBox get sizedHeightBoxLow => SizedBox(height: height * 0.03);
   SizedBox get sizedHeightBoxNormal => SizedBox(height: height * 0.04);
   SizedBox get sizedHeightBoxMedium => SizedBox(height: height * 0.07);
@@ -137,7 +138,7 @@ extension TextStyleExtension on BuildContext {
   TextStyle textStyleH2(BuildContext context) => const TextStyle(
         fontSize: 35,
         fontWeight: FontWeight.bold,
-        color: AppLightColorConstants.ThirdColor,
+        color: AppLightColorConstants.thirdColor,
         fontFamily: 'Barlow Semi Condensed bold',
       );
 

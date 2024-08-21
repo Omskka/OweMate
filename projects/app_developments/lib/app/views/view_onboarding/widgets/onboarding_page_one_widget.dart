@@ -123,7 +123,7 @@ class OnboardingPageOneWidget extends StatelessWidget {
                           text: 'Mate',
                           style: context.textStyleGrey(context).copyWith(
                                 color: AppLightColorConstants
-                                    .ThirdColor, // Color for "Mate"
+                                    .thirdColor, // Color for "Mate"
                                 fontWeight: FontWeight
                                     .bold, // Optional: Make "Mate" bold
                               ),

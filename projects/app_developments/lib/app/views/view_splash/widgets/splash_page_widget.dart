@@ -34,7 +34,7 @@ class SplashPageWidget extends StatelessWidget {
                 TextSpan(
                   text: 'MATE',
                   style: TextStyle(
-                    color: AppLightColorConstants.ThirdColor,
+                    color: AppLightColorConstants.thirdColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 52,
                     fontFamily: 'Barlow Semi Condensed bold',

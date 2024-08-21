@@ -1,8 +1,10 @@
+import 'package:app_developments/app/views/view_home/home_view.dart';
 import 'package:app_developments/app/views/view_login/login_view.dart';
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
 import 'package:app_developments/app/views/view_profile_update/profile_update_view.dart';
 import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
+import 'package:app_developments/core/widgets/custom_navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -43,5 +45,8 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: SignupViewRoute.page),
     AutoRoute(page: LoginViewRoute.page),
     AutoRoute(page: ProfileUpdateViewRoute.page),
+    AutoRoute(page: CustomNavbarRoute.page, children: [
+      AutoRoute(page: HomeViewRoute.page),
+    ]),
   ];
 }

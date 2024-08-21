@@ -14,7 +14,7 @@ class CustomRoundedTopBorderShape extends ShapeBorder {
     // Adjuct Indicator shape
     path.addRRect(RRect.fromLTRBAndCorners(
       rect.left + 5,
-      rect.top - 5,
+      rect.top - 8,
       rect.right - 5,
       rect.bottom + 34,
       // Make the top circular

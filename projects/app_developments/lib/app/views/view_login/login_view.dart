@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_login/view_model/login_event.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_state.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_view_model.dart';
 import 'package:app_developments/app/views/view_login/widgets/login_page_widget.dart';
@@ -12,7 +13,8 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginViewModel(),
+      create: (context) =>
+          LoginViewModel()..add(LoginInitialEvent(context: context)),
       child: BlocBuilder<LoginViewModel, LoginState>(
         builder: (context, state) {
           return const SafeArea(

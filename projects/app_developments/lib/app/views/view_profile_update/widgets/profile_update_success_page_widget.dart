@@ -1,16 +1,11 @@
-import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_event.dart';
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_view_model.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
-import 'package:app_developments/core/constants/validation/phone_number_validation.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
-import 'package:app_developments/core/widgets/custom_rounded_button.dart';
-import 'package:app_developments/core/widgets/custom_text_field.dart';
-import 'package:app_developments/gen/assets.gen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
 class ProfileUpdateSuccessPageWidget extends StatelessWidget {
@@ -81,7 +76,9 @@ class ProfileUpdateSuccessPageWidget extends StatelessWidget {
                           context.sizedHeightBoxMedium,
                           CustomContinueButton(
                             buttonText: 'Continue',
-                            onPressed: () {},
+                            onPressed: () {
+                              context.router.push(const HomeViewRoute());
+                            },
                           ),
                         ],
                       ),
