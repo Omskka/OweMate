@@ -27,7 +27,6 @@ class LoginPageWidget extends StatelessWidget {
           // Determine height and width based on screen width
           double containerHeight;
           double pinContainerWidth;
-          double googleContainerHeight;
           EdgeInsets leftPadding;
 
           // Height

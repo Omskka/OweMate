@@ -2,6 +2,7 @@ import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
+import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:flutter/material.dart';
 
 // Bottomnavbar
@@ -63,43 +64,75 @@ class HomeNavbarWidget extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  ListTile(
-                    leading: const Icon(Icons.people),
-                    title: Text(
-                      'Add friends',
-                      style: context.textStyleGrey(context).copyWith(
-                          color: AppLightColorConstants.bgInverse,
-                          fontSize: 16),
+                  InkWell(
+                    onTap: () {
+                      CustomFlutterToast(
+                        context: context,
+                        msg: 'Under Construction',
+                      ).flutterToast();
+                    },
+                    child: ListTile(
+                      leading: const Icon(Icons.people),
+                      title: Text(
+                        'Add friends',
+                        style: context.textStyleGrey(context).copyWith(
+                            color: AppLightColorConstants.bgInverse,
+                            fontSize: 16),
+                      ),
                     ),
                   ),
                   context.sizedHeightBoxLow,
-                  ListTile(
-                    leading: const Icon(Icons.message),
-                    title: Text(
-                      'Messages',
-                      style: context.textStyleGrey(context).copyWith(
-                          color: AppLightColorConstants.bgInverse,
-                          fontSize: 16),
+                  InkWell(
+                    onTap: () {
+                      CustomFlutterToast(
+                        context: context,
+                        msg: 'Under Construction',
+                      ).flutterToast();
+                    },
+                    child: ListTile(
+                      leading: const Icon(Icons.message),
+                      title: Text(
+                        'Messages',
+                        style: context.textStyleGrey(context).copyWith(
+                            color: AppLightColorConstants.bgInverse,
+                            fontSize: 16),
+                      ),
                     ),
                   ),
                   context.sizedHeightBoxLow,
-                  ListTile(
-                    leading: const Icon(Icons.insert_chart),
-                    title: Text(
-                      'Statistics',
-                      style: context.textStyleGrey(context).copyWith(
-                          color: AppLightColorConstants.bgInverse,
-                          fontSize: 16),
+                  InkWell(
+                    onTap: () {
+                      CustomFlutterToast(
+                        context: context,
+                        msg: 'Under Construction',
+                      ).flutterToast();
+                    },
+                    child: ListTile(
+                      leading: const Icon(Icons.insert_chart),
+                      title: Text(
+                        'Statistics',
+                        style: context.textStyleGrey(context).copyWith(
+                            color: AppLightColorConstants.bgInverse,
+                            fontSize: 16),
+                      ),
                     ),
                   ),
                   context.sizedHeightBoxLow,
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: Text(
-                      'Settings',
-                      style: context.textStyleGrey(context).copyWith(
-                          color: AppLightColorConstants.bgInverse,
-                          fontSize: 16),
+                  InkWell(
+                    onTap: () {
+                      CustomFlutterToast(
+                        context: context,
+                        msg: 'Under Construction',
+                      ).flutterToast();
+                    },
+                    child: ListTile(
+                      leading: const Icon(Icons.settings),
+                      title: Text(
+                        'Settings',
+                        style: context.textStyleGrey(context).copyWith(
+                            color: AppLightColorConstants.bgInverse,
+                            fontSize: 16),
+                      ),
                     ),
                   ),
                 ],

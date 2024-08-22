@@ -1,8 +1,10 @@
+import 'package:app_developments/app/views/view_debts/view_model/debts_event.dart';
+import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
+import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
+import 'package:app_developments/app/views/view_debts/widgets/debts_page_widget.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
-import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/app/views/view_home/widgets/home_drawer.dart';
-import 'package:app_developments/app/views/view_home/widgets/home_page_widget.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
@@ -10,16 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key});
+class DebtsView extends StatelessWidget {
+  const DebtsView({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocProvider(
-      create: (context) => HomeViewModel()..add(HomeInitialEvent()),
-      child: BlocBuilder<HomeViewModel, HomeState>(
+      create: (context) => DebtsViewModel()..add(DebtsInitialEvent()),
+      child: BlocBuilder<DebtsViewModel, DebtsState>(
         builder: (context, state) {
+          final viewModel = context.read<DebtsViewModel>();
+          final homeViewModel = context.read<HomeViewModel>();
           return SafeArea(
             child: Scaffold(
               backgroundColor: AppLightColorConstants.bgDark,
@@ -90,10 +93,10 @@ class HomeView extends StatelessWidget {
                 ],
               ),
               drawer: HomeNavbarWidget(
-                name: context.read<HomeViewModel>().name,
-                phoneNumber: context.read<HomeViewModel>().phoneNumber,
-                email: context.read<HomeViewModel>().email,
-                profileImageUrl: context.read<HomeViewModel>().profileImageUrl,
+                name: context.read<DebtsViewModel>().name,
+                phoneNumber: context.read<DebtsViewModel>().phoneNumber,
+                email: context.read<DebtsViewModel>().email,
+                profileImageUrl: context.read<DebtsViewModel>().profileImageUrl,
               ),
               // Hide navbar when drawer is opened
               onDrawerChanged: (isOpened) {
@@ -101,7 +104,7 @@ class HomeView extends StatelessWidget {
                     ? homeViewModel.add(HomeDrawerOpenedEvent())
                     : homeViewModel.add(HomeDrawerClosedEvent());
               },
-              body: HomePageWidget(),
+              body: const DebtsPageWidget(),
             ),
           );
         },

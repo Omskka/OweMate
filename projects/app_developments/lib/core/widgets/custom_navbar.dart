@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -32,13 +33,14 @@ class _CustomNavbarState extends State<CustomNavbar> {
             extendBodyBehindAppBar: false,
             routes: const [
               HomeViewRoute(),
-              HomeViewRoute(),
+              DebtsViewRoute(),
               HomeViewRoute(),
               HomeViewRoute(),
               // Add other routes as needed
             ],
             bottomNavigationBuilder: (_, tabsRouter) {
-              return state is! HomeDrawerOpenedState
+              return state is! HomeDrawerOpenedState &&
+                      state is! DebtsDrawerOpenedState
                   ? Padding(
                       padding: context.paddingMedium,
                       child: ClipRRect(
