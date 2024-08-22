@@ -12,7 +12,7 @@ final class AppLightColorConstants {
   static const Color errorColor = Color(0xFFF44336);
   static const Color successColor = Color(0xFF43A048);
   static const Color warningColor = Color(0xffFB8A00);
-  static const Color infoColor = Color(0xFFB8B8B8);
+  static const Color infoColor = Color(0xFFE9ECEF);
 
   //button color
 

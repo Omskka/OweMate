@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CustomNavbar(),
       );
     },
+    DebtsViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DebtsView(),
+      );
+    },
     HomeViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -70,6 +76,20 @@ class CustomNavbarRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CustomNavbarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DebtsView]
+class DebtsViewRoute extends PageRouteInfo<void> {
+  const DebtsViewRoute({List<PageRouteInfo>? children})
+      : super(
+          DebtsViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DebtsViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
