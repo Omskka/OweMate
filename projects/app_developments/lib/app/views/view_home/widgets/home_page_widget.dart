@@ -12,6 +12,44 @@ class HomePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
+        // Get screen height and width using MediaQuery
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        // Determine height and width based on screen dimensions
+
+        EdgeInsets leftPadding;
+
+        // Height
+        if (screenHeight <= 680) {
+          // Small screens
+        } else if (screenHeight <= 800) {
+          // Small screens
+        } else if (screenHeight <= 900) {
+          // Medium screens
+        } else if (screenHeight <= 1080) {
+          // Medium screens
+        } else {
+          // Large screens
+        }
+
+        // Width
+        if (screenWidth <= 600) {
+          // very Small screens
+          leftPadding = EdgeInsets.zero;
+        } else if (screenWidth <= 800) {
+          // Small screens
+          leftPadding = EdgeInsets.zero;
+        } else if (screenWidth <= 900) {
+          // Medium screens
+          leftPadding = context.onlyLeftPaddingNormal;
+        } else if (screenWidth <= 1080) {
+          // Medium Large screens
+          leftPadding = context.onlyLeftPaddingNormal;
+        } else {
+          // Large screens
+          leftPadding = context.onlyLeftPaddingHigh;
+        }
         return SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(
@@ -80,11 +118,14 @@ class HomePageWidget extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Money you owe',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              fontSize: 18,
-                            ),
+                      child: Padding(
+                        padding: leftPadding,
+                        child: Text(
+                          'Money you owe',
+                          style: context.textStyleGreyBarlow(context).copyWith(
+                                fontSize: 18,
+                              ),
+                        ),
                       ),
                     ),
                   ),
@@ -111,11 +152,14 @@ class HomePageWidget extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Money Owed to You',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              fontSize: 18,
-                            ),
+                      child: Padding(
+                        padding: leftPadding,
+                        child: Text(
+                          'Money Owed to You',
+                          style: context.textStyleGreyBarlow(context).copyWith(
+                                fontSize: 18,
+                              ),
+                        ),
                       ),
                     ),
                   ),

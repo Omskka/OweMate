@@ -6,17 +6,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Future<void> main(List<String> args) async {
-  // Initialise Firebase
+  // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  // Get screen height in logical pixels
+  final screenHeight = WidgetsBinding.instance.window.physicalSize.height /
+      WidgetsBinding.instance.window.devicePixelRatio;
+
+  // Check the screen height and set orientation accordingly
+  if (screenHeight < 1030) {
+    // Force portrait mode for smaller screens
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  } else {
+    // Allow both portrait and landscape for larger screens
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  // Set up the environment and launch the app
   Flavor.create(
     Environment.dev,
     name: "Dev",
     color: Colors.green,
   );
+
   launchApp();
 }

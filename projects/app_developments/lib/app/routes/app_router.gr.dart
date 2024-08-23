@@ -27,6 +27,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DebtsView(),
       );
     },
+    FriendsViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FriendsView(),
+      );
+    },
     HomeViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -90,6 +96,20 @@ class DebtsViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DebtsViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FriendsView]
+class FriendsViewRoute extends PageRouteInfo<void> {
+  const FriendsViewRoute({List<PageRouteInfo>? children})
+      : super(
+          FriendsViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FriendsViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

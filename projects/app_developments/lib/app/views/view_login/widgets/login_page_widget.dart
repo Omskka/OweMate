@@ -26,7 +26,8 @@ class LoginPageWidget extends StatelessWidget {
 
           // Determine height and width based on screen width
           double containerHeight;
-          double pinContainerWidth;
+          double containerWidth;
+          double textfieldWidth;
           EdgeInsets leftPadding;
 
           // Height
@@ -51,23 +52,28 @@ class LoginPageWidget extends StatelessWidget {
           if (maxWidth <= 600) {
             // very Small screens
             leftPadding = context.onlyLeftPaddingMedium;
-            pinContainerWidth = context.dynamicWidth(0.65);
+            textfieldWidth = context.dynamicWidth(0.8);
+            containerWidth = context.dynamicWidth(0.65);
           } else if (maxWidth <= 800) {
             // Small screens
             leftPadding = context.onlyLeftPaddingMedium;
-            pinContainerWidth = context.dynamicWidth(0.45);
+            textfieldWidth = context.dynamicWidth(0.7);
+            containerWidth = context.dynamicWidth(0.45);
           } else if (maxWidth <= 900) {
             // Medium screens
-            leftPadding = context.onlyLeftPaddingMedium;
-            pinContainerWidth = context.dynamicWidth(0.3);
+            leftPadding = context.onlyLeftPaddingMedium * 2.5;
+            textfieldWidth = context.dynamicWidth(0.7);
+            containerWidth = context.dynamicWidth(0.3);
           } else if (maxWidth <= 1080) {
             // Medium Large screens
             leftPadding = context.onlyLeftPaddingHigh;
-            pinContainerWidth = context.dynamicWidth(0.3);
+            textfieldWidth = context.dynamicWidth(0.6);
+            containerWidth = context.dynamicWidth(0.3);
           } else {
             // Large screens
-            leftPadding = context.onlyLeftPaddingHigh;
-            pinContainerWidth = context.dynamicWidth(0.3);
+            leftPadding = context.onlyLeftPaddingHigh * 3;
+            textfieldWidth = context.dynamicWidth(0.6);
+            containerWidth = context.dynamicWidth(0.3);
           }
 
           return SingleChildScrollView(
@@ -126,6 +132,7 @@ class LoginPageWidget extends StatelessWidget {
                           ),
                           // Custom text field with hint text
                           CustomTextField(
+                            width: textfieldWidth,
                             textInputAction: TextInputAction.next,
                             hintText: 'JohnDoe@gmail.com',
                             validator: (value) =>
@@ -156,6 +163,7 @@ class LoginPageWidget extends StatelessWidget {
                           ),
                           // Custom text field with visibility toggle
                           CustomTextField(
+                            width: textfieldWidth,
                             hintText: '',
                             textInputAction: TextInputAction.next,
                             validator: (value) =>
@@ -236,7 +244,7 @@ class LoginPageWidget extends StatelessWidget {
                       onTap: () {},
                       child: Container(
                         height: context.dynamicHeight(0.08),
-                        width: pinContainerWidth,
+                        width: containerWidth,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(context.normalRadius),
                           border: Border.all(

@@ -31,7 +31,7 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
 
   // Initial event
   FutureOr<void> _initial(DebtsInitialEvent event, Emitter<DebtsState> emit)async {
-        try {
+      try {
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
