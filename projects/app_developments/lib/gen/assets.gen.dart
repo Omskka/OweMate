@@ -70,6 +70,9 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/friends.svg
   String get friends => 'assets/images/svg/friends.svg';
 
+  /// File path: assets/images/svg/friends_icon.svg
+  String get friendsIcon => 'assets/images/svg/friends_icon.svg';
+
   /// File path: assets/images/svg/google.svg
   String get google => 'assets/images/svg/google.svg';
 
@@ -86,8 +89,16 @@ class $AssetsImagesSvgGen {
   String get wallet => 'assets/images/svg/wallet.svg';
 
   /// List of all assets
-  List<String> get values =>
-      [chart, friends, google, home, profileCircle, success, wallet];
+  List<String> get values => [
+        chart,
+        friends,
+        friendsIcon,
+        google,
+        home,
+        profileCircle,
+        success,
+        wallet
+      ];
 }
 
 class Assets {

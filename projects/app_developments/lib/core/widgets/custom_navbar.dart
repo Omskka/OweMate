@@ -35,7 +35,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
               HomeViewRoute(),
               DebtsViewRoute(),
               HomeViewRoute(),
-              HomeViewRoute(),
+              FriendsViewRoute(),
               // Add other routes as needed
             ],
             bottomNavigationBuilder: (_, tabsRouter) {

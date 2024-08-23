@@ -6,13 +6,6 @@ import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
-import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
-import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 class DebtsPageWidget extends StatelessWidget {
   const DebtsPageWidget({super.key});
 
@@ -31,28 +24,28 @@ class DebtsPageWidget extends StatelessWidget {
 
             // Height
             if (maxHeight <= 600) {
-              containerHeight = context.dynamicHeight(0.05);
+              containerHeight = context.dynamicHeight(0.08);
             } else if (maxHeight <= 800) {
               containerHeight = context.dynamicHeight(0.08);
             } else if (maxHeight <= 900) {
-              containerHeight = context.dynamicHeight(0.12);
+              containerHeight = context.dynamicHeight(0.08);
             } else if (maxHeight <= 1080) {
-              containerHeight = context.dynamicHeight(0.15);
+              containerHeight = context.dynamicHeight(0.08);
             } else {
-              containerHeight = context.dynamicHeight(0.18);
+              containerHeight = context.dynamicHeight(0.08);
             }
 
             // Width
             if (maxWidth <= 600) {
               containerWidth = context.dynamicWidth(0.6);
             } else if (maxWidth <= 800) {
-              containerWidth = context.dynamicWidth(0.65);
+              containerWidth = context.dynamicWidth(0.5);
             } else if (maxWidth <= 900) {
-              containerWidth = context.dynamicWidth(0.7);
+              containerWidth = context.dynamicWidth(0.5);
             } else if (maxWidth <= 1080) {
-              containerWidth = context.dynamicWidth(0.75);
+              containerWidth = context.dynamicWidth(0.4);
             } else {
-              containerWidth = context.dynamicWidth(0.8);
+              containerWidth = context.dynamicWidth(0.3);
             }
 
             return SingleChildScrollView(

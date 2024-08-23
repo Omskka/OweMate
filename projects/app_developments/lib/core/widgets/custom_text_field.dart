@@ -15,6 +15,8 @@ class CustomTextField extends StatefulWidget {
   final bool Function(String?)? isValid;
   final Color? hintTextColor;
   final bool outlineBorder;
+  final double? width;
+  final IconData? icon;
   final double hintFontSize;
   final bool removePadding;
 
@@ -22,11 +24,13 @@ class CustomTextField extends StatefulWidget {
       {Key? key,
       this.hintText,
       this.labelText,
+      this.icon,
       this.prefixIcon,
       this.showVisibilityToggle = false,
       this.textInputAction,
       this.keyboardType = TextInputType.text,
       this.label,
+      this.width,
       required this.controller,
       this.validator,
       this.isValid,
@@ -86,7 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: context.dynamicWidth(0.83),
+      width: widget.width ?? context.dynamicWidth(0.83),
       child: TextFormField(
         keyboardType: widget.keyboardType,
         controller: widget.controller,
@@ -150,6 +154,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   Icons.check_circle,
                   color: AppLightColorConstants.primaryColor,
                 ),
+              Icon(widget.icon),
             ],
           ),
           enabledBorder: widget.outlineBorder

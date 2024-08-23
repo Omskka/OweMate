@@ -40,10 +40,10 @@ class CustomContinueButton extends StatelessWidget {
           buttonHeight = context.dynamicHeight(0.0075);
         } else if (maxHeight <= 1080) {
           // Medium screens
-          buttonHeight = context.dynamicHeight(0.075);
+          buttonHeight = context.dynamicHeight(0.07);
         } else {
           // Large screens
-          buttonHeight = context.dynamicHeight(0.08);
+          buttonHeight = context.dynamicHeight(0.075);
         }
 
         // Width
@@ -52,7 +52,7 @@ class CustomContinueButton extends StatelessWidget {
           buttonWidth = context.dynamicWidth(0.6);
         } else if (maxWidth <= 800) {
           // Small screens
-          buttonWidth = context.dynamicWidth(0.5);
+          buttonWidth = context.dynamicWidth(0.4);
         } else if (maxWidth <= 900) {
           // Medium screens
           buttonWidth = context.dynamicWidth(0.4);
