@@ -37,13 +37,13 @@ class CustomRoundedButton extends StatelessWidget {
 
         // Height
         if (effectiveMaxHeight <= 600) {
-          buttonHeight = context.dynamicHeight(0.05);
+          buttonHeight = context.dynamicHeight(0.035);
         } else if (effectiveMaxHeight <= 800) {
-          buttonHeight = context.dynamicHeight(0.065);
+          buttonHeight = context.dynamicHeight(0.035);
         } else if (effectiveMaxHeight <= 900) {
-          buttonHeight = context.dynamicHeight(0.055);
+          buttonHeight = context.dynamicHeight(0.05);
         } else if (effectiveMaxHeight <= 1080) {
-          buttonHeight = context.dynamicHeight(0.055);
+          buttonHeight = context.dynamicHeight(0.0055);
         } else {
           buttonHeight = context.dynamicHeight(0.045);
         }

@@ -16,7 +16,8 @@ class CustomTextField extends StatefulWidget {
   final Color? hintTextColor;
   final bool outlineBorder;
   final double? width;
-  final IconData? icon;
+  final Icon? icon;
+  final Color? fillColor;
   final double hintFontSize;
   final bool removePadding;
 
@@ -27,6 +28,7 @@ class CustomTextField extends StatefulWidget {
       this.icon,
       this.prefixIcon,
       this.showVisibilityToggle = false,
+      this.fillColor,
       this.textInputAction,
       this.keyboardType = TextInputType.text,
       this.label,
@@ -99,7 +101,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         textInputAction: widget.textInputAction,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          fillColor: AppLightColorConstants.bgLight,
+          fillColor: widget.fillColor ?? AppLightColorConstants.bgLight,
           filled: true,
           prefixIcon: _isPrefixIconGiven() && _focusNode.hasFocus && _isTyping
               ? Padding(
@@ -154,7 +156,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   Icons.check_circle,
                   color: AppLightColorConstants.primaryColor,
                 ),
-              Icon(widget.icon),
+              widget.icon ?? const Icon(null),
             ],
           ),
           enabledBorder: widget.outlineBorder

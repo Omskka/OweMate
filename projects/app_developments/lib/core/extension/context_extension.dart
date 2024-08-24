@@ -154,4 +154,10 @@ extension TextStyleExtension on BuildContext {
         color: AppLightColorConstants.contentTeritaryColor,
         fontFamily: 'Barlow Semi Condensed bold',
       );
+  TextStyle textStyleTitleBarlow(BuildContext context) => const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: AppLightColorConstants.bgInverse,
+        fontFamily: 'Barlow Semi Condensed bold',
+      );
 }

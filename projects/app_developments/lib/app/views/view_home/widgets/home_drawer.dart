@@ -1,9 +1,11 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:app_developments/core/widgets/custom_smaller_continue_button.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class HomeNavbarWidget extends StatelessWidget {
@@ -95,9 +97,9 @@ class HomeNavbarWidget extends StatelessWidget {
                         ).flutterToast();
                       },
                       child: ListTile(
-                        leading: const Icon(Icons.people),
+                        leading: const Icon(Icons.person),
                         title: Text(
-                          'Add friends',
+                          'profile',
                           style: context.textStyleGrey(context).copyWith(
                               color: AppLightColorConstants.bgInverse,
                               fontSize: 16),
@@ -165,7 +167,7 @@ class HomeNavbarWidget extends StatelessWidget {
               Padding(
                 padding: context.onlyBottomPaddingHigh,
                 child: Padding(
-                  padding: context.onlyBottomPaddingHigh,
+                  padding: context.onlyBottomPaddingMedium,
                   child: CustomSmallerContinueButton(
                     buttonText: 'Sign Out',
                     icon: const Icon(Icons.logout),

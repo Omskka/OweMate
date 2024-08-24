@@ -17,7 +17,6 @@ class HomePageWidget extends StatelessWidget {
         final screenWidth = MediaQuery.of(context).size.width;
 
         // Determine height and width based on screen dimensions
-
         EdgeInsets leftPadding;
 
         // Height
