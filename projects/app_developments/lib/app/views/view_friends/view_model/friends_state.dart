@@ -1,11 +1,17 @@
 abstract class FriendsState {
-  FriendsState();
+  final List<Map<String, String>> friends;
+  FriendsState({required this.friends});
 }
 
 class FriendsInitialState extends FriendsState {
-  FriendsInitialState();
+  FriendsInitialState() : super(friends: []);
 }
 
 class FriendsDataLoadedState extends FriendsState {
-  FriendsDataLoadedState();
+  FriendsDataLoadedState({
+    required List<Map<String, String>> friends,
+    required FriendsState state,
+  }) : super(
+          friends: friends,
+        );
 }

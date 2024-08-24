@@ -21,7 +21,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
   FriendsViewModel() : super(FriendsInitialState()) {
     on<FriendsInitialEvent>(_initial);
   }
-
   FutureOr<void> _initial(
       FriendsInitialEvent event, Emitter<FriendsState> emit) async {
     try {
@@ -33,11 +32,15 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
 
-      // Emit the loaded state with the fetched data
-      emit(FriendsDataLoadedState());
+      // Fetch friends' data
+      List<Map<String, String>> friends =
+          await fetchUserDataService.fetchFriends();
+
+      // Emit the state with the fetched friends data
+      emit(FriendsDataLoadedState(friends: friends, state: state));
     } catch (e) {
-      // Throw exception
-      throw Exception('$e');
+      // Handle the exception
+      throw Exception('Failed to fetch data: $e');
     }
   }
 }

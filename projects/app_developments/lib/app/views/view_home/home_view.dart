@@ -79,7 +79,7 @@ class HomeView extends StatelessWidget {
                 ),
                 actions: [
                   IconButton(
-                    icon: const Icon(Icons.person),
+                    icon: const Icon(Icons.notifications),
                     onPressed: () {
                       CustomFlutterToast(
                         context: context,

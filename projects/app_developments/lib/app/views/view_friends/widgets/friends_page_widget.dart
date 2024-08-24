@@ -1,3 +1,5 @@
+import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -5,6 +7,7 @@ import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/core/widgets/custom_text_field.dart';
 import 'package:app_developments/gen/assets.gen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,7 +19,8 @@ class FriendsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FriendsViewModel, FriendsState>(
       builder: (context, state) {
-        final viewModel = BlocProvider.of<FriendsViewModel>(context);
+        final viewModel = BlocProvider.of<FriendsViewModel>(context)
+          ..add(FriendsInitialEvent());
         return LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
@@ -93,7 +97,14 @@ class FriendsPageWidget extends StatelessWidget {
                           SvgPicture.asset(Assets.images.svg.friendsIcon),
                           context.sizedWidthBoxNormal,
                           CustomTextField(
-                            icon: Icons.search,
+                            fillColor: AppLightColorConstants.infoColor,
+                            hintTextColor:
+                                AppLightColorConstants.contentTeritaryColor,
+                            icon: const Icon(
+                              Icons.search,
+                              color:
+                                  AppLightColorConstants.contentTeritaryColor,
+                            ),
                             removePadding: true,
                             width: textfieldWidth,
                             controller: viewModel.friendsSearchController,
@@ -105,15 +116,78 @@ class FriendsPageWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+                  context.sizedHeightBoxLower,
                   SizedBox(
                     height: context.dynamicHeight(0.4),
-                    width: context.dynamicWidth(1),
-                    child: const Placeholder(),
+                    width: context.dynamicWidth(0.75),
+                    child: state.friends.isEmpty
+                        ? SizedBox(
+                            child: Center(
+                              child: Text(
+                                'No Friends found',
+                                style: context
+                                    .textStyleTitleBarlow(context)
+                                    .copyWith(
+                                      fontSize: 18,
+                                    ),
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.friends.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                // remove splash effect
+                                splashFactory: NoSplash.splashFactory,
+                                onTap: () {},
+                                child: Padding(
+                                  padding: context.onlyTopPaddingNormal,
+                                  child: SizedBox(
+                                    height: context.dynamicHeight(0.1),
+                                    width: context.dynamicWidth(0.8),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: context.dynamicWidth(0.07),
+                                          backgroundColor:
+                                              AppLightColorConstants
+                                                  .contentTeritaryColor,
+                                          backgroundImage: NetworkImage(
+                                            state.friends[index]
+                                                    ['profileImageUrl'] ??
+                                                '', // Use index to get the correct user
+                                          ),
+                                        ),
+                                        context.sizedWidthBoxNormal,
+                                        Text(
+                                          state.friends[index]['Name'] ??
+                                              'Unknown User',
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: AppLightColorConstants
+                                                    .bgInverse,
+                                              ),
+                                        ),
+                                        context.sizedWidthBoxHigh,
+                                        context.sizedWidthBoxHigh,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                   ),
-                  context.sizedHeightBoxLow,
+                  context.sizedHeightBoxNormal,
                   CustomContinueButton(
                     buttonText: 'Add Friend',
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(const AddFriendsViewRoute());
+                    },
                   )
                 ],
               ),
