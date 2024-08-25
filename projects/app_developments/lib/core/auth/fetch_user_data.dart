@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FetchUserData {
-  Future<Map<String, String>> fetchUserData() async {
+  Future<Map<String, dynamic>> fetchUserData() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
       throw Exception("No user logged in");
@@ -20,14 +21,18 @@ class FetchUserData {
     String profileImageUrl = userDoc['profile_image_url'];
     String phoneNumber = userDoc['phoneNumber'];
     String gender = userDoc['gender'];
+    List friendsList = userDoc['friendsList'];
+    List requestList = userDoc['requestList'];
     String email = FirebaseAuth.instance.currentUser?.email ?? '';
 
-    Map<String, String> userData = {
+    Map<String, dynamic> userData = {
       'firstName': name,
       'profileImageUrl': profileImageUrl,
       'phoneNumber': phoneNumber,
       'gender': gender,
       'email': email,
+      'friendsList': friendsList, // Directly store the list
+      'requestList': requestList, // Directly store the list
     };
 
     return userData;
