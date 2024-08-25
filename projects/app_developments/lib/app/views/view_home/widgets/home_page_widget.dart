@@ -139,8 +139,9 @@ class HomePageWidget extends StatelessWidget {
                     child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'You don\'t owe anyone any money. You\'re all clear!',
+                    'You don\'t owe anyone any money.\nYou\'re all clear!',
                     style: context.textStyleGrey(context),
+                    textAlign: TextAlign.center,
                   ),
                 )),
               ),
@@ -173,8 +174,9 @@ class HomePageWidget extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      'No one owes you anything right now. Everything is balanced!',
+                      'No one owes you anything right now.\nEverything is balanced!',
                       style: context.textStyleGrey(context),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
