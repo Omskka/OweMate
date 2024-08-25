@@ -33,6 +33,7 @@ class ProfilePageWidget extends StatelessWidget {
         double containerWidth;
         double containerHeight;
         double tagSquarePosition;
+        double textfieldWidth;
 
         //  left padding
         EdgeInsets leftPadding;
@@ -159,7 +160,6 @@ class ProfilePageWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: context.onlyLeftPaddingNormal.left,
                     top: context.onlyTopPaddingMedium.top,
                   ),
                   child: Padding(

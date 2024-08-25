@@ -41,9 +41,9 @@ class CustomRoundedButton extends StatelessWidget {
         } else if (effectiveMaxHeight <= 800) {
           buttonHeight = context.dynamicHeight(0.035);
         } else if (effectiveMaxHeight <= 900) {
-          buttonHeight = context.dynamicHeight(0.05);
+          buttonHeight = context.dynamicHeight(0.048);
         } else if (effectiveMaxHeight <= 1080) {
-          buttonHeight = context.dynamicHeight(0.0055);
+          buttonHeight = context.dynamicHeight(0.05);
         } else {
           buttonHeight = context.dynamicHeight(0.045);
         }
@@ -52,7 +52,7 @@ class CustomRoundedButton extends StatelessWidget {
         if (effectiveMaxWidth <= 600) {
           buttonWidth = context.dynamicWidth(0.2);
         } else if (effectiveMaxWidth <= 800) {
-          buttonWidth = context.dynamicWidth(0.17);
+          buttonWidth = context.dynamicWidth(0.14);
         } else if (effectiveMaxWidth <= 900) {
           buttonWidth = context.dynamicWidth(0.12);
         } else if (effectiveMaxWidth <= 1080) {
