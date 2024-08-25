@@ -17,7 +17,7 @@ Future<void> main(List<String> args) async {
       WidgetsBinding.instance.window.devicePixelRatio;
 
   // Check the screen height and set orientation accordingly
-  if (screenHeight < 900) {
+  if (screenHeight < 1000) {
     // Force portrait mode for smaller screens
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
