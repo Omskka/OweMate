@@ -3,9 +3,11 @@ import 'package:app_developments/app/views/view_debts/view_model/debts_state.dar
 import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
 import 'package:app_developments/app/views/view_debts/widgets/debts_page_widget.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
+import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/app/views/view_home/widgets/home_drawer.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,9 @@ class DebtsView extends StatelessWidget {
         builder: (context, state) {
           final viewModel = context.read<DebtsViewModel>();
           final homeViewModel = context.read<HomeViewModel>();
+          int requestNumber = HomeViewModel().fetchRequestNumber(
+            state.requestNumber,
+          );
           return SafeArea(
             child: Scaffold(
               backgroundColor: AppLightColorConstants.bgDark,
@@ -81,14 +86,54 @@ class DebtsView extends StatelessWidget {
                   ),
                 ),
                 actions: [
-                  IconButton(
-                    icon: const Icon(Icons.notifications),
-                    onPressed: () {
-                      CustomFlutterToast(
-                        context: context,
-                        msg: 'Under Construction',
-                      ).flutterToast();
-                    },
+                  Padding(
+                    padding: context.onlyRightPaddingLow,
+                    child: requestNumber != 0
+                        ? GestureDetector(
+                            onTap: () {},
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: Stack(
+                                children: [
+                                  const Icon(
+                                    Icons.notifications,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    alignment: Alignment.topRight,
+                                    margin: const EdgeInsets.only(top: 2.7),
+                                    child: Container(
+                                      width: 15,
+                                      height: 15,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:
+                                              AppLightColorConstants.errorColor,
+                                          border: Border.all(
+                                              color: Colors.white, width: 1)),
+                                      child: Center(
+                                        child: Text(
+                                          '${state.requestNumber.length}',
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                fontSize: 10,
+                                                color: AppLightColorConstants
+                                                    .bgDark,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const Icon(Icons.notifications),
                   ),
                 ],
               ),

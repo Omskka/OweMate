@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -49,6 +50,7 @@ class HomePageWidget extends StatelessWidget {
           // Large screens
           leftPadding = context.onlyLeftPaddingHigh;
         }
+
         return SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(

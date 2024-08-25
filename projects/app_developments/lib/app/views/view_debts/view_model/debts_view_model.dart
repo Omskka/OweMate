@@ -26,12 +26,15 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
   String email = '';
   String phoneNumber = '';
   String profileImageUrl = '';
+  List friendsList = [];
+  List requestList = [];
 
   bool isDrawerOpen = false; // Property to track drawer state
 
   // Initial event
-  FutureOr<void> _initial(DebtsInitialEvent event, Emitter<DebtsState> emit)async {
-      try {
+  FutureOr<void> _initial(
+      DebtsInitialEvent event, Emitter<DebtsState> emit) async {
+    try {
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
@@ -39,9 +42,11 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
       phoneNumber = userData['phoneNumber']!;
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
+      friendsList = userData['friendsList']!;
+      requestList = userData['requestList']!;
 
       // Emit the loaded state with the fetched data
-      emit(DebtsDataLoadedState());
+      emit(DebtsDataLoadedState(requestNumber: requestList, state: state));
     } catch (e) {
       // Throw exception
       throw Exception('$e');
@@ -50,11 +55,13 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
 
   void _onDrawerOpened(DebtsDrawerOpenedEvent event, Emitter<DebtsState> emit) {
     isDrawerOpen = true; // Update drawer state
-    emit(DebtsDrawerOpenedState());
+    emit(DebtsDrawerOpenedState(
+        state: state, requestNumber: state.requestNumber));
   }
 
   void _onDrawerClosed(DebtsDrawerClosedEvent event, Emitter<DebtsState> emit) {
     isDrawerOpen = false; // Update drawer state
-    emit(DebtsDrawerClosedState());
+    emit(DebtsDrawerClosedState(
+        state: state, requestNumber: state.requestNumber));
   }
 }

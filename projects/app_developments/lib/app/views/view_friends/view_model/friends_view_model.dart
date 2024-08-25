@@ -14,6 +14,8 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
   String email = '';
   String phoneNumber = '';
   String profileImageUrl = '';
+  List friendsList = [];
+  List requestList = [];
 
   final FetchUserData fetchUserDataService = FetchUserData();
   final formKey = GlobalKey<FormState>();
@@ -31,13 +33,19 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
       phoneNumber = userData['phoneNumber']!;
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
+      friendsList = userData['friendsList']!;
+      requestList = userData['requestList']!;
 
       // Fetch friends' data
       List<Map<String, String>> friends =
           await fetchUserDataService.fetchFriends();
 
       // Emit the state with the fetched friends data
-      emit(FriendsDataLoadedState(friends: friends, state: state));
+      emit(FriendsDataLoadedState(
+        friends: friends,
+        state: state,
+        requestNumber: requestList,
+      ));
     } catch (e) {
       // Handle the exception
       throw Exception('Failed to fetch data: $e');
