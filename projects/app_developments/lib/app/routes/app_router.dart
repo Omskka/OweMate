@@ -4,6 +4,7 @@ import 'package:app_developments/app/views/view_friends/friends_view.dart';
 import 'package:app_developments/app/views/view_home/home_view.dart';
 import 'package:app_developments/app/views/view_login/login_view.dart';
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
+import 'package:app_developments/app/views/view_profile/profile_view.dart';
 import 'package:app_developments/app/views/view_profile_update/profile_update_view.dart';
 import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
@@ -54,5 +55,6 @@ class AppRouter extends _$AppRouter {
       AutoRoute(page: FriendsViewRoute.page),
     ]),
     AutoRoute(page: AddFriendsViewRoute.page),
+    AutoRoute(page: ProfileViewRoute.page),
   ];
 }

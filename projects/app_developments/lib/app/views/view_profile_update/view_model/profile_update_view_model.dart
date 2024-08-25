@@ -69,14 +69,17 @@ class ProfileUpdateViewModel
       String? userid = AuthenticationRepository().getCurrentUserId();
 
       // Upload user data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(userid).set({
-        'name': firstnameController.text.trim(),
-        'gender': genderController.text.trim(),
-        'phoneNumber': phoneNumberController.text.trim(),
-        'profile_image_url':
-            '', // Default empty URL, will be updated if an image is selected
-        'friendsList': [], // Initialize with an empty list
-      });
+      await FirebaseFirestore.instance.collection('users').doc(userid).set(
+        {
+          'name': firstnameController.text.trim(),
+          'gender': genderController.text.trim(),
+          'phoneNumber': phoneNumberController.text.trim(),
+          'profile_image_url':
+              '', // Default empty URL, will be updated if an image is selected
+          'friendsList': [], // Initialize with an empty list
+          'requestList': [], // Initialize with an empty list
+        },
+      );
 
       // Upload the image to Firebase Storage if selected
       if (selectedImage != null) {

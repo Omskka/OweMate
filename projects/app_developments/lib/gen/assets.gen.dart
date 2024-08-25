@@ -85,6 +85,9 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/success.svg
   String get success => 'assets/images/svg/success.svg';
 
+  /// File path: assets/images/svg/tag_square.svg
+  String get tagSquare => 'assets/images/svg/tag_square.svg';
+
   /// File path: assets/images/svg/wallet.svg
   String get wallet => 'assets/images/svg/wallet.svg';
 
@@ -97,6 +100,7 @@ class $AssetsImagesSvgGen {
         home,
         profileCircle,
         success,
+        tagSquare,
         wallet
       ];
 }

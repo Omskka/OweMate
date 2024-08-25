@@ -91,18 +91,20 @@ class HomeNavbarWidget extends StatelessWidget {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        CustomFlutterToast(
-                          context: context,
-                          msg: 'Under Construction',
-                        ).flutterToast();
+                        context.router.push(const ProfileViewRoute());
                       },
                       child: ListTile(
-                        leading: const Icon(Icons.person),
+                        leading: Icon(
+                          Icons.person,
+                          color: AppLightColorConstants.primaryColor
+                              .withOpacity(0.9),
+                        ),
                         title: Text(
                           'profile',
                           style: context.textStyleGrey(context).copyWith(
-                              color: AppLightColorConstants.bgInverse,
-                              fontSize: 16),
+                                color: AppLightColorConstants.bgInverse,
+                                fontSize: 16,
+                              ),
                         ),
                       ),
                     ),
@@ -115,7 +117,11 @@ class HomeNavbarWidget extends StatelessWidget {
                         ).flutterToast();
                       },
                       child: ListTile(
-                        leading: const Icon(Icons.message),
+                        leading: Icon(
+                          Icons.message,
+                          color: AppLightColorConstants.primaryColor
+                              .withOpacity(0.9),
+                        ),
                         title: Text(
                           'Messages',
                           style: context.textStyleGrey(context).copyWith(
@@ -133,7 +139,11 @@ class HomeNavbarWidget extends StatelessWidget {
                         ).flutterToast();
                       },
                       child: ListTile(
-                        leading: const Icon(Icons.insert_chart),
+                        leading: Icon(
+                          Icons.insert_chart,
+                          color: AppLightColorConstants.primaryColor
+                              .withOpacity(0.9),
+                        ),
                         title: Text(
                           'Statistics',
                           style: context.textStyleGrey(context).copyWith(
@@ -151,7 +161,11 @@ class HomeNavbarWidget extends StatelessWidget {
                         ).flutterToast();
                       },
                       child: ListTile(
-                        leading: const Icon(Icons.settings),
+                        leading: Icon(
+                          Icons.settings,
+                          color: AppLightColorConstants.primaryColor
+                              .withOpacity(0.9),
+                        ),
                         title: Text(
                           'Settings',
                           style: context.textStyleGrey(context).copyWith(
