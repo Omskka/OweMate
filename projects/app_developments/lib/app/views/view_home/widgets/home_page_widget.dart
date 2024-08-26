@@ -1,4 +1,3 @@
-import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -132,15 +131,16 @@ class HomePageWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: context.dynamicHeight(0.25),
                 width: context.dynamicWidth(1),
                 child: Center(
                     child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'You don\'t owe anyone any money. You\'re all clear!',
+                    'You don\'t owe anyone any money.\nYou\'re all clear!',
                     style: context.textStyleGrey(context),
+                    textAlign: TextAlign.center,
                   ),
                 )),
               ),
@@ -173,8 +173,9 @@ class HomePageWidget extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      'No one owes you anything right now. Everything is balanced!',
+                      'No one owes you anything right now.\nEverything is balanced!',
                       style: context.textStyleGrey(context),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),

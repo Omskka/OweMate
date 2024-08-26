@@ -64,6 +64,9 @@ class $AssetsImagesPngGen {
 class $AssetsImagesSvgGen {
   const $AssetsImagesSvgGen();
 
+  /// File path: assets/images/svg/add_friend.svg
+  String get addFriend => 'assets/images/svg/add_friend.svg';
+
   /// File path: assets/images/svg/chart.svg
   String get chart => 'assets/images/svg/chart.svg';
 
@@ -93,6 +96,7 @@ class $AssetsImagesSvgGen {
 
   /// List of all assets
   List<String> get values => [
+        addFriend,
         chart,
         friends,
         friendsIcon,

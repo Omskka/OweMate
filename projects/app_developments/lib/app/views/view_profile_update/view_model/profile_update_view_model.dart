@@ -124,11 +124,12 @@ class ProfileUpdateViewModel
       Navigator.of(event.context).pop();
     } catch (e) {
       // Handle any errors and dismiss the loading circle
-      Navigator.of(event.context).pop();
+      /*  Navigator.of(event.context).pop();
       CustomFlutterToast(
         context: event.context,
         msg: e.toString(),
-      ).flutterToast();
+      ).flutterToast(); */
+      throw Exception(e);
     }
   }
 

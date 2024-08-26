@@ -19,8 +19,7 @@ class FriendsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FriendsViewModel, FriendsState>(
       builder: (context, state) {
-        final viewModel = BlocProvider.of<FriendsViewModel>(context)
-          ..add(FriendsInitialEvent());
+        final viewModel = BlocProvider.of<FriendsViewModel>(context);
         return LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
@@ -133,53 +132,55 @@ class FriendsPageWidget extends StatelessWidget {
                               ),
                             ),
                           )
-                        : ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: state.friends.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                // remove splash effect
-                                splashFactory: NoSplash.splashFactory,
-                                onTap: () {},
-                                child: Padding(
-                                  padding: context.onlyTopPaddingNormal,
-                                  child: SizedBox(
-                                    height: context.dynamicHeight(0.1),
-                                    width: context.dynamicWidth(0.8),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: context.dynamicWidth(0.07),
-                                          backgroundColor:
-                                              AppLightColorConstants
-                                                  .contentTeritaryColor,
-                                          backgroundImage: NetworkImage(
-                                            state.friends[index]
-                                                    ['profileImageUrl'] ??
-                                                '', // Use index to get the correct user
+                        : Scrollbar(
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: state.friends.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  // remove splash effect
+                                  splashFactory: NoSplash.splashFactory,
+                                  onTap: () {},
+                                  child: Padding(
+                                    padding: context.onlyTopPaddingNormal,
+                                    child: SizedBox(
+                                      height: context.dynamicHeight(0.1),
+                                      width: context.dynamicWidth(0.8),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: context.dynamicWidth(0.07),
+                                            backgroundColor:
+                                                AppLightColorConstants
+                                                    .contentTeritaryColor,
+                                            backgroundImage: NetworkImage(
+                                              state.friends[index]
+                                                      ['profileImageUrl'] ??
+                                                  '', // Use index to get the correct user
+                                            ),
                                           ),
-                                        ),
-                                        context.sizedWidthBoxNormal,
-                                        Text(
-                                          state.friends[index]['Name'] ??
-                                              'Unknown User',
-                                          style: context
-                                              .textStyleGrey(context)
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: AppLightColorConstants
-                                                    .bgInverse,
-                                              ),
-                                        ),
-                                        context.sizedWidthBoxHigh,
-                                        context.sizedWidthBoxHigh,
-                                      ],
+                                          context.sizedWidthBoxNormal,
+                                          Text(
+                                            state.friends[index]['Name'] ??
+                                                'Unknown User',
+                                            style: context
+                                                .textStyleGrey(context)
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                  color: AppLightColorConstants
+                                                      .bgInverse,
+                                                ),
+                                          ),
+                                          context.sizedWidthBoxHigh,
+                                          context.sizedWidthBoxHigh,
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                   ),
                   context.sizedHeightBoxNormal,

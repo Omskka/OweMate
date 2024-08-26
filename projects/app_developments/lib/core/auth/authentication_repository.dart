@@ -61,17 +61,18 @@ class AuthenticationRepository {
     required BuildContext context,
   }) async {
     try {
-      // Sign out from Firebase Authentication
-      await _firebaseAuth.signOut();
-
       // Optionally, clear SharedPreferences or any other local storage data
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear(); // Clears all stored data
+
+      // Sign out from Firebase Authentication
+      await _firebaseAuth.signOut();
+
       // Alternatively, you can clear specific keys:
-      // await prefs.remove('isLoggedIn');
+      await prefs.remove('isLoggedIn');
 
       // Navigate to the sign-up screen
-      context.router.replace(const SignupViewRoute());
+      context.router.replace(const LoginViewRoute());
     } catch (e) {
       throw const LogOutFailure();
     }
