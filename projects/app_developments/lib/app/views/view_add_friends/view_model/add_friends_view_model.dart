@@ -37,7 +37,11 @@ class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
       // Fetch all users' data
       allUsers = await fetchUserDataService.fetchAllUsersData();
 
-      // Filter users by name based on the search query
+      // Fetch the current user's friends list
+      List<Map<String, String>> friendsList =
+          await fetchUserDataService.fetchFriends();
+
+      // Filter users by name based on the search query and exclude friends
       String query = searchFriendsController.text.trim().toLowerCase();
 
       List<Map<String, String>> matchedUsers;
@@ -47,7 +51,12 @@ class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
       } else {
         matchedUsers = allUsers.where((user) {
           String name = user['Name']?.toLowerCase() ?? '';
-          return name.contains(query);
+          String userId = user['userId'] ?? '';
+
+          // Check if the user is not in the friends list and matches the search query
+          bool isFriend =
+              friendsList.any((friend) => friend['userId'] == userId);
+          return name.contains(query) && !isFriend;
         }).toList();
       }
 

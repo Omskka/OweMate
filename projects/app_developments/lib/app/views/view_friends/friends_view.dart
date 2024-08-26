@@ -1,3 +1,4 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_view_model.dart';
@@ -7,7 +8,6 @@ import 'package:app_developments/app/views/view_home/view_model/home_view_model.
 import 'package:app_developments/app/views/view_home/widgets/home_drawer.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +88,10 @@ class FriendsView extends StatelessWidget {
                     padding: context.onlyRightPaddingLow,
                     child: requestNumber != 0
                         ? GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.router
+                                  .push(const NotificationsViewRoute());
+                            },
                             child: SizedBox(
                               width: 30,
                               height: 30,
@@ -131,7 +134,13 @@ class FriendsView extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const Icon(Icons.notifications),
+                        : GestureDetector(
+                            onTap: () {
+                              context.router
+                                  .push(const NotificationsViewRoute());
+                            },
+                            child: const Icon(Icons.notifications),
+                          ),
                   ),
                 ],
               ),

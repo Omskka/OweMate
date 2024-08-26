@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_state.dart';

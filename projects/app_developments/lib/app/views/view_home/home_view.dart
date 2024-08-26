@@ -1,3 +1,4 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
@@ -85,7 +86,10 @@ class HomeView extends StatelessWidget {
                     padding: context.onlyRightPaddingLow,
                     child: requestNumber != 0
                         ? GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.router
+                                  .push(const NotificationsViewRoute());
+                            },
                             child: SizedBox(
                               width: 30,
                               height: 30,
@@ -128,7 +132,13 @@ class HomeView extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const Icon(Icons.notifications),
+                        : GestureDetector(
+                            onTap: () {
+                              context.router
+                                  .push(const NotificationsViewRoute());
+                            },
+                            child: const Icon(Icons.notifications),
+                          ),
                   ),
                 ],
               ),
