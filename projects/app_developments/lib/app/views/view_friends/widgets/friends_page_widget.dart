@@ -20,6 +20,11 @@ class FriendsPageWidget extends StatelessWidget {
     return BlocBuilder<FriendsViewModel, FriendsState>(
       builder: (context, state) {
         final viewModel = BlocProvider.of<FriendsViewModel>(context);
+        viewModel.friendsSearchController.addListener(() {
+          context
+              .read<FriendsViewModel>()
+              .add(FriendsSearchEvent(context: context));
+        });
         return LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
@@ -119,69 +124,76 @@ class FriendsPageWidget extends StatelessWidget {
                   SizedBox(
                     height: context.dynamicHeight(0.4),
                     width: context.dynamicWidth(0.75),
-                    child: state.friends.isEmpty
-                        ? SizedBox(
-                            child: Center(
-                              child: Text(
-                                'No Friends found',
-                                style: context
-                                    .textStyleTitleBarlow(context)
-                                    .copyWith(
-                                      fontSize: 18,
-                                    ),
-                              ),
-                            ),
+                    child: state is FriendsLoadingState
+                        ? const Center(
+                            child: CircularProgressIndicator(),
                           )
-                        : Scrollbar(
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: state.friends.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  // remove splash effect
-                                  splashFactory: NoSplash.splashFactory,
-                                  onTap: () {},
-                                  child: Padding(
-                                    padding: context.onlyTopPaddingNormal,
-                                    child: SizedBox(
-                                      height: context.dynamicHeight(0.1),
-                                      width: context.dynamicWidth(0.8),
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: context.dynamicWidth(0.07),
-                                            backgroundColor:
-                                                AppLightColorConstants
-                                                    .contentTeritaryColor,
-                                            backgroundImage: NetworkImage(
-                                              state.friends[index]
-                                                      ['profileImageUrl'] ??
-                                                  '', // Use index to get the correct user
-                                            ),
-                                          ),
-                                          context.sizedWidthBoxNormal,
-                                          Text(
-                                            state.friends[index]['Name'] ??
-                                                'Unknown User',
-                                            style: context
-                                                .textStyleGrey(context)
-                                                .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: AppLightColorConstants
-                                                      .bgInverse,
-                                                ),
-                                          ),
-                                          context.sizedWidthBoxHigh,
-                                          context.sizedWidthBoxHigh,
-                                        ],
-                                      ),
-                                    ),
+                        : state.friends.isEmpty
+                            ? SizedBox(
+                                child: Center(
+                                  child: Text(
+                                    'No Friends found',
+                                    style: context
+                                        .textStyleTitleBarlow(context)
+                                        .copyWith(
+                                          fontSize: 18,
+                                        ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                ),
+                              )
+                            : Scrollbar(
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: state.friends.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      // remove splash effect
+                                      splashFactory: NoSplash.splashFactory,
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: context.onlyTopPaddingNormal,
+                                        child: SizedBox(
+                                          height: context.dynamicHeight(0.1),
+                                          width: context.dynamicWidth(0.8),
+                                          child: Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius:
+                                                    context.dynamicWidth(0.07),
+                                                backgroundColor:
+                                                    AppLightColorConstants
+                                                        .contentTeritaryColor,
+                                                backgroundImage: NetworkImage(
+                                                  state.friends[index]
+                                                          ['profileImageUrl'] ??
+                                                      '', // Use index to get the correct user
+                                                ),
+                                              ),
+                                              context.sizedWidthBoxNormal,
+                                              Text(
+                                                state.friends[index]['Name'] ??
+                                                    'Unknown User',
+                                                style: context
+                                                    .textStyleGrey(context)
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color:
+                                                          AppLightColorConstants
+                                                              .bgInverse,
+                                                    ),
+                                              ),
+                                              context.sizedWidthBoxHigh,
+                                              context.sizedWidthBoxHigh,
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                   ),
                   context.sizedHeightBoxNormal,
                   CustomContinueButton(

@@ -75,7 +75,7 @@ class SignupPageWidget extends StatelessWidget {
       leftPadding = EdgeInsets.symmetric(
           horizontal: (screenWidth - context.dynamicWidth(0.6)) / 2);
       textfieldWidth = context.dynamicWidth(0.6);
-      googleContainerWidth = screenWidth * 0.3;
+      googleContainerWidth = screenWidth * 0.2;
     }
 
     return SizedBox(

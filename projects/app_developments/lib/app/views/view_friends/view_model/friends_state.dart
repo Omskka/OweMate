@@ -14,6 +14,13 @@ class FriendsInitialState extends FriendsState {
           requestNumber: [],
         );
 }
+class FriendsLoadingState extends FriendsState {
+  FriendsLoadingState()
+      : super(
+          friends: [],
+          requestNumber: [],
+        );
+}
 
 class FriendsDataLoadedState extends FriendsState {
   FriendsDataLoadedState({

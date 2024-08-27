@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_event.dart';
 import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_state.dart';
 import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_view_model.dart';
 import 'package:app_developments/app/views/view_add_friends/widgets/add_friends_page_widget.dart';
@@ -13,7 +14,8 @@ class AddFriendsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddFriendsViewModel(),
+      create: (context) =>
+          AddFriendsViewModel()..add(AddFriendsFetchAllUsersEvent()),
       child: BlocBuilder<AddFriendsViewModel, AddFriendsState>(
         builder: (context, state) {
           return const SafeArea(

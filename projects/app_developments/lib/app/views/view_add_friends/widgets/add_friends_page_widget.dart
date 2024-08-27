@@ -20,8 +20,11 @@ class AddFriendsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddFriendsViewModel, AddFriendsState>(
         builder: (context, state) {
-      final viewModel = BlocProvider.of<AddFriendsViewModel>(context)
-        ..add(AddFriendsFetchAllUsersEvent());
+      final viewModel = BlocProvider.of<AddFriendsViewModel>(context);
+      // Add listener to call event as user types
+      viewModel.searchFriendsController.addListener(() {
+        context.read<AddFriendsViewModel>().add(AddFriendsFetchAllUsersEvent());
+      });
       // Determine height and width based on screen width
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;

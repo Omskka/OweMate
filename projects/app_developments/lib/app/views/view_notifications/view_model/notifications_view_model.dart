@@ -89,20 +89,8 @@ class NotificationsViewModel
         'friendsList': FieldValue.arrayUnion([userId]),
       });
 
-      // Fetch updated data
-      final updatedUserData = await fetchUserDataService.fetchUserData();
-
-      List<dynamic> requestList = updatedUserData['requestList'];
-      List<Map<String, dynamic>> updatedRequests = [];
-
-      for (var item in requestList) {
-        if (item is Map<String, dynamic>) {
-          updatedRequests.add(item);
-        }
-      }
-
-      // Emit the updated state
-      emit(NotificationsFetchDataState(friendRequests: updatedRequests));
+      // Trigger the initial event to fetch updated data
+      add(NotificationsInitialEvent());
 
       // Show success message
       CustomFlutterToast(
@@ -154,20 +142,8 @@ class NotificationsViewModel
         'requestList': FieldValue.arrayRemove([friendId]),
       });
 
-      // Fetch updated data to reflect changes in the UI
-      final updatedUserData = await fetchUserDataService.fetchUserData();
-
-      List<dynamic> requestList = updatedUserData['requestList'];
-      List<Map<String, dynamic>> updatedRequests = [];
-
-      for (var item in requestList) {
-        if (item is Map<String, dynamic>) {
-          updatedRequests.add(item);
-        }
-      }
-
-      // Emit the updated state
-      emit(NotificationsFetchDataState(friendRequests: updatedRequests));
+      // Trigger the initial event to fetch updated data
+      add(NotificationsInitialEvent());
     } catch (e) {
       // Handle any errors that occur
       throw Exception('Failed to decline friend request: $e');

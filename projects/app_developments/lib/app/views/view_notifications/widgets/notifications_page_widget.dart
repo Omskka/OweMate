@@ -118,9 +118,6 @@ class NotificationsPageWidget extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         itemCount: state.friendRequests.length,
                         itemBuilder: (context, index) {
-                          final viewModel =
-                              BlocProvider.of<NotificationsViewModel>(context)
-                                ..add(NotificationsInitialEvent());
                           return InkWell(
                             // remove splash effect
                             splashFactory: NoSplash.splashFactory,

@@ -61,7 +61,7 @@ class CustomContinueButton extends StatelessWidget {
           buttonWidth = context.dynamicWidth(0.3);
         } else {
           // Large screens
-          buttonWidth = context.dynamicWidth(0.25);
+          buttonWidth = context.dynamicWidth(0.18);
         }
 
         return ElevatedButton.icon(

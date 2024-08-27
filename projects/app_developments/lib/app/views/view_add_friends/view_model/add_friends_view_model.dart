@@ -59,7 +59,7 @@ class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
           return name.contains(query) && !isFriend;
         }).toList();
       }
-
+      print('matched users :$matchedUsers');
       // Emit the state with matched users
       emit(AddFriendsDataLoadedState(users: matchedUsers, state: state));
     } catch (e) {

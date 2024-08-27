@@ -18,10 +18,6 @@ class CustomRoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Get maxWidth and maxHeight from constraints
-        final maxWidth = constraints.maxWidth;
-        final maxHeight = constraints.maxHeight;
-
         // Handle the case where maxWidth or maxHeight is Infinity
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
@@ -29,33 +25,27 @@ class CustomRoundedButton extends StatelessWidget {
         double buttonWidth;
         double buttonHeight;
 
-        // Set fallback values if maxWidth or maxHeight is Infinity
-        final effectiveMaxWidth =
-            maxWidth == double.infinity ? screenWidth : maxWidth;
-        final effectiveMaxHeight =
-            maxHeight == double.infinity ? screenHeight : maxHeight;
-
         // Height
-        if (effectiveMaxHeight <= 600) {
+        if (screenHeight <= 600) {
           buttonHeight = context.dynamicHeight(0.035);
-        } else if (effectiveMaxHeight <= 800) {
-          buttonHeight = context.dynamicHeight(0.035);
-        } else if (effectiveMaxHeight <= 900) {
-          buttonHeight = context.dynamicHeight(0.048);
-        } else if (effectiveMaxHeight <= 1080) {
+        } else if (screenHeight <= 800) {
           buttonHeight = context.dynamicHeight(0.05);
+        } else if (screenHeight <= 900) {
+          buttonHeight = context.dynamicHeight(0.048);
+        } else if (screenHeight <= 1080) {
+          buttonHeight = context.dynamicHeight(0.048);
         } else {
-          buttonHeight = context.dynamicHeight(0.045);
+          buttonHeight = context.dynamicHeight(0.035);
         }
 
         // Width
-        if (effectiveMaxWidth <= 600) {
+        if (screenWidth <= 600) {
           buttonWidth = context.dynamicWidth(0.2);
-        } else if (effectiveMaxWidth <= 800) {
+        } else if (screenWidth <= 800) {
           buttonWidth = context.dynamicWidth(0.14);
-        } else if (effectiveMaxWidth <= 900) {
+        } else if (screenWidth <= 900) {
           buttonWidth = context.dynamicWidth(0.12);
-        } else if (effectiveMaxWidth <= 1080) {
+        } else if (screenWidth <= 1080) {
           buttonWidth = context.dynamicWidth(0.1);
         } else {
           buttonWidth = context.dynamicWidth(0.07);

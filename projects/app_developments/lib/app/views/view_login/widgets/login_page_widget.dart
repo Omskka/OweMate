@@ -73,7 +73,7 @@ class LoginPageWidget extends StatelessWidget {
             // Large screens
             leftPadding = context.onlyLeftPaddingHigh * 3;
             textfieldWidth = context.dynamicWidth(0.6);
-            containerWidth = context.dynamicWidth(0.3);
+            containerWidth = context.dynamicWidth(0.2);
           }
 
           return SingleChildScrollView(

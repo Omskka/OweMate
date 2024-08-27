@@ -20,7 +20,7 @@ class FriendsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeViewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocProvider(
-      create: (context) => FriendsViewModel()..add(FriendsInitialEvent()),
+      create: (context) => FriendsViewModel()..add(FriendsInitialEvent(context: context)),
       child: BlocBuilder<FriendsViewModel, FriendsState>(
         builder: (context, state) {
           int requestNumber = HomeViewModel().fetchRequestNumber(
