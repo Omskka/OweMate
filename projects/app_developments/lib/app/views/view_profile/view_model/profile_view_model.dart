@@ -84,7 +84,6 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
       ProfileChangeImageEvent event, Emitter<ProfileState> emit) async {
     // Get current user id
     String? userid = AuthenticationRepository().getCurrentUserId();
-    print("UserID: $userid");
 
     try {
       // Pick the image

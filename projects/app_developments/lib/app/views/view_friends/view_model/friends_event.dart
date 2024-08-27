@@ -13,3 +13,9 @@ class FriendsSearchEvent extends FriendsEvent{
   BuildContext context;
   FriendsSearchEvent({required this.context});
 }
+
+class FriendsRemoveFriendEvent extends FriendsEvent{
+  BuildContext context;
+  final String friendId;
+  FriendsRemoveFriendEvent({required this.context, required this.friendId});
+}

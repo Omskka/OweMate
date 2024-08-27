@@ -30,17 +30,23 @@ class FriendsPageWidget extends StatelessWidget {
             final maxWidth = constraints.maxWidth;
             // Determine height and width based on screen width
             double textfieldWidth;
+            double containerWidth;
 
             // Width
             if (maxWidth <= 600) {
+              containerWidth = 0.75;
               textfieldWidth = context.dynamicWidth(0.6);
             } else if (maxWidth <= 800) {
+              containerWidth = 0.65;
               textfieldWidth = context.dynamicWidth(0.55);
             } else if (maxWidth <= 900) {
+              containerWidth = 0.6;
               textfieldWidth = context.dynamicWidth(0.5);
             } else if (maxWidth <= 1080) {
+              containerWidth = 0.55;
               textfieldWidth = context.dynamicWidth(0.5);
             } else {
+              containerWidth = 0.5;
               textfieldWidth = context.dynamicWidth(0.4);
             }
 
@@ -122,8 +128,8 @@ class FriendsPageWidget extends StatelessWidget {
                   ),
                   context.sizedHeightBoxLower,
                   SizedBox(
-                    height: context.dynamicHeight(0.4),
-                    width: context.dynamicWidth(0.75),
+                    height: context.dynamicHeight(0.42),
+                    width: context.dynamicWidth(containerWidth),
                     child: state is FriendsLoadingState
                         ? const Center(
                             child: CircularProgressIndicator(),
@@ -170,22 +176,86 @@ class FriendsPageWidget extends StatelessWidget {
                                                 ),
                                               ),
                                               context.sizedWidthBoxNormal,
-                                              Text(
-                                                state.friends[index]['Name'] ??
-                                                    'Unknown User',
-                                                style: context
-                                                    .textStyleGrey(context)
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20,
-                                                      color:
-                                                          AppLightColorConstants
-                                                              .bgInverse,
-                                                    ),
+                                              Expanded(
+                                                child: Text(
+                                                  state.friends[index]
+                                                          ['Name'] ??
+                                                      'Unknown User',
+                                                  style: context
+                                                      .textStyleGrey(context)
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                        color:
+                                                            AppLightColorConstants
+                                                                .bgInverse,
+                                                      ),
+                                                ),
                                               ),
-                                              context.sizedWidthBoxHigh,
-                                              context.sizedWidthBoxHigh,
+                                              InkWell(
+                                                onTap: () {
+                                                  // set up the buttons
+                                                  Widget cancelButton =
+                                                      TextButton(
+                                                    child: const Text(
+                                                      "Cancel",
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Dismiss the dialog
+                                                    },
+                                                  );
+                                                  Widget continueButton =
+                                                      TextButton(
+                                                    child: const Text("Remove"),
+                                                    onPressed: () {
+                                                      context
+                                                          .read<
+                                                              FriendsViewModel>()
+                                                          .add(
+                                                            FriendsRemoveFriendEvent(
+                                                                context:
+                                                                    context,
+                                                                friendId: state
+                                                                            .friends[
+                                                                        index][
+                                                                    'userId']!),
+                                                          );
+                                                      Navigator.of(context)
+                                                          .pop(); // Dismiss the dialog
+                                                    },
+                                                  );
+
+                                                  // set up the AlertDialog
+                                                  AlertDialog alert =
+                                                      AlertDialog(
+                                                    title: const Text(
+                                                        "Remove Friend"),
+                                                    content: Text(
+                                                        "Are you sure you want to remove ${state.friends[index]['Name'] ?? 'Unknown User'} as a friend?"),
+                                                    actions: [
+                                                      cancelButton,
+                                                      continueButton,
+                                                    ],
+                                                  );
+
+                                                  // show the dialog
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return alert;
+                                                    },
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding: context
+                                                      .onlyRightPaddingNormal,
+                                                  child:
+                                                      const Icon(Icons.close),
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ),

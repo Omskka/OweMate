@@ -1,4 +1,3 @@
-import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class SignUpValidation {
@@ -19,7 +18,6 @@ class SignUpValidation {
     if (!regex.hasMatch(value!)) {
       return 'Invalid Email Format';
     }
-    //print('retuned null');
     return null;
   }
 

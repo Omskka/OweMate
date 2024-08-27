@@ -1,9 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
+import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
   FriendsViewModel() : super(FriendsInitialState()) {
     on<FriendsInitialEvent>(_initial);
     on<FriendsSearchEvent>(_searchFriend);
+    on<FriendsRemoveFriendEvent>(_removeFriend);
   }
   FutureOr<void> _initial(
       FriendsInitialEvent event, Emitter<FriendsState> emit) async {
@@ -47,6 +49,7 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
           await fetchUserDataService.fetchFriends();
 
       // Emit the state with the fetched friends data
+      print('--FriENDS---');
       emit(FriendsDataLoadedState(
         friends: friends,
         state: state,
@@ -90,6 +93,54 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     } catch (e) {
       // Handle the exception
       throw Exception('Failed to search friends: $e');
+    }
+  }
+
+  FutureOr<void> _removeFriend(
+      FriendsRemoveFriendEvent event, Emitter<FriendsState> emit) async {
+    try {
+      // Get current user ID
+      String? userId = AuthenticationRepository().getCurrentUserId();
+      // Get friend's ID
+      String friendId = event.friendId;
+
+      if (userId == null) {
+        throw Exception("User ID is not available");
+      }
+
+      // Fetch current user data
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      // Fetch friend data
+      DocumentSnapshot friendDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(friendId)
+          .get();
+
+      if (!friendDoc.exists) {
+        throw Exception("Friend data not found");
+      }
+
+      // Update Firestore: Remove friendId from the current user's friendsList
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'friendsList': FieldValue.arrayRemove([friendId]),
+      });
+
+      // Update Firestore: Remove current user ID from the friend's friendsList
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(friendId)
+          .update({
+        'friendsList': FieldValue.arrayRemove([userId]),
+      });
+
+      // Fetch and emit updated friends list
+      add(FriendsInitialEvent(context: event.context));
+    } catch (e) {
+      throw Exception('Failed to remove friend: $e');
     }
   }
 }
