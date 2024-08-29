@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_activity/activity_view.dart';
 import 'package:app_developments/app/views/view_add_friends/add_friends_view.dart';
 import 'package:app_developments/app/views/view_debts/debts_view.dart';
 import 'package:app_developments/app/views/view_friends/friends_view.dart';
@@ -54,6 +55,7 @@ class AppRouter extends _$AppRouter {
       AutoRoute(page: HomeViewRoute.page),
       AutoRoute(page: DebtsViewRoute.page),
       AutoRoute(page: FriendsViewRoute.page),
+      AutoRoute(page: ActivityViewRoute.page),
     ]),
     AutoRoute(page: AddFriendsViewRoute.page),
     AutoRoute(page: ProfileViewRoute.page),

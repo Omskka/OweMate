@@ -34,7 +34,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
             routes: const [
               HomeViewRoute(),
               DebtsViewRoute(),
-              HomeViewRoute(),
+              ActivityViewRoute(),
               FriendsViewRoute(),
               // Add other routes as needed
             ],

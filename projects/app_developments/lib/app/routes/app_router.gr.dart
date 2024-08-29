@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ActivityViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ActivityView(),
+      );
+    },
     AddFriendsViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -88,6 +94,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [ActivityView]
+class ActivityViewRoute extends PageRouteInfo<void> {
+  const ActivityViewRoute({List<PageRouteInfo>? children})
+      : super(
+          ActivityViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ActivityViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
