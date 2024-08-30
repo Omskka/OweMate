@@ -4,10 +4,10 @@ import 'package:app_developments/app/views/view_request/view_model/request_view_
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
-import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class RequestSuccessPageWidget extends StatelessWidget {
   const RequestSuccessPageWidget({super.key});
@@ -53,11 +53,28 @@ class RequestSuccessPageWidget extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: context.onlyTopPaddingHigh,
-                child: Image.asset(Assets.images.png.success.path),
+              context.sizedHeightBoxHigh,
+              SizedBox(
+                height: context.dynamicHeight(0.3),
+                width: context.dynamicWidth(0.6),
+                child: Lottie.network(
+                  'https://lottie.host/695e0efb-4fa7-4f42-87b5-23f0777aed77/LZ3HYjvAn3.json',
+                  repeat: false,
+                  frameBuilder: (context, child, composition) {
+                    if (composition == null) {
+                      return Container(
+                        height: context.dynamicHeight(0.4),
+                        width: context.dynamicWidth(1),
+                        color: Colors
+                            .transparent, // Empty container before loading
+                      );
+                    } else {
+                      return child; // The Lottie animation
+                    }
+                  },
+                ),
               ),
-              context.sizedHeightBoxLow,
+              context.sizedHeightBoxLower,
               SizedBox(
                 width: context.dynamicWidth(1),
                 height: context.dynamicHeight(0.15),
