@@ -54,7 +54,7 @@ class RequestSuccessPageWidget extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: context.onlyTopPaddingMedium,
+                padding: context.onlyTopPaddingHigh,
                 child: Image.asset(Assets.images.png.success.path),
               ),
               context.sizedHeightBoxLow,
