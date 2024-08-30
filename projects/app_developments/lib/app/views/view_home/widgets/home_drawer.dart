@@ -2,7 +2,6 @@ import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:app_developments/core/widgets/custom_smaller_continue_button.dart';
 import 'package:auto_route/auto_route.dart';
@@ -30,15 +29,31 @@ class HomeNavbarWidget extends StatelessWidget {
 
       // Determine height and width based on screen width
       double sizedboxHeight;
+      SizedBox heightBox;
+      SizedBox initialHeightBox;
 
       // Height
       if (maxHeight <= 600) {
         sizedboxHeight = context.dynamicHeight(0.35);
+        heightBox = context.sizedHeightBoxLow;
+        initialHeightBox = const SizedBox(
+          height: 0,
+        );
       } else if (maxHeight <= 800) {
+        heightBox = context.sizedHeightBoxLow;
         sizedboxHeight = context.dynamicHeight(0.28);
+        initialHeightBox = const SizedBox(
+          height: 0,
+        );
       } else if (maxHeight <= 1080) {
+        heightBox = context.sizedHeightBoxLow;
+        initialHeightBox = const SizedBox(
+          height: 0,
+        );
         sizedboxHeight = context.dynamicHeight(0.22);
       } else {
+        heightBox = context.sizedHeightBoxNormal;
+        initialHeightBox = context.sizedHeightBoxLow;
         sizedboxHeight = context.dynamicHeight(0.165);
       }
 
@@ -89,6 +104,7 @@ class HomeNavbarWidget extends StatelessWidget {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
+                    initialHeightBox,
                     InkWell(
                       onTap: () {
                         context.router.push(const ProfileViewRoute());
@@ -108,7 +124,7 @@ class HomeNavbarWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    context.sizedHeightBoxLow,
+                    heightBox,
                     InkWell(
                       onTap: () {
                         CustomFlutterToast(
@@ -130,7 +146,7 @@ class HomeNavbarWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    context.sizedHeightBoxLow,
+                    heightBox,
                     InkWell(
                       onTap: () {
                         CustomFlutterToast(
@@ -152,7 +168,7 @@ class HomeNavbarWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    context.sizedHeightBoxLow,
+                    heightBox,
                     InkWell(
                       onTap: () {
                         CustomFlutterToast(

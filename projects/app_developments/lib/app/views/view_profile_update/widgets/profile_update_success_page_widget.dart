@@ -77,7 +77,7 @@ class ProfileUpdateSuccessPageWidget extends StatelessWidget {
                           CustomContinueButton(
                             buttonText: 'Continue',
                             onPressed: () {
-                              context.router.push(const HomeViewRoute());
+                              context.router.push(const LoginViewRoute());
                             },
                           ),
                         ],

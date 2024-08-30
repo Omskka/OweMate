@@ -103,9 +103,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           fillColor: widget.fillColor ?? AppLightColorConstants.bgLight,
           filled: true,
-          prefixIcon: _isPrefixIconGiven() && _focusNode.hasFocus && _isTyping
+          prefixIcon: _isPrefixIconGiven() && _isTyping
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: context.onlyLeftPaddingLow,
                   child: Text(
                     widget.prefixIcon!,
                     style: const TextStyle(
@@ -117,7 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : null,
           prefixIconConstraints: _isPrefixIconGiven()
               ? const BoxConstraints(
-                  minWidth: 45,
+                  minWidth: 30,
                   minHeight: 20,
                   maxWidth: 50,
                   maxHeight: 20,

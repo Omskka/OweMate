@@ -8,6 +8,7 @@ import 'package:app_developments/app/views/view_notifications/notifications_view
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
 import 'package:app_developments/app/views/view_profile/profile_view.dart';
 import 'package:app_developments/app/views/view_profile_update/profile_update_view.dart';
+import 'package:app_developments/app/views/view_request/request_view.dart';
 import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
 import 'package:app_developments/core/widgets/custom_navbar.dart';
@@ -60,5 +61,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: AddFriendsViewRoute.page),
     AutoRoute(page: ProfileViewRoute.page),
     AutoRoute(page: NotificationsViewRoute.page),
+    AutoRoute(page: RequestViewRoute.page),
   ];
 }

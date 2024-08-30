@@ -49,6 +49,10 @@ class $AssetsImagesPngGen {
   AssetGenImage get onlineShopping =>
       const AssetGenImage('assets/images/png/online_shopping.png');
 
+  /// File path: assets/images/png/success.png
+  AssetGenImage get success =>
+      const AssetGenImage('assets/images/png/success.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         saly1,
@@ -57,7 +61,8 @@ class $AssetsImagesPngGen {
         characterQuestionMark,
         characterThinking,
         logo,
-        onlineShopping
+        onlineShopping,
+        success
       ];
 }
 
@@ -85,9 +90,6 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/profile_circle.svg
   String get profileCircle => 'assets/images/svg/profile_circle.svg';
 
-  /// File path: assets/images/svg/success.svg
-  String get success => 'assets/images/svg/success.svg';
-
   /// File path: assets/images/svg/tag_square.svg
   String get tagSquare => 'assets/images/svg/tag_square.svg';
 
@@ -103,7 +105,6 @@ class $AssetsImagesSvgGen {
         google,
         home,
         profileCircle,
-        success,
         tagSquare,
         wallet
       ];
