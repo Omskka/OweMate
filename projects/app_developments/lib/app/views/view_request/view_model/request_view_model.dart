@@ -106,8 +106,13 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
   FutureOr<void> _sendRequest(
       RequestSendEvent event, Emitter<RequestState> emit) async {
     try {
-      emit(RequestLoadingState());
-
+      // Show loading circle
+      showDialog(
+        context: event.context,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
       // Fetch current user ID
       String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
@@ -144,11 +149,16 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
         ]),
       });
 
+      // Dismiss the loading circle dialog
+      Navigator.of(event.context).pop();
+
       // Emit a success state or update the UI as needed
       emit(
         RequestSuccessState(state: state),
       );
     } catch (e) {
+      // Dismiss the loading circle dialog
+      Navigator.of(event.context).pop();
       // Handle the exception and emit an error state
       throw Exception(e);
     }
