@@ -2,14 +2,11 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:app_developments/app/l10n/app_localizations.dart';
-import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_event.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +75,8 @@ class ProfileUpdateViewModel
               '', // Default empty URL, will be updated if an image is selected
           'friendsList': [], // Initialize with an empty list
           'requestList': [], // Initialize with an empty list
+          'owedMoney': [], // Initialize with an empty list
+          'requestedMoney': [], // Initialize with an empty list
         },
       );
 
@@ -123,12 +122,6 @@ class ProfileUpdateViewModel
       emit(ProfileUpdateSelectedPageState(selectedPage: 2, state: state));
       Navigator.of(event.context).pop();
     } catch (e) {
-      // Handle any errors and dismiss the loading circle
-      /*  Navigator.of(event.context).pop();
-      CustomFlutterToast(
-        context: event.context,
-        msg: e.toString(),
-      ).flutterToast(); */
       throw Exception(e);
     }
   }

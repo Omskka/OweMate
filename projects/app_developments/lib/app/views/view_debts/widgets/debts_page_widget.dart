@@ -1,8 +1,10 @@
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +47,7 @@ class DebtsPageWidget extends StatelessWidget {
             } else if (maxWidth <= 1080) {
               containerWidth = context.dynamicWidth(0.4);
             } else {
-              containerWidth = context.dynamicWidth(0.3);
+              containerWidth = context.dynamicWidth(0.25);
             }
 
             return SingleChildScrollView(
@@ -132,10 +134,7 @@ class DebtsPageWidget extends StatelessWidget {
                     width: containerWidth,
                     child: GestureDetector(
                       onTap: () {
-                        CustomFlutterToast(
-                          context: context,
-                          msg: 'Under Construction',
-                        ).flutterToast();
+                        context.router.push(const RequestViewRoute());
                       },
                       child: Container(
                         height: containerHeight,
@@ -155,17 +154,24 @@ class DebtsPageWidget extends StatelessWidget {
                           ],
                         ),
                         child: Center(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.add,
-                            ),
-                            title: Text(
-                              'Request Money',
-                              style: context.textStyleGrey(context).copyWith(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
+                          child: Row(
+                            mainAxisSize:
+                                MainAxisSize.min, // Shrink Row to fit content
+                            mainAxisAlignment: MainAxisAlignment
+                                .center, // Center content within Row
+                            children: [
+                              const Icon(
+                                Icons.add,
+                              ),
+                              context.sizedHeightBoxLow,
+                              Text(
+                                'Request Money',
+                                style: context.textStyleGrey(context).copyWith(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -232,22 +238,29 @@ class DebtsPageWidget extends StatelessWidget {
                           ],
                         ),
                         child: Center(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.add,
-                            ),
-                            title: Text(
-                              'Settle Debt',
-                              style: context.textStyleGrey(context).copyWith(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
+                          child: Row(
+                            mainAxisSize:
+                                MainAxisSize.min, // Shrink Row to fit content
+                            mainAxisAlignment: MainAxisAlignment
+                                .center, // Center content within Row
+                            children: [
+                              const Icon(
+                                Icons.add,
+                              ),
+                              context.sizedHeightBoxLower,
+                              Text(
+                                'Settle Debt',
+                                style: context.textStyleGrey(context).copyWith(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             );

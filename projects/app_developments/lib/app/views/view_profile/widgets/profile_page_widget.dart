@@ -41,18 +41,18 @@ class ProfilePageWidget extends StatelessWidget {
         // Height
         if (screenHeight <= 600) {
           // Small screens
-          containerHeight = context.dynamicHeight(0.08);
+          containerHeight = context.dynamicHeight(0.085);
         } else if (screenHeight <= 800) {
           // Small screens
-          containerHeight = context.dynamicHeight(0.08);
+          containerHeight = context.dynamicHeight(0.065);
         } else if (screenHeight <= 900) {
           // Medium screens
-          containerHeight = context.dynamicHeight(0.08);
+          containerHeight = context.dynamicHeight(0.07);
         } else if (screenHeight <= 1080) {
           // Medium screens
           containerHeight = context.dynamicHeight(0.08);
         } else {
-          containerHeight = context.dynamicHeight(0.08);
+          containerHeight = context.dynamicHeight(0.07);
           // Large screens
         }
 
@@ -70,17 +70,17 @@ class ProfilePageWidget extends StatelessWidget {
         } else if (screenWidth <= 900) {
           // Medium screens
           leftPadding = context.onlyLeftPaddingMedium;
-          tagSquarePosition = 0.37;
+          tagSquarePosition = 0.39;
           containerWidth = context.dynamicWidth(0.05);
         } else if (screenWidth <= 1080) {
           // Medium Large screens
           leftPadding = context.onlyLeftPaddingHigh;
-          tagSquarePosition = 0.38;
+          tagSquarePosition = 0.395;
           containerWidth = context.dynamicWidth(0.04);
         } else {
           // Large screens
           leftPadding = context.onlyLeftPaddingHigh * 2;
-          tagSquarePosition = 0.43;
+          tagSquarePosition = 0.445;
           containerWidth = context.dynamicWidth(0.03);
         }
         if (state is ProfileLoadDataState) {
@@ -119,18 +119,11 @@ class ProfilePageWidget extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: CircleAvatar(
-                          radius: context.dynamicHeight(0.16),
+                          radius: context.dynamicHeight(0.09),
                           backgroundColor:
                               AppLightColorConstants.contentTeritaryColor,
-                          child: ClipOval(
-                            child: SizedBox(
-                              height: context.dynamicHeight(0.16),
-                              child: Image.network(
-                                state.profileImageUrl,
-                                fit: BoxFit.cover,
-                                width: context.dynamicWidth(0.35),
-                              ),
-                            ),
+                          backgroundImage: NetworkImage(
+                            state.profileImageUrl,
                           ),
                         ),
                       ),

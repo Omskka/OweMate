@@ -49,7 +49,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
           await fetchUserDataService.fetchFriends();
 
       // Emit the state with the fetched friends data
-      print('--FriENDS---');
       emit(FriendsDataLoadedState(
         friends: friends,
         state: state,

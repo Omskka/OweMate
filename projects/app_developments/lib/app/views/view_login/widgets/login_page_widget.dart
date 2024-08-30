@@ -56,7 +56,7 @@ class LoginPageWidget extends StatelessWidget {
             containerWidth = context.dynamicWidth(0.65);
           } else if (maxWidth <= 800) {
             // Small screens
-            leftPadding = context.onlyLeftPaddingMedium;
+            leftPadding = context.onlyLeftPaddingHigh;
             textfieldWidth = context.dynamicWidth(0.7);
             containerWidth = context.dynamicWidth(0.45);
           } else if (maxWidth <= 900) {
@@ -66,12 +66,14 @@ class LoginPageWidget extends StatelessWidget {
             containerWidth = context.dynamicWidth(0.3);
           } else if (maxWidth <= 1080) {
             // Medium Large screens
-            leftPadding = context.onlyLeftPaddingHigh;
+            leftPadding = EdgeInsets.symmetric(
+                horizontal: (maxWidth - context.dynamicWidth(0.6)) / 2);
             textfieldWidth = context.dynamicWidth(0.6);
             containerWidth = context.dynamicWidth(0.3);
           } else {
             // Large screens
-            leftPadding = context.onlyLeftPaddingHigh * 3;
+            leftPadding = EdgeInsets.symmetric(
+                horizontal: (maxWidth - context.dynamicWidth(0.6)) / 2);
             textfieldWidth = context.dynamicWidth(0.6);
             containerWidth = context.dynamicWidth(0.2);
           }
