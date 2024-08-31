@@ -89,9 +89,6 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       final friendsUserData =
           await fetchUserDataService.fetchUserData(userId: event.friendsUserId);
 
-      // Log fetched data for debugging
-      //  print('Fetched friends user data: $friendsUserData\n');
-
       // Update the state with fetched friends data
       final updatedFriendsUserData =
           Map<String, dynamic>.from(state.friendsUserData)
@@ -105,12 +102,8 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
           state: state,
         ),
       );
-
-      // Log updated state for debugging
-      // print('Updated friends user data: $updatedFriendsUserData\n');
     } catch (e) {
       // Log the error
-      print('Error fetching friends data: $e');
       // Optionally emit an error state if needed
     }
   }
