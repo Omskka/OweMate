@@ -40,7 +40,6 @@ class HomePageWidget extends StatelessWidget {
                     HomefetchRequestDataEvent(friendsUserId: friendUserId),
                   );
             }
-            print('-----friendsUserData ${state.friendsUserData}');
           }
         }
 
