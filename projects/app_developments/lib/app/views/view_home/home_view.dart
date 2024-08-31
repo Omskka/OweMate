@@ -22,7 +22,7 @@ class HomeView extends StatelessWidget {
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           int requestNumber = HomeViewModel().fetchRequestNumber(
-            state.requestNumber,
+            state.userData['requestList'] ?? [],
           );
           return SafeArea(
             child: Scaffold(
@@ -116,7 +116,7 @@ class HomeView extends StatelessWidget {
                                               color: Colors.white, width: 1)),
                                       child: Center(
                                         child: Text(
-                                          '${state.requestNumber.length}',
+                                          '${state.userData['requestList'].length}',
                                           style: context
                                               .textStyleGrey(context)
                                               .copyWith(

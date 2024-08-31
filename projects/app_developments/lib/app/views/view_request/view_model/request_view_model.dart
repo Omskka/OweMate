@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -113,6 +115,7 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
           return const Center(child: CircularProgressIndicator());
         },
       );
+
       // Fetch current user ID
       String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
@@ -124,6 +127,9 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
       // Combine prefix and amount
       String formattedAmount = '$currencyPrefix$amount';
 
+      // Get the current date and format it
+      String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
+
       // Define Firestore instance
       final firestore = FirebaseFirestore.instance;
 
@@ -134,33 +140,33 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
             'amount': formattedAmount,
             'friendUserId': friendUserId,
             'message': messageController.text.trim(),
+            'date': formattedDate, // Add the formatted date
           },
         ]),
       });
 
       // Update friend's owedMoney array
-      await firestore.collection('users').doc(friendUserId).update({
-        'owedMoney': FieldValue.arrayUnion([
-          {
-            'amount': formattedAmount,
-            'currentUserId': currentUserId,
-            'message': messageController.text.trim(),
-          },
-        ]),
-      });
-
-      // Dismiss the loading circle dialog
-      Navigator.of(event.context).pop();
-
-      // Emit a success state or update the UI as needed
-      emit(
-        RequestSuccessState(state: state),
+      await firestore.collection('users').doc(friendUserId).update(
+        {
+          'owedMoney': FieldValue.arrayUnion(
+            [
+              {
+                'amount': formattedAmount,
+                'friendUserId': currentUserId,
+                'message': messageController.text.trim(),
+                'date': formattedDate, // Add the formatted date
+              },
+            ],
+          ),
+        },
       );
-    } catch (e) {
-      // Dismiss the loading circle dialog
+      emit(RequestSuccessState(state: state));
+      // Close the loading circle after the update is done
       Navigator.of(event.context).pop();
-      // Handle the exception and emit an error state
-      throw Exception(e);
+    } catch (e) {
+      // Handle errors
+      print('Error sending request: $e');
+      Navigator.of(event.context).pop();
     }
   }
 }

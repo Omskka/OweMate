@@ -22,7 +22,7 @@ final class AppLightColorConstants {
   //background color
 
   static const Color bgLight = Color(0xFFFFFFFF);
-  static const Color bgDark = Color(0xF7F5F5F5);
+  static const Color bgDark = Color(0xC2EEEDED);
   static const Color bgInverse = Color(0xFF121212);
   static const Color bgAccent = Color(0xFF304FFE);
   static const Color bgSecondary = Color(0xFFFDD835);

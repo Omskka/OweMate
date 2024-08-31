@@ -1,7 +1,10 @@
+import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
+import 'package:app_developments/core/widgets/money_debt_card.dart';
+import 'package:app_developments/core/widgets/money_request_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +15,35 @@ class HomePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
+        // Fetch friends' data if not already fetched
+        if (state is HomeDataLoadedState) {
+          final requestedMoney =
+              state.userData['requestedMoney'] as List? ?? [];
+          final owedMoney = state.userData['owedMoney'] as List? ?? [];
+
+          // Dispatch events to fetch each friend's data
+          for (var request in requestedMoney) {
+            String friendUserId = request['friendUserId'] ?? '';
+            // Fetch friend's data if not already fetched
+            if (!state.friendsUserData.containsKey(friendUserId)) {
+              context.read<HomeViewModel>().add(
+                    HomefetchRequestDataEvent(friendsUserId: friendUserId),
+                  );
+            }
+          }
+
+          for (var debt in owedMoney) {
+            String friendUserId = debt['friendUserId'] ?? '';
+            // Fetch friend's data if not already fetched
+            if (!state.friendsUserData.containsKey(friendUserId)) {
+              context.read<HomeViewModel>().add(
+                    HomefetchRequestDataEvent(friendsUserId: friendUserId),
+                  );
+            }
+            print('-----friendsUserData ${state.friendsUserData}');
+          }
+        }
+
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
         final screenWidth = MediaQuery.of(context).size.width;
@@ -19,40 +51,23 @@ class HomePageWidget extends StatelessWidget {
         // Determine height and width based on screen dimensions
         EdgeInsets leftPadding;
 
-        // Height
-        if (screenHeight <= 680) {
-          // Small screens
-        } else if (screenHeight <= 800) {
-          // Small screens
-        } else if (screenHeight <= 900) {
-          // Medium screens
-        } else if (screenHeight <= 1080) {
-          // Medium screens
-        } else {
-          // Large screens
-        }
-
         // Width
         if (screenWidth <= 600) {
-          // very Small screens
           leftPadding = EdgeInsets.zero;
         } else if (screenWidth <= 800) {
-          // Small screens
           leftPadding = EdgeInsets.zero;
         } else if (screenWidth <= 900) {
-          // Medium screens
           leftPadding = context.onlyLeftPaddingNormal;
         } else if (screenWidth <= 1080) {
-          // Medium Large screens
           leftPadding = context.onlyLeftPaddingNormal;
         } else {
-          // Large screens
           leftPadding = context.onlyLeftPaddingHigh;
         }
 
         return SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               context.sizedHeightBoxLow,
               Row(
@@ -109,6 +124,7 @@ class HomePageWidget extends StatelessWidget {
                 ),
               ),
               context.sizedHeightBoxLower,
+              // Money You Owe Section
               SizedBox(
                 height: context.dynamicHeight(0.05),
                 width: context.dynamicWidth(1),
@@ -131,19 +147,89 @@ class HomePageWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: context.dynamicHeight(0.25),
-                width: context.dynamicWidth(1),
-                child: Center(
-                    child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'You don\'t owe anyone any money.\nYou\'re all clear!',
-                    style: context.textStyleGrey(context),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
+              Padding(
+                padding: context.onlyLeftPaddingNormal,
+                child: SizedBox(
+                  height: context.dynamicHeight(0.25),
+                  width: context.dynamicWidth(1),
+                  child: state.userData.containsKey('owedMoney') &&
+                          state.userData['owedMoney'] != null &&
+                          state.userData['owedMoney'] is List &&
+                          state.userData['owedMoney'].isNotEmpty
+                      ? ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.userData['owedMoney'].length,
+                          itemBuilder: (context, index) {
+                            final debt = state.userData['owedMoney'][index];
+
+                            final amount = debt['amount']?.toString() ?? '0';
+                            final date = debt['date'] ?? '';
+                            final friendUserId = debt['friendUserId'] ?? '';
+
+                            // Fetch friend's data from state
+                            final friendData =
+                                state.friendsUserData[friendUserId] ?? {};
+                            final friendName =
+                                friendData['firstName'] ?? 'Unknown';
+                            final profileImageUrl =
+                                friendData['profileImageUrl'] ?? '';
+
+                            return GestureDetector(
+                              onTap: () {
+                                // set up the buttons
+                                Widget continueButton = TextButton(
+                                  child: const Text("Continue"),
+                                  onPressed: () {
+                                    // Action for the Remove button
+                                    Navigator.of(context)
+                                        .pop(); // Dismiss the dialog
+                                  },
+                                );
+
+                                // set up the AlertDialog
+                                AlertDialog alert = AlertDialog(
+                                  title: Text(
+                                    "$friendName's Request Message",
+                                    style: context.textStyleGreyBarlow(context),
+                                  ),
+                                  content: Text(
+                                    "${state.userData['owedMoney'][index]['message']}",
+                                  ),
+                                  actions: [
+                                    continueButton,
+                                  ],
+                                );
+
+                                // show the dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alert;
+                                  },
+                                );
+                              },
+                              child: MoneyDebtCard(
+                                profileImageUrl: profileImageUrl,
+                                amount: amount,
+                                name: friendName,
+                                date: date,
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'You don\'t owe anyone any money.\nYou\'re all clear!',
+                              style: context.textStyleGrey(context),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                ),
               ),
+              // Money Owed to You Section
               SizedBox(
                 height: context.dynamicHeight(0.05),
                 width: context.dynamicWidth(1),
@@ -166,19 +252,110 @@ class HomePageWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: context.dynamicHeight(0.25),
                 width: context.dynamicWidth(1),
-                child: Center(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'No one owes you anything right now.\nEverything is balanced!',
-                      style: context.textStyleGrey(context),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+                child: state.userData.containsKey('requestedMoney') &&
+                        state.userData['requestedMoney'] != null &&
+                        state.userData['requestedMoney'] is List &&
+                        state.userData['requestedMoney'].isNotEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                            left: context.onlyLeftPaddingNormal.left),
+                        child: SizedBox(
+                          height: context.dynamicHeight(0.25),
+                          width: context.dynamicWidth(1),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.userData['requestedMoney'].length,
+                            itemBuilder: (context, index) {
+                              final request =
+                                  state.userData['requestedMoney'][index];
+                              final amount =
+                                  request['amount']?.toString() ?? '0';
+                              final date = request['date'] ?? '';
+                              final friendUserId =
+                                  request['friendUserId'] ?? '';
+
+                              // Fetch friend's data from state
+                              final friendData =
+                                  state.friendsUserData[friendUserId] ?? {};
+                              final friendName =
+                                  friendData['firstName'] ?? 'Unknown';
+                              final profileImageUrl =
+                                  friendData['profileImageUrl'] ?? '';
+
+                              return GestureDetector(
+                                onTap: () {
+                                  // set up the buttons
+                                  Widget continueButton = TextButton(
+                                    child: const Text("Continue"),
+                                    onPressed: () {
+                                      // Action for the Remove button
+                                      Navigator.of(context)
+                                          .pop(); // Dismiss the dialog
+                                    },
+                                  );
+                                  Widget deleteButton = TextButton(
+                                    child: const Text(
+                                      "Delete",
+                                      style: TextStyle(
+                                        color:
+                                            AppLightColorConstants.errorColor,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // Action for the Remove button
+                                      Navigator.of(context)
+                                          .pop(); // Dismiss the dialog
+                                    },
+                                  );
+
+                                  // set up the AlertDialog
+                                  AlertDialog alert = AlertDialog(
+                                    title: Text(
+                                      "Your Request Message to $friendName",
+                                      style:
+                                          context.textStyleGreyBarlow(context),
+                                    ),
+                                    content: Text(
+                                      "${state.userData['requestedMoney'][index]['message']}",
+                                    ),
+                                    actions: [
+                                      deleteButton,
+                                      continueButton,
+                                    ],
+                                  );
+
+                                  // show the dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                },
+                                child: MoneyRequestCard(
+                                  profileImageUrl: profileImageUrl,
+                                  amount: amount,
+                                  name: friendName,
+                                  date: date,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'No one owes you anything right now.\nEverything is balanced!',
+                            style: context.textStyleGrey(context),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),
