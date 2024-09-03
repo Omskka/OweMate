@@ -3,6 +3,7 @@ import 'package:app_developments/app/views/view_request/view_model/request_event
 import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/core/constants/validation/money_request_validation.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
@@ -266,6 +267,11 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                         hintText: 'Ex. 500',
                         controller: viewModel.amountController,
                         textInputAction: TextInputAction.next,
+                        validator: (value) =>
+                            MoneyRequestValidation().checkValidAmount(
+                          value,
+                          context,
+                        ),
                       ),
                       context.sizedHeightBoxLow,
                       RichText(
@@ -297,6 +303,11 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                         hintText: 'Ex. Lunch at Joe\'s Diner',
                         controller: viewModel.messageController,
                         textInputAction: TextInputAction.done,
+                        validator: (value) =>
+                            MoneyRequestValidation().checkValidMessage(
+                          value,
+                          context,
+                        ),
                       ),
                     ],
                   ),

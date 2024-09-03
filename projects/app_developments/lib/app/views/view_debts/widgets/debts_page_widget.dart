@@ -72,7 +72,7 @@ class DebtsPageWidget extends StatelessWidget {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          'Home',
+                          'Finances',
                           style: context.textStyleGrey(context).copyWith(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -160,9 +160,6 @@ class DebtsPageWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment
                                 .center, // Center content within Row
                             children: [
-                              const Icon(
-                                Icons.add,
-                              ),
                               context.sizedHeightBoxLow,
                               Text(
                                 'Request Money',
@@ -215,10 +212,7 @@ class DebtsPageWidget extends StatelessWidget {
                     width: containerWidth,
                     child: GestureDetector(
                       onTap: () {
-                        CustomFlutterToast(
-                          context: context,
-                          msg: 'Under Construction',
-                        ).flutterToast();
+                        context.router.push(const SettleViewRoute());
                       },
                       child: Container(
                         height: containerHeight,
@@ -244,12 +238,9 @@ class DebtsPageWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment
                                 .center, // Center content within Row
                             children: [
-                              const Icon(
-                                Icons.add,
-                              ),
                               context.sizedHeightBoxLower,
                               Text(
-                                'Settle Debt',
+                                'Settle Debts',
                                 style: context.textStyleGrey(context).copyWith(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700,

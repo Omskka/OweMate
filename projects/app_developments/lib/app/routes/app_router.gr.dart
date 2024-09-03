@@ -87,6 +87,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RequestView(),
       );
     },
+    SettleViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettleView(),
+      );
+    },
     SignupViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -266,6 +272,20 @@ class RequestViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'RequestViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettleView]
+class SettleViewRoute extends PageRouteInfo<void> {
+  const SettleViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SettleViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettleViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

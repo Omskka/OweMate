@@ -31,7 +31,7 @@ class LogInWithEmailAndPasswordFailure implements Exception {
           'L10n.of(context)?.wrongPassword',
         );
       default:
-        return const LogInWithEmailAndPasswordFailure('An unknown exception occurred.');
+        return const LogInWithEmailAndPasswordFailure('Wrong Credentials');
     }
   }
 }
