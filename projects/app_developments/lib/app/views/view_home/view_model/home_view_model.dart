@@ -40,6 +40,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _initial(
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     try {
+      emit(HomeLoadingState());
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
       gender = userData['gender']!;
@@ -115,8 +116,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       HomefetchDeleteRequestEvent event, Emitter<HomeState> emit) async {
     try {
       // Assume `currentUserId` is the ID of the currently logged-in user
-      String? currentUserId =
-           AuthenticationRepository().getCurrentUserId();
+      String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
       // Fetch current user's data
       var currentUserData =

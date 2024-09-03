@@ -17,6 +17,10 @@ class HomeInitialState extends HomeState {
         );
 }
 
+class HomeLoadingState extends HomeState {
+  HomeLoadingState() : super(friendsUserData: {}, userData: {});
+}
+
 // State to represent loaded data
 class HomeDataLoadedState extends HomeState {
   HomeDataLoadedState({
