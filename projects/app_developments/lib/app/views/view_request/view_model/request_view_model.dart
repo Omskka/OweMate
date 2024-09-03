@@ -8,6 +8,7 @@ import 'package:app_developments/app/views/view_request/view_model/request_state
 import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class RequestViewModel extends Bloc<RequestEvent, RequestState> {
   String name = '';
@@ -105,68 +106,77 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
     );
   }
 
-  FutureOr<void> _sendRequest(
-      RequestSendEvent event, Emitter<RequestState> emit) async {
-    try {
-      // Show loading circle
-      showDialog(
-        context: event.context,
-        builder: (context) {
-          return const Center(child: CircularProgressIndicator());
-        },
-      );
+FutureOr<void> _sendRequest(
+    RequestSendEvent event, Emitter<RequestState> emit) async {
+  try {
+    // Show loading circle
+    showDialog(
+      context: event.context,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
 
-      // Fetch current user ID
-      String? currentUserId = AuthenticationRepository().getCurrentUserId();
+    // Fetch current user ID
+    String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
-      // Get the selected friend ID and the amount to request from the event
-      String? friendUserId = event.selectedUser![0]['userId'];
-      double amount = double.tryParse(amountController.text.trim()) ?? 0.0;
-      String? currencyPrefix = event.prefix;
+    // Get the selected friend ID and the amount to request from the event
+    String? friendUserId = event.selectedUser![0]['userId'];
+    double amount = double.tryParse(amountController.text.trim()) ?? 0.0;
+    String? currencyPrefix = event.prefix;
 
-      // Combine prefix and amount
-      String formattedAmount = '$currencyPrefix$amount';
+    // Combine prefix and amount
+    String formattedAmount = '$currencyPrefix$amount';
 
-      // Get the current date and format it
-      String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
+    // Get the current date and format it
+    String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
 
-      // Define Firestore instance
-      final firestore = FirebaseFirestore.instance;
+    // Generate a unique request ID
+    var uuid = Uuid();
+    String requestId = uuid.v4();
 
-      // Update current user's requestMoney array
-      await firestore.collection('users').doc(currentUserId).update({
-        'requestedMoney': FieldValue.arrayUnion([
-          {
-            'amount': formattedAmount,
-            'friendUserId': friendUserId,
-            'message': messageController.text.trim(),
-            'date': formattedDate, // Add the formatted date
-          },
-        ]),
-      });
+    // Define Firestore instance
+    final firestore = FirebaseFirestore.instance;
 
-      // Update friend's owedMoney array
-      await firestore.collection('users').doc(friendUserId).update(
+    // Update current user's requestMoney array
+    await firestore.collection('users').doc(currentUserId).update({
+      'requestedMoney': FieldValue.arrayUnion([
         {
-          'owedMoney': FieldValue.arrayUnion(
-            [
-              {
-                'amount': formattedAmount,
-                'friendUserId': currentUserId,
-                'message': messageController.text.trim(),
-                'date': formattedDate, // Add the formatted date
-              },
-            ],
-          ),
+          'requestId': requestId,
+          'amount': formattedAmount,
+          'friendUserId': friendUserId,
+          'message': messageController.text.trim(),
+          'date': formattedDate,
         },
-      );
-      emit(RequestSuccessState(state: state));
-      // Close the loading circle after the update is done
-      Navigator.of(event.context).pop();
-    } catch (e) {
-      // Handle errors
-      print('Error sending request: $e');
-      Navigator.of(event.context).pop();
-    }
+      ]),
+    });
+
+    // Update friend's owedMoney array
+    await firestore.collection('users').doc(friendUserId).update(
+      {
+        'owedMoney': FieldValue.arrayUnion(
+          [
+            {
+              'requestId': requestId,
+              'amount': formattedAmount,
+              'friendUserId': currentUserId,
+              'message': messageController.text.trim(),
+              'date': formattedDate,
+            },
+          ],
+        ),
+      },
+    );
+
+    emit(RequestSuccessState(state: state));
+
+    // Close the loading circle after the update is done
+    Navigator.of(event.context).pop();
+  } catch (e) {
+    // Handle errors
+    print('Error sending request: $e');
+    Navigator.of(event.context).pop();
   }
+}
+
 }

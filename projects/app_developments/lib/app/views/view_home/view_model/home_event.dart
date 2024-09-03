@@ -18,6 +18,15 @@ class HomefetchDebtDataEvent extends HomeEvent {
   HomefetchDebtDataEvent({required this.friendsUserId});
 }
 
+class HomefetchDeleteRequestEvent extends HomeEvent {
+  final String requestId;
+  final String friendUserId;
+  HomefetchDeleteRequestEvent({
+    required this.requestId,
+    required this.friendUserId,
+  });
+}
+
 class HomeDrawerOpenedEvent extends HomeEvent {}
 
 class HomeDrawerClosedEvent extends HomeEvent {}
