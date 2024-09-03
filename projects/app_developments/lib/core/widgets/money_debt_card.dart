@@ -17,11 +17,54 @@ class MoneyDebtCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen height and width using MediaQuery
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Define responsive variables
+    double circleAvatarWidth;
+    double containerWidth;
+
+    // Height
+    if (screenHeight <= 680) {
+      // Small screens
+    } else if (screenHeight <= 800) {
+      // Small screens
+    } else if (screenHeight <= 900) {
+      // Medium screens
+    } else if (screenHeight <= 1080) {
+      // Medium screens
+    } else {
+      // Large screens
+    }
+
+    // Width
+    if (screenWidth <= 600) {
+      // very Small screens
+      circleAvatarWidth = 0.09;
+      containerWidth = 0.45;
+    } else if (screenWidth <= 800) {
+      // Small screens
+      circleAvatarWidth = 0.05;
+      containerWidth = 0.4;
+    } else if (screenWidth <= 900) {
+      // Medium screens
+      circleAvatarWidth = 0.04;
+      containerWidth = 0.4;
+    } else if (screenWidth <= 1080) {
+      // Medium Large screens
+      circleAvatarWidth = 0.036;
+      containerWidth = 0.3;
+    } else {
+      // Large screens
+      circleAvatarWidth = 0.02;
+      containerWidth = 0.2;
+    }
     return Padding(
       padding: context.onlyRightPaddingNormal,
       child: Container(
         height: context.dynamicHeight(0.25),
-        width: context.dynamicWidth(0.45),
+        width: context.dynamicWidth(containerWidth),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(context.normalRadius),
           color: AppLightColorConstants.bgLight,
@@ -32,7 +75,7 @@ class MoneyDebtCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: context.dynamicWidth(0.09),
+                radius: context.dynamicWidth(circleAvatarWidth),
                 backgroundColor: AppLightColorConstants.infoColor,
                 backgroundImage: NetworkImage(profileImageUrl),
               ),

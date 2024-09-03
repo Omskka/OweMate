@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
+import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewModel extends Bloc<HomeEvent, HomeState> {
@@ -13,6 +15,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
     on<HomeDrawerOpenedEvent>(_onDrawerOpened);
     on<HomeDrawerClosedEvent>(_onDrawerClosed);
     on<HomefetchRequestDataEvent>(_fetchFriendsData);
+    on<HomefetchDeleteRequestEvent>(_deleteRequest);
   }
 
   // Define key for drawer
@@ -105,6 +108,48 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       // Log the error
       // Optionally emit an error state if needed
+    }
+  }
+
+  FutureOr<void> _deleteRequest(
+      HomefetchDeleteRequestEvent event, Emitter<HomeState> emit) async {
+    try {
+      // Assume `currentUserId` is the ID of the currently logged-in user
+      String? currentUserId =
+           AuthenticationRepository().getCurrentUserId();
+
+      // Fetch current user's data
+      var currentUserData =
+          await fetchUserDataService.fetchUserData(userId: currentUserId);
+
+      // Fetch friend's user data
+      var friendUserData =
+          await fetchUserDataService.fetchUserData(userId: event.friendUserId);
+
+      // Remove the request from the current user's `requestedMoney` list
+      currentUserData['requestedMoney']
+          .removeWhere((item) => item['requestId'] == event.requestId);
+
+      // Remove the request from the friend's `owedMoney` list
+      friendUserData['owedMoney']
+          .removeWhere((item) => item['requestId'] == event.requestId);
+
+      // Update both the current user and friend's data in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .update({'requestedMoney': currentUserData['requestedMoney']});
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(event.friendUserId)
+          .update({'owedMoney': friendUserData['owedMoney']});
+
+      //  add HomeInitialEvent to refresh requests on page
+      add(HomeInitialEvent());
+    } catch (e) {
+      // Handle any errors
+      throw Exception(e);
     }
   }
 }

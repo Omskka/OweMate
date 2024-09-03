@@ -49,18 +49,24 @@ class HomePageWidget extends StatelessWidget {
 
         // Determine height and width based on screen dimensions
         EdgeInsets leftPadding;
+        EdgeInsets cardLeftPadding;
 
         // Width
         if (screenWidth <= 600) {
           leftPadding = EdgeInsets.zero;
+          cardLeftPadding = context.onlyLeftPaddingMedium;
         } else if (screenWidth <= 800) {
           leftPadding = EdgeInsets.zero;
+          cardLeftPadding = context.onlyLeftPaddingMedium;
         } else if (screenWidth <= 900) {
           leftPadding = context.onlyLeftPaddingNormal;
+          cardLeftPadding = context.onlyLeftPaddingMedium;
         } else if (screenWidth <= 1080) {
           leftPadding = context.onlyLeftPaddingNormal;
+          cardLeftPadding = context.onlyLeftPaddingMedium;
         } else {
           leftPadding = context.onlyLeftPaddingHigh;
+          cardLeftPadding = context.onlyLeftPaddingHigh;
         }
 
         return SingleChildScrollView(
@@ -147,7 +153,7 @@ class HomePageWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: context.onlyLeftPaddingNormal,
+                padding: cardLeftPadding,
                 child: SizedBox(
                   height: context.dynamicHeight(0.25),
                   width: context.dynamicWidth(1),
@@ -259,8 +265,7 @@ class HomePageWidget extends StatelessWidget {
                         state.userData['requestedMoney'] is List &&
                         state.userData['requestedMoney'].isNotEmpty
                     ? Padding(
-                        padding: EdgeInsets.only(
-                            left: context.onlyLeftPaddingNormal.left),
+                        padding: EdgeInsets.only(left: cardLeftPadding.left),
                         child: SizedBox(
                           height: context.dynamicHeight(0.25),
                           width: context.dynamicWidth(1),
@@ -297,14 +302,22 @@ class HomePageWidget extends StatelessWidget {
                                   );
                                   Widget deleteButton = TextButton(
                                     child: const Text(
-                                      "Delete",
+                                      "Delete Request",
                                       style: TextStyle(
                                         color:
                                             AppLightColorConstants.errorColor,
                                       ),
                                     ),
                                     onPressed: () {
-                                      // Action for the Remove button
+                                      // Action for the Delete button
+                                      context.read<HomeViewModel>().add(
+                                            HomefetchDeleteRequestEvent(
+                                              requestId: state.friendsUserData[
+                                                      friendUserId]['owedMoney']
+                                                  [0]['requestId'],
+                                              friendUserId: friendUserId,
+                                            ),
+                                          );
                                       Navigator.of(context)
                                           .pop(); // Dismiss the dialog
                                     },

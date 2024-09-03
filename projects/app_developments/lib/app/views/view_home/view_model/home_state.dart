@@ -55,3 +55,11 @@ class HomeDrawerClosedState extends HomeState {
     required Map<String, dynamic> friendsUserData,
   }) : super(userData: state.userData, friendsUserData: state.friendsUserData);
 }
+
+class HomeRequestDeletedState extends HomeState {
+  HomeRequestDeletedState({
+    required HomeState state,
+    required Map<String, dynamic> userData,
+    required Map<String, dynamic> friendsUserData,
+  }) : super(userData: state.userData, friendsUserData: state.friendsUserData);
+}
