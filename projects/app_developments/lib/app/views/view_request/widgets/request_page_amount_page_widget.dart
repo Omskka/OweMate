@@ -82,247 +82,246 @@ class RequestPageAmountPageWidget extends StatelessWidget {
         }
 
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              BackButtonWithTitle(
-                title: 'Enter Amount',
-                ontap: () {
-                  context.router.push(const DebtsViewRoute());
-                },
-              ),
-              SizedBox(
-                height: context.dynamicHeight(0.075),
-                width: context.dynamicWidth(1),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Enter the exact amount owed to ensure\nprecise and clear transactions.',
-                    style: context.textStyleGrey(context).copyWith(
-                          fontSize: 15,
-                        ),
-                    textAlign: TextAlign.center,
+          child: Form(
+            key: viewModel.formKey,
+            child: Column(
+              children: [
+                BackButtonWithTitle(
+                  title: 'Enter Amount',
+                  ontap: () {
+                    context.router.push(const DebtsViewRoute());
+                  },
+                ),
+                SizedBox(
+                  height: context.dynamicHeight(0.075),
+                  width: context.dynamicWidth(1),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Enter the exact amount owed to ensure\nprecise and clear transactions.',
+                      style: context.textStyleGrey(context).copyWith(
+                            fontSize: 15,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
-              context.sizedHeightBoxLower,
-              Container(
-                height: context.dynamicHeight(containerHeight),
-                width: context.dynamicWidth(0.5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(context.normalRadius),
-                ),
-                child: Column(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Center align the content
-                  crossAxisAlignment:
-                      CrossAxisAlignment.center, // Center align horizontally
-                  children: [
-                    // Display the profile image
-                    Container(
-                      width: context.dynamicWidth(
-                          0.11 * circleAvatarWidth), // Adjust size as needed
-                      height: context.dynamicWidth(
-                          0.11 * circleAvatarWidth), // Ensure it's a square
-                      decoration: BoxDecoration(
-                        shape:
-                            BoxShape.circle, // Make sure the border is circular
-                        border: Border.all(
-                          color: AppLightColorConstants.contentTeritaryColor
-                              .withOpacity(0.45), // Border color
-                          width: 3.0, // Border width
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius:
-                            context.dynamicWidth(0.16), // Adjust size as needed
-                        backgroundImage: NetworkImage(
-                          state.selectedUser![0]['profileImageUrl'] ?? '',
-                        ), // Use a default image or handle null
-                        backgroundColor: Colors
-                            .transparent, // Set a transparent background if needed
-                      ),
-                    ),
-
-                    // Space between image and text
-                    context.sizedHeightBoxLower,
-                    // Display the user's name
-                    Text(
-                      'Send request to',
-                      style: context.textStyleGrey(context),
-                    ),
-                    Text(
-                      state.selectedUser?[0]['Name'] ??
-                          'No Name', // Provide a default name if null
-                      style: context.textStyleGreyBarlow(context),
-                    ),
-                  ],
-                ),
-              ),
-              context.sizedHeightBoxLow,
-              Padding(
-                padding: leftPadding,
-                child: SizedBox(
-                  height: context.dynamicHeight(0.385),
-                  width: context.dynamicWidth(1),
+                context.sizedHeightBoxLower,
+                Container(
+                  height: context.dynamicHeight(containerHeight),
+                  width: context.dynamicWidth(0.5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(context.normalRadius),
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment:
+                        MainAxisAlignment.center, // Center align the content
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center, // Center align horizontally
                     children: [
-                      Text(
-                        'Select a Currency',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              fontSize: 15,
-                              color: AppLightColorConstants.primaryColor,
-                            ),
+                      // Display the profile image
+                      Container(
+                        width: context.dynamicWidth(
+                            0.11 * circleAvatarWidth), // Adjust size as needed
+                        height: context.dynamicWidth(
+                            0.11 * circleAvatarWidth), // Ensure it's a square
+                        decoration: BoxDecoration(
+                          shape: BoxShape
+                              .circle, // Make sure the border is circular
+                          border: Border.all(
+                            color: AppLightColorConstants.contentTeritaryColor
+                                .withOpacity(0.45), // Border color
+                            width: 3.0, // Border width
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: context
+                              .dynamicWidth(0.16), // Adjust size as needed
+                          backgroundImage: NetworkImage(
+                            state.selectedUser![0]['profileImageUrl'] ?? '',
+                          ), // Use a default image or handle null
+                          backgroundColor: Colors
+                              .transparent, // Set a transparent background if needed
+                        ),
                       ),
+
+                      // Space between image and text
                       context.sizedHeightBoxLower,
-                      DropdownMenu(
-                        menuHeight: context.dynamicHeight(0.15),
-                        width: context.dynamicWidth(0.3),
-                        textStyle: context
-                            .textStyleGrey(context)
-                            .copyWith(fontWeight: FontWeight.w600),
-                        controller: viewModel.currencyController,
-                        hintText: 'Ex. USD',
-                        dropdownMenuEntries: <DropdownMenuEntry<String>>[
-                          DropdownMenuEntry(
-                            value: '₺',
-                            label: 'TL',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05)),
-                              ),
-                            ),
-                          ),
-                          DropdownMenuEntry(
-                            value: '\$',
-                            label: 'USD',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05)),
-                              ),
-                            ),
-                          ),
-                          DropdownMenuEntry(
-                            value: '€',
-                            label: 'EURO',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05)),
-                              ),
-                            ),
-                          ),
-                          DropdownMenuEntry(
-                            value: '£',
-                            label: 'GBP',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05)),
-                              ),
-                            ),
-                          ),
-                          DropdownMenuEntry(
-                            value: '¥',
-                            label: 'JPY',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                  left: context.dynamicWidth(0.05),
-                                ),
-                              ),
-                            ),
-                          ),
-                          DropdownMenuEntry(
-                            value: '₣',
-                            label: 'CHF',
-                            style: ButtonStyle(
-                              padding:
-                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05)),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      context.sizedHeightBoxLow,
+                      // Display the user's name
                       Text(
-                        'Enter Amount',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              fontSize: 15,
-                              color: AppLightColorConstants.primaryColor,
-                            ),
+                        'Send request to',
+                        style: context.textStyleGrey(context),
                       ),
-                      CustomTextField(
-                        width: textfieldWidth,
-                        prefixIcon: state.prefix,
-                        hintText: 'Ex. 500',
-                        controller: viewModel.amountController,
-                        textInputAction: TextInputAction.next,
-                        validator: (value) =>
-                            MoneyRequestValidation().checkValidAmount(
-                          value,
-                          context,
-                        ),
-                      ),
-                      context.sizedHeightBoxLow,
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Enter a Message', // Main text
-                              style: context
-                                  .textStyleGreyBarlow(context)
-                                  .copyWith(
-                                    fontSize: 15,
-                                    color: AppLightColorConstants.primaryColor,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: ' (Optional)', // Optional text
-                              style: context.textStyleGrey(context).copyWith(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppLightColorConstants
-                                        .contentDisabled, // Different color
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      CustomTextField(
-                        width: textfieldWidth,
-                        hintText: 'Ex. Lunch at Joe\'s Diner',
-                        controller: viewModel.messageController,
-                        textInputAction: TextInputAction.done,
-                        validator: (value) =>
-                            MoneyRequestValidation().checkValidMessage(
-                          value,
-                          context,
-                        ),
+                      Text(
+                        state.selectedUser?[0]['Name'] ??
+                            'No Name', // Provide a default name if null
+                        style: context.textStyleGreyBarlow(context),
                       ),
                     ],
                   ),
                 ),
-              ),
-              CustomContinueButton(
-                buttonText: 'Send Request',
-                onPressed: () {
-                  viewModel.add(RequestSendEvent(
-                      context: context,
-                      selectedUser: state.selectedUser,
-                      prefix: state.prefix!));
-                },
-              ),
-            ],
+                context.sizedHeightBoxLow,
+                Padding(
+                  padding: leftPadding,
+                  child: SizedBox(
+                    height: context.dynamicHeight(0.385),
+                    width: context.dynamicWidth(1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Select a Currency',
+                          style: context.textStyleGreyBarlow(context).copyWith(
+                                fontSize: 15,
+                                color: AppLightColorConstants.primaryColor,
+                              ),
+                        ),
+                        context.sizedHeightBoxLower,
+                        DropdownMenu(
+                          menuHeight: context.dynamicHeight(0.15),
+                          width: context.dynamicWidth(0.3),
+                          textStyle: context
+                              .textStyleGrey(context)
+                              .copyWith(fontWeight: FontWeight.w600),
+                          controller: viewModel.currencyController,
+                          hintText: 'Ex. USD',
+                          dropdownMenuEntries: <DropdownMenuEntry<String>>[
+                            DropdownMenuEntry(
+                              value: '₺',
+                              label: 'TL',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                      left: context.dynamicWidth(0.05)),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuEntry(
+                              value: '\$',
+                              label: 'USD',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                      left: context.dynamicWidth(0.05)),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuEntry(
+                              value: '€',
+                              label: 'EURO',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                      left: context.dynamicWidth(0.05)),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuEntry(
+                              value: '£',
+                              label: 'GBP',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                      left: context.dynamicWidth(0.05)),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuEntry(
+                              value: '¥',
+                              label: 'JPY',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                    left: context.dynamicWidth(0.05),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuEntry(
+                              value: '₣',
+                              label: 'CHF',
+                              style: ButtonStyle(
+                                padding:
+                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.only(
+                                      left: context.dynamicWidth(0.05)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        context.sizedHeightBoxLow,
+                        Text(
+                          'Enter Amount',
+                          style: context.textStyleGreyBarlow(context).copyWith(
+                                fontSize: 15,
+                                color: AppLightColorConstants.primaryColor,
+                              ),
+                        ),
+                        CustomTextField(
+                          width: textfieldWidth,
+                          prefixIcon: state.prefix,
+                          hintText: 'Ex. 500',
+                          controller: viewModel.amountController,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) =>
+                              MoneyRequestValidation().checkValidAmount(
+                            value,
+                            context,
+                          ),
+                        ),
+                        context.sizedHeightBoxLow,
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Enter a Message', // Main text
+                                style: context
+                                    .textStyleGreyBarlow(context)
+                                    .copyWith(
+                                      fontSize: 15,
+                                      color:
+                                          AppLightColorConstants.primaryColor,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        CustomTextField(
+                          width: textfieldWidth,
+                          hintText: 'Ex. Lunch at Joe\'s Diner',
+                          controller: viewModel.messageController,
+                          textInputAction: TextInputAction.done,
+                          validator: (value) =>
+                              MoneyRequestValidation().checkValidMessage(
+                            value,
+                            context,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                CustomContinueButton(
+                  buttonText: 'Send Request',
+                  onPressed: () {
+                    if (viewModel.formKey.currentState!.validate()) {
+                      viewModel.add(
+                        RequestSendEvent(
+                            context: context,
+                            selectedUser: state.selectedUser,
+                            prefix: state.prefix!),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },

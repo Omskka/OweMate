@@ -5,10 +5,12 @@ abstract class SettleState {
   final Map<String, dynamic> userData;
   final int? selectedPage;
   final Map<String, dynamic> friendsUserData;
+  final int? index;
   SettleState({
     required this.userData,
     required this.friendsUserData,
     this.selectedPage,
+    this.index,
   });
 }
 
@@ -19,6 +21,7 @@ class SettleInitialState extends SettleState {
           selectedPage: 0,
           userData: {},
           friendsUserData: {},
+          index: null,
         );
 }
 
@@ -60,12 +63,15 @@ class SettleLoadingState extends SettleState {
 class SettlePageIncrementState extends SettleState {
   final int? selectedPage;
   final SettleState state;
+  final int index;
   SettlePageIncrementState({
     required this.state,
     required this.selectedPage,
+    required this.index,
   }) : super(
           selectedPage: selectedPage,
           userData: state.userData,
           friendsUserData: state.friendsUserData,
+          index: index,
         );
 }

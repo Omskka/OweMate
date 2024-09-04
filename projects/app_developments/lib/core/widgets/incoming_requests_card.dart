@@ -51,16 +51,22 @@ class IncomingRequestsCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          name,
-                          style: context.textStyleGrey(context).copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            name,
+                            style: context.textStyleGrey(context).copyWith(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
                         ),
-                        Text(
-                          date,
-                          style: context.textStyleGrey(context).copyWith(
-                                fontSize: 12,
-                              ),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            date,
+                            style: context.textStyleGrey(context).copyWith(
+                                  fontSize: 12,
+                                ),
+                          ),
                         ),
                       ],
                     ),
@@ -68,11 +74,14 @@ class IncomingRequestsCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: context.onlyRightPaddingMedium,
-                  child: Text(
-                    amount,
-                    style: context
-                        .textStyleGrey(context)
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      amount,
+                      style: context
+                          .textStyleGrey(context)
+                          .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                   ),
                 ),
               ],
