@@ -45,6 +45,12 @@ class SettlePageWidget extends StatelessWidget {
             }
           }
         }
+
+        final filteredOwedMoney = (state.userData['owedMoney'] as List?)
+                ?.where((item) => item['status'] == 'pending')
+                .toList() ??
+            [];
+
         // Handle the case where maxWidth or maxHeight is Infinity
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
@@ -78,18 +84,17 @@ class SettlePageWidget extends StatelessWidget {
           circleAvatarWidth = 1.4;
         } else if (screenWidth <= 900) {
           leftPadding = EdgeInsets.symmetric(
-              horizontal: (screenWidth - context.dynamicWidth(0.37)) / 2);
+              horizontal: (screenWidth - context.dynamicWidth(0.5)) / 2);
 
           circleAvatarWidth = 1.3;
         } else if (screenWidth <= 1080) {
           leftPadding = EdgeInsets.symmetric(
-              horizontal: (screenWidth - context.dynamicWidth(0.37)) / 2);
+              horizontal: (screenWidth - context.dynamicWidth(0.45)) / 2);
 
           circleAvatarWidth = 1;
         } else {
           leftPadding = EdgeInsets.symmetric(
-              horizontal: (screenWidth - context.dynamicWidth(0.37)) / 2);
-
+              horizontal: (screenWidth - context.dynamicWidth(0.45)) / 2);
           circleAvatarWidth = 0.8;
         }
         return SingleChildScrollView(
@@ -135,108 +140,122 @@ class SettlePageWidget extends StatelessWidget {
               context.sizedHeightBoxLow,
               Padding(
                 padding: leftPadding,
-                child: SizedBox(
-                  height: context.dynamicHeight(0.5),
-                  width: context.dynamicWidth(0.8),
-                  child: state is SettleLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : state.userData.containsKey('owedMoney') &&
-                              state.userData['owedMoney'] != null &&
-                              state.userData['owedMoney'] is List &&
-                              state.userData['owedMoney'].isNotEmpty
-                          ? ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: state.userData['owedMoney'].length,
-                              itemBuilder: (context, index) {
-                                final debt = state.userData['owedMoney'][index];
+                child: Scrollbar(
+                  interactive: true,
+                  child: SizedBox(
+                    height: context.dynamicHeight(0.5),
+                    width: context.dynamicWidth(0.8),
+                    child: state is SettleLoadingState
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : state.userData.containsKey('owedMoney') &&
+                                state.userData['owedMoney'] != null &&
+                                state.userData['owedMoney'] is List &&
+                                state.userData['owedMoney'].isNotEmpty
+                            ? ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: filteredOwedMoney.length,
+                                itemBuilder: (context, index) {
+                                  final debt = filteredOwedMoney[index];
 
-                                final amount =
-                                    debt['amount']?.toString() ?? '0';
-                                final date = debt['date'] ?? '';
-                                final friendUserId = debt['friendUserId'] ?? '';
+                                  final amount =
+                                      debt['amount']?.toString() ?? '0';
+                                  final date = debt['date'] ?? '';
+                                  final friendUserId =
+                                      debt['friendUserId'] ?? '';
 
-                                // Fetch friend's data from state
-                                final friendData =
-                                    state.friendsUserData[friendUserId] ?? {};
-                                final friendName =
-                                    friendData['firstName'] ?? 'Unknown';
-                                final profileImageUrl =
-                                    friendData['profileImageUrl'] ?? '';
+                                  // Fetch friend's data from state
+                                  final friendData =
+                                      state.friendsUserData[friendUserId] ?? {};
+                                  final friendName =
+                                      friendData['firstName'] ?? 'Unknown';
+                                  final profileImageUrl =
+                                      friendData['profileImageUrl'] ?? '';
 
-                                return Padding(
-                                  padding: context.onlyBottomPaddingNormal,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      // set up the buttons
-                                      Widget continueButton = TextButton(
-                                        child: const Text("Continue"),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
+                                  return Padding(
+                                    padding: context.onlyBottomPaddingNormal,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        // set up the buttons
+                                        Widget continueButton = TextButton(
+                                          child: const Text("Continue"),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
 
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text(
-                                          "$friendName's Request Message",
-                                          style: context
-                                              .textStyleGreyBarlow(context),
-                                        ),
-                                        content: Text(
-                                          "${state.userData['owedMoney'][index]['message']}",
-                                        ),
-                                        actions: [
-                                          continueButton,
-                                        ],
-                                      );
-
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    },
-                                    child: IncomingRequestsCard(
-                                      profileImageUrl: profileImageUrl,
-                                      amount: amount,
-                                      name: friendName,
-                                      date: date,
-                                      onMarkAsPaid: () {
-                                        viewModel.add(
-                                          SettleNavigateToNextPageEvent(
-                                            selectedPage: 3,
-                                            context: context,
+                                        // set up the AlertDialog
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text(
+                                            "$friendName's Request Message",
+                                            style: context
+                                                .textStyleGreyBarlow(context),
                                           ),
+                                          content: Text(
+                                            "${state.userData['owedMoney'][index]['message']}",
+                                          ),
+                                          actions: [
+                                            continueButton,
+                                          ],
+                                        );
+
+                                        // show the dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
                                         );
                                       },
-                                      onDeclineRequest: () {
-                                        viewModel.add(
-                                          SettleNavigateToNextPageEvent(
-                                            selectedPage: 2,
-                                            context: context,
-                                          ),
-                                        );
-                                      },
+                                      child: IncomingRequestsCard(
+                                        profileImageUrl: profileImageUrl,
+                                        amount: amount,
+                                        name: friendName,
+                                        date: date,
+                                        onDeclineRequest: () {
+                                          final originalIndex = state
+                                              .userData['owedMoney']
+                                              .indexOf(debt);
+                                          viewModel.add(
+                                            SettleNavigateToNextPageEvent(
+                                              selectedPage: 2,
+                                              context: context,
+                                              index:
+                                                  originalIndex, // Use original index
+                                            ),
+                                          );
+                                        },
+                                        onMarkAsPaid: () {
+                                          final originalIndex = state
+                                              .userData['owedMoney']
+                                              .indexOf(debt);
+                                          viewModel.add(
+                                            SettleNavigateToNextPageEvent(
+                                              selectedPage: 3,
+                                              context: context,
+                                              index:
+                                                  originalIndex, // Use original index
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
+                                  );
+                                },
+                              )
+                            : Center(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                    style: context.textStyleGrey(context),
+                                    textAlign: TextAlign.center,
                                   ),
-                                );
-                              },
-                            )
-                          : Center(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                  style: context.textStyleGrey(context),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
+                  ),
                 ),
               ),
             ],

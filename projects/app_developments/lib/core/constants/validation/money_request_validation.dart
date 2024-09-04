@@ -25,7 +25,7 @@ class MoneyRequestValidation {
       return 'Message is required';
     }
 
-    if (value.length > 30) {
+    if (value.length > 25) {
       return 'Message must be less than 25 characters';
     }
 

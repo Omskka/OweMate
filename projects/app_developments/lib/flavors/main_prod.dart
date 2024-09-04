@@ -12,12 +12,14 @@ Future<void> main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Get screen height in logical pixels
-  final screenHeight = WidgetsBinding.instance.window.physicalSize.height /
+  // Get screen dimensions in logical pixels
+  final screenSize = WidgetsBinding.instance.window.physicalSize /
       WidgetsBinding.instance.window.devicePixelRatio;
+  final screenHeight = screenSize.height;
+  final screenWidth = screenSize.width;
 
-  // Check the screen height and set orientation accordingly
-  if (screenHeight < 900) {
+  // Check the screen height and width and set orientation accordingly
+  if (screenHeight < 900 && screenWidth < 900) {
     // Force portrait mode for smaller screens
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

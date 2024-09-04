@@ -15,7 +15,7 @@ class HomePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
-        // Fetch friends' data if not already fetched
+        // Fetch friends' data if not already fetched 
         if (state is HomeDataLoadedState) {
           final requestedMoney =
               state.userData['requestedMoney'] as List? ?? [];
@@ -42,6 +42,18 @@ class HomePageWidget extends StatelessWidget {
             }
           }
         }
+
+        // Filter requestedMoney and owedMoney by status
+        final filteredRequestedMoney =
+            (state.userData['requestedMoney'] as List?)
+                    ?.where((item) => item['status'] == 'pending')
+                    .toList() ??
+                [];
+
+        final filteredOwedMoney = (state.userData['owedMoney'] as List?)
+                ?.where((item) => item['status'] == 'pending')
+                .toList() ??
+            [];
 
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
@@ -128,7 +140,6 @@ class HomePageWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              context.sizedHeightBoxLower,
               // Money You Owe Section
               SizedBox(
                 height: context.dynamicHeight(0.05),
@@ -153,93 +164,89 @@ class HomePageWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                  padding: cardLeftPadding,
-                  child: SizedBox(
-                    height: context.dynamicHeight(0.25),
-                    width: context.dynamicWidth(1),
-                    child: state is HomeLoadingState
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : state.userData.containsKey('owedMoney') &&
-                                state.userData['owedMoney'] != null &&
-                                state.userData['owedMoney'] is List &&
-                                state.userData['owedMoney'].isNotEmpty
-                            ? ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: state.userData['owedMoney'].length,
-                                itemBuilder: (context, index) {
-                                  final debt =
-                                      state.userData['owedMoney'][index];
+                padding: cardLeftPadding,
+                child: SizedBox(
+                  height: context.dynamicHeight(0.25),
+                  width: context.dynamicWidth(1),
+                  child: state is HomeLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : filteredOwedMoney.isNotEmpty
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: filteredOwedMoney.length,
+                              itemBuilder: (context, index) {
+                                final debt = filteredOwedMoney[index];
 
-                                  final amount =
-                                      debt['amount']?.toString() ?? '0';
-                                  final date = debt['date'] ?? '';
-                                  final friendUserId =
-                                      debt['friendUserId'] ?? '';
+                                final amount =
+                                    debt['amount']?.toString() ?? '0';
+                                final date = debt['date'] ?? '';
+                                final friendUserId = debt['friendUserId'] ?? '';
 
-                                  // Fetch friend's data from state
-                                  final friendData =
-                                      state.friendsUserData[friendUserId] ?? {};
-                                  final friendName =
-                                      friendData['firstName'] ?? 'Unknown';
-                                  final profileImageUrl =
-                                      friendData['profileImageUrl'] ?? '';
+                                // Fetch friend's data from state
+                                final friendData =
+                                    state.friendsUserData[friendUserId] ?? {};
+                                final friendName =
+                                    friendData['firstName'] ?? 'Unknown';
+                                final profileImageUrl =
+                                    friendData['profileImageUrl'] ?? '';
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      // set up the buttons
-                                      Widget continueButton = TextButton(
-                                        child: const Text("Continue"),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
+                                return GestureDetector(
+                                  onTap: () {
+                                    // set up the buttons
+                                    Widget continueButton = TextButton(
+                                      child: const Text("Continue"),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Dismiss the dialog
+                                      },
+                                    );
 
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text(
-                                          "$friendName's Request Message",
-                                          style: context
-                                              .textStyleGreyBarlow(context),
-                                        ),
-                                        content: Text(
-                                          "${state.userData['owedMoney'][index]['message']}",
-                                        ),
-                                        actions: [
-                                          continueButton,
-                                        ],
-                                      );
+                                    // set up the AlertDialog
+                                    AlertDialog alert = AlertDialog(
+                                      title: Text(
+                                        "$friendName's Request Message",
+                                        style: context
+                                            .textStyleGreyBarlow(context),
+                                      ),
+                                      content: Text(
+                                        "${debt['message']}",
+                                      ),
+                                      actions: [
+                                        continueButton,
+                                      ],
+                                    );
 
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    },
-                                    child: MoneyDebtCard(
-                                      profileImageUrl: profileImageUrl,
-                                      amount: amount,
-                                      name: friendName,
-                                      date: date,
-                                    ),
-                                  );
-                                },
-                              )
-                            : Center(
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                    style: context.textStyleGrey(context),
-                                    textAlign: TextAlign.center,
+                                    // show the dialog
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return alert;
+                                      },
+                                    );
+                                  },
+                                  child: MoneyDebtCard(
+                                    profileImageUrl: profileImageUrl,
+                                    amount: amount,
+                                    name: friendName,
+                                    date: date,
                                   ),
+                                );
+                              },
+                            )
+                          : Center(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                  style: context.textStyleGrey(context),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                  )),
+                            ),
+                ),
+              ),
               // Money Owed to You Section
               SizedBox(
                 height: context.dynamicHeight(0.05),
@@ -270,10 +277,7 @@ class HomePageWidget extends StatelessWidget {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : state.userData.containsKey('requestedMoney') &&
-                            state.userData['requestedMoney'] != null &&
-                            state.userData['requestedMoney'] is List &&
-                            state.userData['requestedMoney'].isNotEmpty
+                    : filteredRequestedMoney.isNotEmpty
                         ? Padding(
                             padding:
                                 EdgeInsets.only(left: cardLeftPadding.left),
@@ -282,11 +286,9 @@ class HomePageWidget extends StatelessWidget {
                               width: context.dynamicWidth(1),
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    state.userData['requestedMoney'].length,
+                                itemCount: filteredRequestedMoney.length,
                                 itemBuilder: (context, index) {
-                                  final request =
-                                      state.userData['requestedMoney'][index];
+                                  final request = filteredRequestedMoney[index];
                                   final amount =
                                       request['amount']?.toString() ?? '0';
                                   final date = request['date'] ?? '';
@@ -311,42 +313,17 @@ class HomePageWidget extends StatelessWidget {
                                               .pop(); // Dismiss the dialog
                                         },
                                       );
-                                      Widget deleteButton = TextButton(
-                                        child: const Text(
-                                          "Delete Request",
-                                          style: TextStyle(
-                                            color: AppLightColorConstants
-                                                .errorColor,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          context.read<HomeViewModel>().add(
-                                                HomefetchDeleteRequestEvent(
-                                                  requestId:
-                                                      state.friendsUserData[
-                                                                  friendUserId]
-                                                              ['owedMoney'][0]
-                                                          ['requestId'],
-                                                  friendUserId: friendUserId,
-                                                ),
-                                              );
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
-
                                       // set up the AlertDialog
                                       AlertDialog alert = AlertDialog(
                                         title: Text(
-                                          "Your Request Message to $friendName",
+                                          "$friendName's Request Message",
                                           style: context
                                               .textStyleGreyBarlow(context),
                                         ),
                                         content: Text(
-                                          "${state.userData['requestedMoney'][index]['message']}",
+                                          "${request['message']}",
                                         ),
                                         actions: [
-                                          deleteButton,
                                           continueButton,
                                         ],
                                       );
@@ -374,13 +351,13 @@ class HomePageWidget extends StatelessWidget {
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                'No one owes you anything right now.\nEverything is balanced!',
+                                'Nobody owes you any money.\nYou\'re all set!',
                                 style: context.textStyleGrey(context),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-              )
+              ),
             ],
           ),
         );

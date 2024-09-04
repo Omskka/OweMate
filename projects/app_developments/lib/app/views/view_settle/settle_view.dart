@@ -2,8 +2,10 @@
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_view_model.dart';
+import 'package:app_developments/app/views/view_settle/widgets/settle_decline_success_page_widget.dart';
 import 'package:app_developments/app/views/view_settle/widgets/settle_page_widget.dart';
 import 'package:app_developments/app/views/view_settle/widgets/settle_paid_page_widget.dart';
+import 'package:app_developments/app/views/view_settle/widgets/settle_pay_success_page_widget.dart';
 import 'package:app_developments/app/views/view_settle/widgets/setttle_decline_page_widget.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:auto_route/auto_route.dart';
@@ -40,6 +42,10 @@ class SettleView extends StatelessWidget {
       return const SetttleDeclinePageWidget();
     } else if (state.selectedPage == 3) {
       return const SettlePaidPageWidget();
+    } else if (state.selectedPage == 4) {
+      return const SettleDeclineSuccessPageWidget();
+    } else if (state.selectedPage == 5) {
+      return const SettlePaySuccessPageWidget();
     }
     return const SettlePageWidget();
   }

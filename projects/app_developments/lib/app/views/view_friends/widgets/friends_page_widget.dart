@@ -128,7 +128,7 @@ class FriendsPageWidget extends StatelessWidget {
                   ),
                   context.sizedHeightBoxLower,
                   SizedBox(
-                    height: context.dynamicHeight(0.42),
+                    height: context.dynamicHeight(0.4),
                     width: context.dynamicWidth(containerWidth),
                     child: state is FriendsLoadingState
                         ? const Center(
@@ -208,19 +208,27 @@ class FriendsPageWidget extends StatelessWidget {
                                                   );
                                                   Widget continueButton =
                                                       TextButton(
-                                                    child: const Text("Remove"),
+                                                    child: const Text(
+                                                      "Remove",
+                                                      style: TextStyle(
+                                                        color:
+                                                            AppLightColorConstants
+                                                                .errorColor,
+                                                      ),
+                                                    ),
                                                     onPressed: () {
                                                       context
                                                           .read<
                                                               FriendsViewModel>()
                                                           .add(
                                                             FriendsRemoveFriendEvent(
-                                                                context:
-                                                                    context,
-                                                                friendId: state
-                                                                            .friends[
-                                                                        index][
-                                                                    'userId']!),
+                                                              context: context,
+                                                              friendId:
+                                                                  state.friends[
+                                                                          index]
+                                                                      [
+                                                                      'userId']!,
+                                                            ),
                                                           );
                                                       Navigator.of(context)
                                                           .pop(); // Dismiss the dialog
