@@ -78,7 +78,7 @@ class MoneyDebtCard extends StatelessWidget {
         child: Padding(
           padding: context.paddingLow,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CircleAvatar(
                 radius: context.dynamicWidth(circleAvatarWidth),
@@ -92,7 +92,6 @@ class MoneyDebtCard extends StatelessWidget {
                     ? const Icon(Icons.person, color: Colors.blue)
                     : null,
               ),
-              SizedBox(height: context.dynamicHeight(0.02)),
               Center(
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -110,14 +109,12 @@ class MoneyDebtCard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: context.dynamicHeight(0.01)),
               Text(
                 amount,
                 style: context
                     .textStyleGreyBarlow(context)
                     .copyWith(color: AppLightColorConstants.thirdColor),
               ),
-              SizedBox(height: context.dynamicHeight(0.01)),
               Text(
                 date,
                 style: context.textStyleGrey(context),
