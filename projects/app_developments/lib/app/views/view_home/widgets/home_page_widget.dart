@@ -15,7 +15,7 @@ class HomePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
-        // Fetch friends' data if not already fetched 
+        // Fetch friends' data if not already fetched
         if (state is HomeDataLoadedState) {
           final requestedMoney =
               state.userData['requestedMoney'] as List? ?? [];
@@ -153,7 +153,7 @@ class HomePageWidget extends StatelessWidget {
                       child: Padding(
                         padding: leftPadding,
                         child: Text(
-                          'Money you owe',
+                          'Pending Debts',
                           style: context.textStyleGreyBarlow(context).copyWith(
                                 fontSize: 18,
                               ),
@@ -260,7 +260,7 @@ class HomePageWidget extends StatelessWidget {
                       child: Padding(
                         padding: leftPadding,
                         child: Text(
-                          'Money Owed to You',
+                          'Pending Requests',
                           style: context.textStyleGreyBarlow(context).copyWith(
                                 fontSize: 18,
                               ),

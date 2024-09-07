@@ -1,34 +1,75 @@
-abstract class ActivityState{
+abstract class ActivityState {
   final List requestNumber;
-  ActivityState({
-    required this.requestNumber,
-  });
+  final List<double> requestedMoneyTotals;
+  final List<double> owedMoneyTotals;
+  final int? requestCurrencyIndex;
+  final int? debtCurrencyIndex;
+  ActivityState(
+      {required this.requestNumber,
+      required this.requestedMoneyTotals,
+      required this.owedMoneyTotals,
+      this.requestCurrencyIndex,
+      this.debtCurrencyIndex});
 }
 
-class ActivityInitialState extends ActivityState{
-  ActivityInitialState(): super(requestNumber: []);
+class ActivityInitialState extends ActivityState {
+  ActivityInitialState()
+      : super(
+          requestNumber: [],
+          requestedMoneyTotals: [],
+          owedMoneyTotals: [],
+        );
 }
 
-// State to represent loaded data
 class ActivityDataLoadedState extends ActivityState {
-  ActivityDataLoadedState({
-    required List requestNumber,
-    required ActivityState state,
-  }) : super(requestNumber: requestNumber);
+  ActivityDataLoadedState(
+      {required List requestNumber,
+      required List<double> requestedMoneyTotals,
+      required List<double> owedMoneyTotals,
+      required int? requestCurrencyIndex,
+      required int? debtCurrencyIndex})
+      : super(
+          requestNumber: requestNumber,
+          requestedMoneyTotals: requestedMoneyTotals,
+          owedMoneyTotals: owedMoneyTotals,
+          requestCurrencyIndex: requestCurrencyIndex,
+          debtCurrencyIndex: debtCurrencyIndex,
+        );
 }
 
-// State to represent drawer open
+class ActivityGetIndexState extends ActivityState {
+  ActivityGetIndexState({
+    required ActivityState state,
+    required List requestNumber,
+    required List<double> requestedMoneyTotals,
+    required List<double> owedMoneyTotals,
+    required int? requestCurrencyIndex,
+    required int? debtCurrencyIndex,
+  }) : super(
+          requestNumber: state.requestNumber,
+          owedMoneyTotals: state.owedMoneyTotals,
+          requestedMoneyTotals: state.requestedMoneyTotals,
+          requestCurrencyIndex: requestCurrencyIndex,
+          debtCurrencyIndex: debtCurrencyIndex,
+        );
+}
+
 class ActivityDrawerOpenedState extends ActivityState {
   ActivityDrawerOpenedState({
     required ActivityState state,
     required List requestNumber,
-  }) : super(requestNumber: state.requestNumber);
+  }) : super(
+            requestNumber: state.requestNumber,
+            requestedMoneyTotals: state.requestedMoneyTotals,
+            owedMoneyTotals: state.owedMoneyTotals);
 }
 
-// State to represent drawer closed
 class ActivityDrawerClosedState extends ActivityState {
   ActivityDrawerClosedState({
     required ActivityState state,
     required List requestNumber,
-  }):super(requestNumber: state.requestNumber);
+  }) : super(
+            requestNumber: state.requestNumber,
+            requestedMoneyTotals: state.requestedMoneyTotals,
+            owedMoneyTotals: state.owedMoneyTotals);
 }

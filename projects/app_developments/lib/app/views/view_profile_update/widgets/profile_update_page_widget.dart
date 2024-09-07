@@ -29,7 +29,6 @@ class ProfileUpdatePageWidget extends StatelessWidget {
 
               // Determine height and width based on screen width
               double containerWidth;
-
               EdgeInsets leftPadding;
 
               // Width
