@@ -78,7 +78,7 @@ class MoneyRequestCard extends StatelessWidget {
         child: Padding(
           padding: context.paddingLow,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CircleAvatar(
                 radius: context.dynamicWidth(circleAvatarWidth),
@@ -92,35 +92,41 @@ class MoneyRequestCard extends StatelessWidget {
                     ? const Icon(Icons.person, color: Colors.blue)
                     : null,
               ),
-              SizedBox(height: context.dynamicHeight(0.02)),
               Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Sent Request to\n',
-                        style: context.textStyleGrey(context),
-                      ),
-                      TextSpan(
-                        text: name,
-                        style: context.textStyleGreyBarlow(context),
-                      ),
-                    ],
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Sent Request to\n',
+                          style: context.textStyleGrey(context),
+                        ),
+                        TextSpan(
+                          text: name,
+                          style: context.textStyleGreyBarlow(context),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: context.dynamicHeight(0.01)),
-              Text(
-                amount,
-                style: context
-                    .textStyleGreyBarlow(context)
-                    .copyWith(color: AppLightColorConstants.primaryColor),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  amount,
+                  style: context
+                      .textStyleGreyBarlow(context)
+                      .copyWith(color: AppLightColorConstants.primaryColor),
+                ),
               ),
-              SizedBox(height: context.dynamicHeight(0.01)),
-              Text(
-                date,
-                style: context.textStyleGrey(context),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  date,
+                  style: context.textStyleGrey(context),
+                ),
               ),
             ],
           ),
