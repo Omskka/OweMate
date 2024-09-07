@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 
+import 'package:flutter/material.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/core/extension/context_extension.dart';
+
 class MoneyRequestCard extends StatelessWidget {
   final String profileImageUrl;
   final String name;
   final String amount;
   final String date;
+
   const MoneyRequestCard({
     required this.profileImageUrl,
     required this.name,
@@ -60,6 +65,7 @@ class MoneyRequestCard extends StatelessWidget {
       circleAvatarWidth = 0.02;
       containerWidth = 0.2;
     }
+
     return Padding(
       padding: context.onlyRightPaddingNormal,
       child: Container(
@@ -76,14 +82,20 @@ class MoneyRequestCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: context.dynamicWidth(circleAvatarWidth),
-                backgroundColor: AppLightColorConstants.infoColor,
-                backgroundImage: NetworkImage(profileImageUrl),
+                backgroundColor: profileImageUrl.isEmpty
+                    ? AppLightColorConstants.infoColor
+                    : Colors.transparent,
+                backgroundImage: profileImageUrl.isNotEmpty
+                    ? NetworkImage(profileImageUrl)
+                    : null,
+                child: profileImageUrl.isEmpty
+                    ? const Icon(Icons.person, color: Colors.blue)
+                    : null,
               ),
               SizedBox(height: context.dynamicHeight(0.02)),
               Center(
                 child: RichText(
-                  textAlign:
-                      TextAlign.center, // Align text within the RichText widget
+                  textAlign: TextAlign.center,
                   text: TextSpan(
                     children: [
                       TextSpan(
@@ -93,24 +105,19 @@ class MoneyRequestCard extends StatelessWidget {
                       TextSpan(
                         text: name,
                         style: context.textStyleGreyBarlow(context),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: context.dynamicHeight(0.01),
-              ),
+              SizedBox(height: context.dynamicHeight(0.01)),
               Text(
                 amount,
                 style: context
                     .textStyleGreyBarlow(context)
                     .copyWith(color: AppLightColorConstants.primaryColor),
               ),
-              SizedBox(
-                  height: context.dynamicHeight(
-                0.01,
-              )),
+              SizedBox(height: context.dynamicHeight(0.01)),
               Text(
                 date,
                 style: context.textStyleGrey(context),
