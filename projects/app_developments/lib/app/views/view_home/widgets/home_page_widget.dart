@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
@@ -81,219 +83,117 @@ class HomePageWidget extends StatelessWidget {
           cardLeftPadding = context.onlyLeftPaddingHigh;
         }
 
-        return SingleChildScrollView(
-          clipBehavior: Clip.none,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              context.sizedHeightBoxLow,
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: context.dynamicWidth(0.2),
-                        right: context.dynamicWidth(0.06),
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
-                      ),
-                    ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Home',
-                      style: context.textStyleGrey(context).copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: AppLightColorConstants.bgInverse,
-                          ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: context.dynamicWidth(0.06),
-                        right: context.dynamicWidth(0.2),
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: context.dynamicHeight(0.08),
-                width: context.dynamicWidth(1),
-                child: Center(
-                  child: Text(
-                    'Manage your debts and requests easily.\nTap on the cards to view messages.',
-                    textAlign: TextAlign.center,
-                    style:
-                        context.textStyleGrey(context).copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-              // Money You Owe Section
-              SizedBox(
-                height: context.dynamicHeight(0.05),
-                width: context.dynamicWidth(1),
-                child: Padding(
-                  padding: context.onlyLeftPaddingMedium,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Padding(
-                        padding: leftPadding,
-                        child: Text(
-                          'Pending Debts',
-                          style: context.textStyleGreyBarlow(context).copyWith(
-                                fontSize: 18,
-                              ),
+        return RefreshIndicator(
+          color: AppLightColorConstants.primaryColor,
+          onRefresh: () async {
+            await Future.delayed(const Duration(seconds: 1));
+            // Dispatch the initial event to refresh the data
+            context.read<HomeViewModel>().add(HomeInitialEvent());
+          },
+          child: SingleChildScrollView(
+            clipBehavior: Clip.none,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                context.sizedHeightBoxLow,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: context.dynamicWidth(0.2),
+                          right: context.dynamicWidth(0.06),
+                        ),
+                        child: const Divider(
+                          color: AppLightColorConstants.contentDisabled,
+                          height: 36,
+                          thickness: 1.5,
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: cardLeftPadding,
-                child: SizedBox(
-                  height: context.dynamicHeight(0.25),
-                  width: context.dynamicWidth(1),
-                  child: state is HomeLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : filteredOwedMoney.isNotEmpty
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: filteredOwedMoney.length,
-                              itemBuilder: (context, index) {
-                                final debt = filteredOwedMoney[index];
-
-                                final amount =
-                                    debt['amount']?.toString() ?? '0';
-                                final date = debt['date'] ?? '';
-                                final friendUserId = debt['friendUserId'] ?? '';
-
-                                // Fetch friend's data from state
-                                final friendData =
-                                    state.friendsUserData[friendUserId] ?? {};
-                                final friendName =
-                                    friendData['firstName'] ?? 'Unknown';
-                                final profileImageUrl =
-                                    friendData['profileImageUrl'] ?? '';
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    // set up the buttons
-                                    Widget continueButton = TextButton(
-                                      child: const Text("Continue"),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Dismiss the dialog
-                                      },
-                                    );
-
-                                    // set up the AlertDialog
-                                    AlertDialog alert = AlertDialog(
-                                      title: Text(
-                                        "$friendName's Request Message",
-                                        style: context
-                                            .textStyleGreyBarlow(context),
-                                      ),
-                                      content: Text(
-                                        "${debt['message']}",
-                                      ),
-                                      actions: [
-                                        continueButton,
-                                      ],
-                                    );
-
-                                    // show the dialog
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return alert;
-                                      },
-                                    );
-                                  },
-                                  child: MoneyDebtCard(
-                                    profileImageUrl: profileImageUrl,
-                                    amount: amount,
-                                    name: friendName,
-                                    date: date,
-                                  ),
-                                );
-                              },
-                            )
-                          : Center(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                  style: context.textStyleGrey(context),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Home',
+                        style: context.textStyleGrey(context).copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppLightColorConstants.bgInverse,
                             ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: context.dynamicWidth(0.06),
+                          right: context.dynamicWidth(0.2),
+                        ),
+                        child: const Divider(
+                          color: AppLightColorConstants.contentDisabled,
+                          height: 36,
+                          thickness: 1.5,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              // Money Owed to You Section
-              SizedBox(
-                height: context.dynamicHeight(0.05),
-                width: context.dynamicWidth(1),
-                child: Padding(
-                  padding: context.onlyLeftPaddingMedium,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Padding(
-                        padding: leftPadding,
-                        child: Text(
-                          'Pending Requests',
-                          style: context.textStyleGreyBarlow(context).copyWith(
-                                fontSize: 18,
-                              ),
+                SizedBox(
+                  height: context.dynamicHeight(0.08),
+                  width: context.dynamicWidth(1),
+                  child: Center(
+                    child: Text(
+                      'Manage your debts and requests easily.\nTap on the cards to view messages.',
+                      textAlign: TextAlign.center,
+                      style:
+                          context.textStyleGrey(context).copyWith(fontSize: 17),
+                    ),
+                  ),
+                ),
+                // Money You Owe Section
+                SizedBox(
+                  height: context.dynamicHeight(0.05),
+                  width: context.dynamicWidth(1),
+                  child: Padding(
+                    padding: context.onlyLeftPaddingMedium,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Padding(
+                          padding: leftPadding,
+                          child: Text(
+                            'Pending Debts',
+                            style:
+                                context.textStyleGreyBarlow(context).copyWith(
+                                      fontSize: 18,
+                                    ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: context.dynamicHeight(0.25),
-                width: context.dynamicWidth(1),
-                child: state is HomeLoadingState
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : filteredRequestedMoney.isNotEmpty
-                        ? Padding(
-                            padding:
-                                EdgeInsets.only(left: cardLeftPadding.left),
-                            child: SizedBox(
-                              height: context.dynamicHeight(0.25),
-                              width: context.dynamicWidth(1),
-                              child: ListView.builder(
+                Padding(
+                  padding: cardLeftPadding,
+                  child: SizedBox(
+                    height: context.dynamicHeight(0.25),
+                    width: context.dynamicWidth(1),
+                    child: state is HomeLoadingState
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : filteredOwedMoney.isNotEmpty
+                            ? ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: filteredRequestedMoney.length,
+                                itemCount: filteredOwedMoney.length,
                                 itemBuilder: (context, index) {
-                                  final request = filteredRequestedMoney[index];
+                                  final debt = filteredOwedMoney[index];
+
                                   final amount =
-                                      request['amount']?.toString() ?? '0';
-                                  final date = request['date'] ?? '';
+                                      debt['amount']?.toString() ?? '0';
+                                  final date = debt['date'] ?? '';
                                   final friendUserId =
-                                      request['friendUserId'] ?? '';
+                                      debt['friendUserId'] ?? '';
 
                                   // Fetch friend's data from state
                                   final friendData =
@@ -313,43 +213,18 @@ class HomePageWidget extends StatelessWidget {
                                               .pop(); // Dismiss the dialog
                                         },
                                       );
-                                      Widget deleteButton = TextButton(
-                                        child: const Text(
-                                          "Delete Request",
-                                          style: TextStyle(
-                                            color: AppLightColorConstants
-                                                .errorColor,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          // Action for the Delete button
-                                          context.read<HomeViewModel>().add(
-                                                HomefetchDeleteRequestEvent(
-                                                  requestId:
-                                                      state.friendsUserData[
-                                                                  friendUserId]
-                                                              ['owedMoney'][0]
-                                                          ['requestId'],
-                                                  friendUserId: friendUserId,
-                                                ),
-                                              );
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
 
                                       // set up the AlertDialog
                                       AlertDialog alert = AlertDialog(
                                         title: Text(
-                                          "Your Request Message",
+                                          "$friendName's Request Message",
                                           style: context
                                               .textStyleGreyBarlow(context),
                                         ),
                                         content: Text(
-                                          "${request['message']}",
+                                          "${debt['message']}",
                                         ),
                                         actions: [
-                                          deleteButton,
                                           continueButton,
                                         ],
                                       );
@@ -362,7 +237,7 @@ class HomePageWidget extends StatelessWidget {
                                         },
                                       );
                                     },
-                                    child: MoneyRequestCard(
+                                    child: MoneyDebtCard(
                                       profileImageUrl: profileImageUrl,
                                       amount: amount,
                                       name: friendName,
@@ -370,21 +245,161 @@ class HomePageWidget extends StatelessWidget {
                                     ),
                                   );
                                 },
+                              )
+                            : Center(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                    style: context.textStyleGrey(context),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
-                            ),
-                          )
-                        : Center(
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                'Nobody owes you any money.\nYou\'re all set!',
-                                style: context.textStyleGrey(context),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                  ),
+                ),
+                // Money Owed to You Section
+                SizedBox(
+                  height: context.dynamicHeight(0.05),
+                  width: context.dynamicWidth(1),
+                  child: Padding(
+                    padding: context.onlyLeftPaddingMedium,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Padding(
+                          padding: leftPadding,
+                          child: Text(
+                            'Pending Requests',
+                            style:
+                                context.textStyleGreyBarlow(context).copyWith(
+                                      fontSize: 18,
+                                    ),
                           ),
-              ),
-            ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: context.dynamicHeight(0.25),
+                  width: context.dynamicWidth(1),
+                  child: state is HomeLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : filteredRequestedMoney.isNotEmpty
+                          ? Padding(
+                              padding:
+                                  EdgeInsets.only(left: cardLeftPadding.left),
+                              child: SizedBox(
+                                height: context.dynamicHeight(0.25),
+                                width: context.dynamicWidth(1),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: filteredRequestedMoney.length,
+                                  itemBuilder: (context, index) {
+                                    final request =
+                                        filteredRequestedMoney[index];
+                                    final amount =
+                                        request['amount']?.toString() ?? '0';
+                                    final date = request['date'] ?? '';
+                                    final friendUserId =
+                                        request['friendUserId'] ?? '';
+
+                                    // Fetch friend's data from state
+                                    final friendData =
+                                        state.friendsUserData[friendUserId] ??
+                                            {};
+                                    final friendName =
+                                        friendData['firstName'] ?? 'Unknown';
+                                    final profileImageUrl =
+                                        friendData['profileImageUrl'] ?? '';
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // set up the buttons
+                                        Widget continueButton = TextButton(
+                                          child: const Text("Continue"),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
+                                        Widget deleteButton = TextButton(
+                                          child: const Text(
+                                            "Delete Request",
+                                            style: TextStyle(
+                                              color: AppLightColorConstants
+                                                  .errorColor,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            // Action for the Delete button
+                                            context.read<HomeViewModel>().add(
+                                                  HomefetchDeleteRequestEvent(
+                                                    requestId:
+                                                        state.friendsUserData[
+                                                                    friendUserId]
+                                                                ['owedMoney'][0]
+                                                            ['requestId'],
+                                                    friendUserId: friendUserId,
+                                                  ),
+                                                );
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
+
+                                        // set up the AlertDialog
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text(
+                                            "Your Request Message",
+                                            style: context
+                                                .textStyleGreyBarlow(context),
+                                          ),
+                                          content: Text(
+                                            "${request['message']}",
+                                          ),
+                                          actions: [
+                                            deleteButton,
+                                            continueButton,
+                                          ],
+                                        );
+
+                                        // show the dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
+                                        );
+                                      },
+                                      child: MoneyRequestCard(
+                                        profileImageUrl: profileImageUrl,
+                                        amount: amount,
+                                        name: friendName,
+                                        date: date,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'Nobody owes you any money.\nYou\'re all set!',
+                                  style: context.textStyleGrey(context),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                ),
+              ],
+            ),
           ),
         );
       },

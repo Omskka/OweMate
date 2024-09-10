@@ -124,622 +124,652 @@ class ActivityPageWidget extends StatelessWidget {
           containerWidth = context.dynamicWidth(0.15);
           cardWidth = context.dynamicWidth(0.25);
         }
-        return SingleChildScrollView(
-          clipBehavior: Clip.none,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              context.sizedHeightBoxLow,
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: context.dynamicWidth(0.2),
-                        right: context.dynamicWidth(0.06),
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
-                      ),
-                    ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Activity',
-                      style: context.textStyleGrey(context).copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: AppLightColorConstants.bgInverse,
-                          ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: context.dynamicWidth(0.06),
-                        right: context.dynamicWidth(0.2),
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
+        return RefreshIndicator(
+          color: AppLightColorConstants.primaryColor,
+          onRefresh: () async {
+            await Future.delayed(const Duration(seconds: 1));
+            // Dispatch the initial event to refresh the data
+            context
+                .read<ActivityViewModel>()
+                .add(ActivityInitialEvent(activityType: 'Requests'));
+          },
+          child: SingleChildScrollView(
+            clipBehavior: Clip.none,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                context.sizedHeightBoxLow,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: context.dynamicWidth(0.2),
+                          right: context.dynamicWidth(0.06),
+                        ),
+                        child: const Divider(
+                          color: AppLightColorConstants.contentDisabled,
+                          height: 36,
+                          thickness: 1.5,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              context.sizedHeightBoxLow,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Total Requets
-                  Container(
-                    height: context.dynamicHeight(0.2),
-                    width: cardWidth,
-                    decoration: BoxDecoration(
-                      color: AppLightColorConstants.primaryColor,
-                      borderRadius: BorderRadius.all(context.normalRadius),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Shadow color
-                          spreadRadius: 3, // Spread radius
-                          blurRadius: 2, // Blur radius
-                          offset: const Offset(
-                            0,
-                            0.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Padding(
-                            padding: context.onlyTopPaddingNormal,
-                            child: Text(
-                              'Total Requests',
-                              style:
-                                  context.textStyleGreyBarlow(context).copyWith(
-                                        fontSize: 17,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Activity',
+                        style: context.textStyleGrey(context).copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppLightColorConstants.bgInverse,
                             ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () async {
-                            final selectedCurrency =
-                                await showModalBottomSheet<String>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: currencies.map((currency) {
-                                    return ListTile(
-                                      title: Text(currency['label']!),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context, currency['value']);
-                                      },
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            );
-
-                            if (selectedCurrency != null) {
-                              viewModel.requestCurrencyController.text =
-                                  selectedCurrency;
-                              context
-                                  .read<ActivityViewModel>()
-                                  .add(ActivityRequestCurrencyEvent());
-                            }
-                          },
-                          child: Container(
-                            padding: context.paddingNormal,
-                            width: containerWidth,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: viewModel
-                                    .requestCurrencyController.text.isEmpty
-                                ? Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Currrency',
-                                        style: context
-                                            .textStyleGrey(context)
-                                            .copyWith(
-                                              color: AppLightColorConstants
-                                                  .bgLight,
-                                            ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        viewModel
-                                            .requestCurrencyController.text,
-                                        style: context
-                                            .textStyleGrey(context)
-                                            .copyWith(
-                                              color: AppLightColorConstants
-                                                  .bgLight,
-                                            ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: context.onlyBottomPaddingLow,
-                          child: state.requestCurrencyIndex != null
-                              ? FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    '${viewModel.requestCurrencyController.text.trim()[viewModel.requestCurrencyController.text.length - 2]}${state.requestedMoneyTotals[state.requestCurrencyIndex!]}',
-                                    style: context
-                                        .textStyleGreyBarlow(context)
-                                        .copyWith(
-                                          fontSize: 19,
-                                          color: AppLightColorConstants.bgLight,
-                                        ),
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ), // Return an empty SizedBox if currencyIndex is null
-                      ],
+                      ),
                     ),
-                  ),
-                  // Total owed money
-                  Container(
-                    height: context.dynamicHeight(0.2),
-                    width: cardWidth,
-                    decoration: BoxDecoration(
-                      color: AppLightColorConstants.thirdColor,
-                      borderRadius: BorderRadius.all(context.normalRadius),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Shadow color
-                          spreadRadius: 3, // Spread radius
-                          blurRadius: 2, // Blur radius
-                          offset: const Offset(
-                            0,
-                            0.5,
-                          ),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: context.dynamicWidth(0.06),
+                          right: context.dynamicWidth(0.2),
                         ),
-                      ],
+                        child: const Divider(
+                          color: AppLightColorConstants.contentDisabled,
+                          height: 36,
+                          thickness: 1.5,
+                        ),
+                      ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Padding(
-                            padding: context.onlyTopPaddingNormal,
-                            child: Text(
-                              'Total Debt',
-                              style:
-                                  context.textStyleGreyBarlow(context).copyWith(
-                                        fontSize: 17,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
-                            ),
-                          ),
-                        ),
-
-                        GestureDetector(
-                          onTap: () async {
-                            final selectedCurrency =
-                                await showModalBottomSheet<String>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: currencies.map((currency) {
-                                    return ListTile(
-                                      title: Text(currency['label']!),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context, currency['value']);
-                                      },
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            );
-
-                            if (selectedCurrency != null) {
-                              viewModel.debtCurrencyController.text =
-                                  selectedCurrency;
-                              context
-                                  .read<ActivityViewModel>()
-                                  .add(ActivityDebtCurrencyEvent());
-                            }
-                          },
-                          child: Container(
-                            padding: context.paddingNormal,
-                            width: containerWidth,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: viewModel.debtCurrencyController.text.isEmpty
-                                ? Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Currrency',
-                                        style: context
-                                            .textStyleGrey(context)
-                                            .copyWith(
-                                              color: AppLightColorConstants
-                                                  .bgLight,
-                                            ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        viewModel.debtCurrencyController.text,
-                                        style: context
-                                            .textStyleGrey(context)
-                                            .copyWith(
-                                              color: AppLightColorConstants
-                                                  .bgLight,
-                                            ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: AppLightColorConstants.bgLight,
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: context.onlyBottomPaddingLow,
-                          child: state.debtCurrencyIndex != null
-                              ? FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    '${viewModel.debtCurrencyController.text.trim()[viewModel.debtCurrencyController.text.length - 2]}${state.owedMoneyTotals[state.debtCurrencyIndex!]}',
-                                    style: context
-                                        .textStyleGreyBarlow(context)
-                                        .copyWith(
-                                          fontSize: 19,
-                                          color: AppLightColorConstants.bgLight,
-                                        ),
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ), // Return an empty SizedBox if currencyIndex is null
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              context.sizedHeightBoxNormal,
-              Center(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Recent Activities',
-                    style: context.textStyleH2(context).copyWith(
-                        fontSize: 20,
-                        color: AppLightColorConstants.contentTeritaryColor),
-                  ),
+                  ],
                 ),
-              ),
-              context.sizedHeightBoxLower,
-              Center(
-                child: GestureDetector(
-                  onTap: () async {
-                    final activityType = await showModalBottomSheet<String>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: activities.map(
-                            (currency) {
-                              return ListTile(
-                                title: Text(currency['label']!),
-                                onTap: () {
-                                  Navigator.pop(context, currency['value']);
+                context.sizedHeightBoxLow,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Total Requets
+                    Container(
+                      height: context.dynamicHeight(0.2),
+                      width: cardWidth,
+                      decoration: BoxDecoration(
+                        color: AppLightColorConstants.primaryColor,
+                        borderRadius: BorderRadius.all(context.normalRadius),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.black.withOpacity(0.2), // Shadow color
+                            spreadRadius: 3, // Spread radius
+                            blurRadius: 2, // Blur radius
+                            offset: const Offset(
+                              0,
+                              0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding: context.onlyTopPaddingNormal,
+                              child: Text(
+                                'Total Requests',
+                                style: context
+                                    .textStyleGreyBarlow(context)
+                                    .copyWith(
+                                      fontSize: 17,
+                                      color: AppLightColorConstants.bgLight,
+                                    ),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: () async {
+                              final selectedCurrency =
+                                  await showModalBottomSheet<String>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: currencies.map((currency) {
+                                      return ListTile(
+                                        title: Text(currency['label']!),
+                                        onTap: () {
+                                          Navigator.pop(
+                                              context, currency['value']);
+                                        },
+                                      );
+                                    }).toList(),
+                                  );
                                 },
                               );
+
+                              if (selectedCurrency != null) {
+                                viewModel.requestCurrencyController.text =
+                                    selectedCurrency;
+                                context
+                                    .read<ActivityViewModel>()
+                                    .add(ActivityRequestCurrencyEvent());
+                              }
                             },
-                          ).toList(),
-                        );
-                      },
-                    );
-
-                    if (activityType != null) {
-                      viewModel.activityTypeController.text = activityType;
-                      context
-                          .read<ActivityViewModel>()
-                          .add(ActivitySelectEvent());
-                    }
-                  },
-                  child: Container(
-                    padding: context.paddingLow,
-                    width: containerWidth,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: viewModel.activityTypeController.text.isEmpty
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Activity Type',
-                                style: context.textStyleGreyBarlow(context),
+                            child: Container(
+                              padding: context.paddingNormal,
+                              width: containerWidth,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              const Icon(Icons.arrow_drop_down_sharp),
-                            ],
-                          )
-                        : Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                viewModel.activityTypeController.text,
-                                style: context.textStyleGreyBarlow(context),
-                              ),
-                              const Icon(Icons.arrow_drop_down_sharp),
-                            ],
-                          ),
-                  ),
-                ),
-              ),
-              context.sizedHeightBoxLower,
-              Center(
-                child: SizedBox(
-                  height: context.dynamicHeight(0.3),
-                  width: context.dynamicWidth(0.75),
-                  child: viewModel.activityTypeController.text.isNotEmpty
-                      ? (() {
-                          // Determine which list to use based on activityTypeController
-                          List selectedList;
-                          bool isRequest;
-
-                          if (viewModel.activityTypeController.text == 'All') {
-                            selectedList = state.combinedFilteredList;
-                            isRequest = selectedList.isNotEmpty
-                                ? (selectedList.first['status'] == 'pending')
-                                : true;
-                          }
-                          if (viewModel.activityTypeController.text ==
-                              'Requests') {
-                            selectedList = state.filteredRequestedMoney;
-                            isRequest = true;
-                          } else if (viewModel.activityTypeController.text ==
-                              'Debts') {
-                            selectedList = state.filteredOwedMoney;
-                            isRequest = false;
-                          } else {
-                            selectedList = [];
-                            isRequest =
-                                true; // Default value or you might handle this case differently
-                          }
-
-                          return selectedList.isEmpty
-                              ? SizedBox(
-                                  child: Center(
-                                    child: Text(
-                                      'No Recent Activity Found',
-                                      style: context
-                                          .textStyleTitleBarlow(context)
-                                          .copyWith(
-                                            fontSize: 16,
-                                          ),
+                              child: viewModel
+                                      .requestCurrencyController.text.isEmpty
+                                  ? Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'Currrency',
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                color: AppLightColorConstants
+                                                    .bgLight,
+                                              ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: AppLightColorConstants.bgLight,
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          viewModel
+                                              .requestCurrencyController.text,
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                color: AppLightColorConstants
+                                                    .bgLight,
+                                              ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: AppLightColorConstants.bgLight,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                )
-                              : Scrollbar(
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: selectedList.length,
-                                    itemBuilder: (context, index) {
-                                      final activity = selectedList[index];
-                                      final amount =
-                                          activity['amount']?.toString() ?? '0';
-                                      final status = activity['status'];
-                                      final date = activity['date'] ?? '';
-                                      final friendUserId =
-                                          activity['friendUserId'] ?? '';
-                                      final declineMessage =
-                                          activity['declineMessage'] ?? '';
-                                      final paidMessage =
-                                          activity['paidMessage'] ?? '';
+                            ),
+                          ),
 
-                                      // Fetch friend's data from state
-                                      final friendData =
-                                          state.friendsUserData[friendUserId] ??
-                                              {};
-                                      final friendName =
-                                          friendData['firstName'] ?? 'Unknown';
-                                      final profileImageUrl =
-                                          friendData['profileImageUrl'] ?? '';
-
-                                      return Dismissible(
-                                        key: Key(activity['requestId']
-                                                ?.toString() ??
-                                            'unknown'), // Ensure each item has a unique key
-                                        direction: DismissDirection.endToStart,
-                                        onDismissed: (direction) {
-                                          // Make sure to remove the item from the list and update the state
-                                          context.read<ActivityViewModel>().add(
-                                                ActivityDeleteEvent(
-                                                  requestId: activity[
-                                                      'requestId'], // Ensure this is the correct ID
-                                                  friendUserId: friendUserId,
-                                                ),
-                                              );
-
-                                          // Here, you should also remove the item from the UI's data source if needed.
-                                          // You may need to refresh the data or handle the state update accordingly.
-                                        },
-                                        background: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.all(
-                                                context.normalRadius),
-                                          ),
-                                          alignment: Alignment.centerRight,
-                                          padding: context.paddingNormal,
-                                          child: const Icon(
-                                            Icons.close,
+                          Padding(
+                            padding: context.onlyBottomPaddingLow,
+                            child: state.requestCurrencyIndex != null
+                                ? FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      '${viewModel.requestCurrencyController.text.trim()[viewModel.requestCurrencyController.text.length - 2]}${state.requestedMoneyTotals[state.requestCurrencyIndex!]}',
+                                      style: context
+                                          .textStyleGreyBarlow(context)
+                                          .copyWith(
+                                            fontSize: 19,
                                             color:
                                                 AppLightColorConstants.bgLight,
-                                            size: 32.0,
                                           ),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            // Show the dialog on tap
-                                            Widget continueButton = TextButton(
-                                              child: const Text("Continue"),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(); // Dismiss the dialog
-                                              },
-                                            );
-                                            Widget deleteButton = TextButton(
-                                              child: const Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                  color: AppLightColorConstants
-                                                      .errorColor,
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                // Action for the Delete button
-                                                context
-                                                    .read<ActivityViewModel>()
-                                                    .add(
-                                                      ActivityDeleteEvent(
-                                                        requestId: activity[
-                                                            'requestId'], // Ensure this is the correct ID
-                                                        friendUserId:
-                                                            friendUserId,
-                                                      ),
-                                                    );
-                                                Navigator.of(context)
-                                                    .pop(); // Dismiss the dialog
-                                              },
-                                            );
-                                            // Set up the AlertDialog
-                                            AlertDialog alert = AlertDialog(
-                                              title: isRequest
-                                                  ? Text(
-                                                      status == 'paid'
-                                                          ? "$friendName's Message"
-                                                          : "$friendName's Decline Message",
-                                                      style: context
-                                                          .textStyleGreyBarlow(
-                                                              context),
-                                                    )
-                                                  : Text(
-                                                      status == 'declined'
-                                                          ? "Your Decline Message"
-                                                          : "Your Message",
-                                                      style: context
-                                                          .textStyleGreyBarlow(
-                                                              context),
-                                                    ),
-                                              content: status == 'paid'
-                                                  ? Text("$paidMessage")
-                                                  : Text('$declineMessage'),
-                                              actions: [
-                                                deleteButton,
-                                                continueButton,
-                                              ],
-                                            );
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          ), // Return an empty SizedBox if currencyIndex is null
+                        ],
+                      ),
+                    ),
+                    // Total owed money
+                    Container(
+                      height: context.dynamicHeight(0.2),
+                      width: cardWidth,
+                      decoration: BoxDecoration(
+                        color: AppLightColorConstants.thirdColor,
+                        borderRadius: BorderRadius.all(context.normalRadius),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.black.withOpacity(0.2), // Shadow color
+                            spreadRadius: 3, // Spread radius
+                            blurRadius: 2, // Blur radius
+                            offset: const Offset(
+                              0,
+                              0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding: context.onlyTopPaddingNormal,
+                              child: Text(
+                                'Total Debt',
+                                style: context
+                                    .textStyleGreyBarlow(context)
+                                    .copyWith(
+                                      fontSize: 17,
+                                      color: AppLightColorConstants.bgLight,
+                                    ),
+                              ),
+                            ),
+                          ),
 
-                                            // Show the dialog
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return alert;
-                                              },
-                                            );
+                          GestureDetector(
+                            onTap: () async {
+                              final selectedCurrency =
+                                  await showModalBottomSheet<String>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: currencies.map((currency) {
+                                      return ListTile(
+                                        title: Text(currency['label']!),
+                                        onTap: () {
+                                          Navigator.pop(
+                                              context, currency['value']);
+                                        },
+                                      );
+                                    }).toList(),
+                                  );
+                                },
+                              );
+
+                              if (selectedCurrency != null) {
+                                viewModel.debtCurrencyController.text =
+                                    selectedCurrency;
+                                context
+                                    .read<ActivityViewModel>()
+                                    .add(ActivityDebtCurrencyEvent());
+                              }
+                            },
+                            child: Container(
+                              padding: context.paddingNormal,
+                              width: containerWidth,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: viewModel
+                                      .debtCurrencyController.text.isEmpty
+                                  ? Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'Currrency',
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                color: AppLightColorConstants
+                                                    .bgLight,
+                                              ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: AppLightColorConstants.bgLight,
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          viewModel.debtCurrencyController.text,
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                color: AppLightColorConstants
+                                                    .bgLight,
+                                              ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_drop_down_sharp,
+                                          color: AppLightColorConstants.bgLight,
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: context.onlyBottomPaddingLow,
+                            child: state.debtCurrencyIndex != null
+                                ? FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      '${viewModel.debtCurrencyController.text.trim()[viewModel.debtCurrencyController.text.length - 2]}${state.owedMoneyTotals[state.debtCurrencyIndex!]}',
+                                      style: context
+                                          .textStyleGreyBarlow(context)
+                                          .copyWith(
+                                            fontSize: 19,
+                                            color:
+                                                AppLightColorConstants.bgLight,
+                                          ),
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          ), // Return an empty SizedBox if currencyIndex is null
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                context.sizedHeightBoxNormal,
+                Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Recent Activities',
+                      style: context.textStyleH2(context).copyWith(
+                          fontSize: 20,
+                          color: AppLightColorConstants.contentTeritaryColor),
+                    ),
+                  ),
+                ),
+                context.sizedHeightBoxLower,
+                Center(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final activityType = await showModalBottomSheet<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: activities.map(
+                              (currency) {
+                                return ListTile(
+                                  title: Text(currency['label']!),
+                                  onTap: () {
+                                    Navigator.pop(context, currency['value']);
+                                  },
+                                );
+                              },
+                            ).toList(),
+                          );
+                        },
+                      );
+
+                      if (activityType != null) {
+                        viewModel.activityTypeController.text = activityType;
+                        context
+                            .read<ActivityViewModel>()
+                            .add(ActivitySelectEvent());
+                      }
+                    },
+                    child: Container(
+                      padding: context.paddingLow,
+                      width: containerWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: viewModel.activityTypeController.text.isEmpty
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Activity Type',
+                                  style: context.textStyleGreyBarlow(context),
+                                ),
+                                const Icon(Icons.arrow_drop_down_sharp),
+                              ],
+                            )
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  viewModel.activityTypeController.text,
+                                  style: context.textStyleGreyBarlow(context),
+                                ),
+                                const Icon(Icons.arrow_drop_down_sharp),
+                              ],
+                            ),
+                    ),
+                  ),
+                ),
+                context.sizedHeightBoxLower,
+                Center(
+                  child: SizedBox(
+                    height: context.dynamicHeight(0.3),
+                    width: context.dynamicWidth(0.75),
+                    child: viewModel.activityTypeController.text.isNotEmpty
+                        ? (() {
+                            // Determine which list to use based on activityTypeController
+                            List selectedList;
+                            bool isRequest;
+
+                            if (viewModel.activityTypeController.text ==
+                                'All') {
+                              selectedList = state.combinedFilteredList;
+                              isRequest = selectedList.isNotEmpty
+                                  ? (selectedList.first['status'] == 'pending')
+                                  : true;
+                            }
+                            if (viewModel.activityTypeController.text ==
+                                'Requests') {
+                              selectedList = state.filteredRequestedMoney;
+                              isRequest = true;
+                            } else if (viewModel.activityTypeController.text ==
+                                'Debts') {
+                              selectedList = state.filteredOwedMoney;
+                              isRequest = false;
+                            } else {
+                              selectedList = [];
+                              isRequest =
+                                  true; // Default value or you might handle this case differently
+                            }
+
+                            return selectedList.isEmpty
+                                ? SizedBox(
+                                    child: Center(
+                                      child: Text(
+                                        'No Recent Activity Found',
+                                        style: context
+                                            .textStyleTitleBarlow(context)
+                                            .copyWith(
+                                              fontSize: 16,
+                                            ),
+                                      ),
+                                    ),
+                                  )
+                                : Scrollbar(
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: selectedList.length,
+                                      itemBuilder: (context, index) {
+                                        final activity = selectedList[index];
+                                        final amount =
+                                            activity['amount']?.toString() ??
+                                                '0';
+                                        final status = activity['status'];
+                                        final date = activity['date'] ?? '';
+                                        final friendUserId =
+                                            activity['friendUserId'] ?? '';
+                                        final declineMessage =
+                                            activity['declineMessage'] ?? '';
+                                        final paidMessage =
+                                            activity['paidMessage'] ?? '';
+
+                                        // Fetch friend's data from state
+                                        final friendData =
+                                            state.friendsUserData[
+                                                    friendUserId] ??
+                                                {};
+                                        final friendName =
+                                            friendData['firstName'] ??
+                                                'Unknown';
+                                        final profileImageUrl =
+                                            friendData['profileImageUrl'] ?? '';
+
+                                        return Dismissible(
+                                          key: Key(activity['requestId']
+                                                  ?.toString() ??
+                                              'unknown'), // Ensure each item has a unique key
+                                          direction:
+                                              DismissDirection.endToStart,
+                                          onDismissed: (direction) {
+                                            // Make sure to remove the item from the list and update the state
+                                            context
+                                                .read<ActivityViewModel>()
+                                                .add(
+                                                  ActivityDeleteEvent(
+                                                    requestId: activity[
+                                                        'requestId'], // Ensure this is the correct ID
+                                                    friendUserId: friendUserId,
+                                                  ),
+                                                );
+
+                                            // Here, you should also remove the item from the UI's data source if needed.
+                                            // You may need to refresh the data or handle the state update accordingly.
                                           },
-                                          child: Padding(
-                                            padding: context.onlyTopPaddingLow,
-                                            child: Center(
-                                              child: RecentActivityCard(
-                                                profileImageUrl:
-                                                    profileImageUrl,
-                                                friendName: friendName,
-                                                amount: amount,
-                                                date: date,
-                                                status: status,
-                                                request: isRequest,
+                                          background: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.all(
+                                                  context.normalRadius),
+                                            ),
+                                            alignment: Alignment.centerRight,
+                                            padding: context.paddingNormal,
+                                            child: const Icon(
+                                              Icons.close,
+                                              color: AppLightColorConstants
+                                                  .bgLight,
+                                              size: 32.0,
+                                            ),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              // Show the dialog on tap
+                                              Widget continueButton =
+                                                  TextButton(
+                                                child: const Text("Continue"),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // Dismiss the dialog
+                                                },
+                                              );
+                                              Widget deleteButton = TextButton(
+                                                child: const Text(
+                                                  "Delete",
+                                                  style: TextStyle(
+                                                    color:
+                                                        AppLightColorConstants
+                                                            .errorColor,
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  // Action for the Delete button
+                                                  context
+                                                      .read<ActivityViewModel>()
+                                                      .add(
+                                                        ActivityDeleteEvent(
+                                                          requestId: activity[
+                                                              'requestId'], // Ensure this is the correct ID
+                                                          friendUserId:
+                                                              friendUserId,
+                                                        ),
+                                                      );
+                                                  Navigator.of(context)
+                                                      .pop(); // Dismiss the dialog
+                                                },
+                                              );
+                                              // Set up the AlertDialog
+                                              AlertDialog alert = AlertDialog(
+                                                title: isRequest
+                                                    ? Text(
+                                                        status == 'paid'
+                                                            ? "$friendName's Message"
+                                                            : "$friendName's Decline Message",
+                                                        style: context
+                                                            .textStyleGreyBarlow(
+                                                                context),
+                                                      )
+                                                    : Text(
+                                                        status == 'declined'
+                                                            ? "Your Decline Message"
+                                                            : "Your Message",
+                                                        style: context
+                                                            .textStyleGreyBarlow(
+                                                                context),
+                                                      ),
+                                                content: status == 'paid'
+                                                    ? Text("$paidMessage")
+                                                    : Text('$declineMessage'),
+                                                actions: [
+                                                  deleteButton,
+                                                  continueButton,
+                                                ],
+                                              );
+
+                                              // Show the dialog
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return alert;
+                                                },
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  context.onlyTopPaddingLow,
+                                              child: Center(
+                                                child: RecentActivityCard(
+                                                  profileImageUrl:
+                                                      profileImageUrl,
+                                                  friendName: friendName,
+                                                  amount: amount,
+                                                  date: date,
+                                                  status: status,
+                                                  request: isRequest,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                        })()
-                      : SizedBox(
-                          height: context.dynamicHeight(0.1),
-                          width: context.dynamicWidth(1),
-                          child: Center(
-                            child: Text(
-                              'No Recent Activity Found',
-                              style: context
-                                  .textStyleTitleBarlow(context)
-                                  .copyWith(
-                                    fontSize: 16,
-                                  ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                          })()
+                        : SizedBox(
+                            height: context.dynamicHeight(0.1),
+                            width: context.dynamicWidth(1),
+                            child: Center(
+                              child: Text(
+                                'No Recent Activity Found',
+                                style: context
+                                    .textStyleTitleBarlow(context)
+                                    .copyWith(
+                                      fontSize: 16,
+                                    ),
+                              ),
                             ),
                           ),
-                        ),
-                ),
-              )
-            ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
