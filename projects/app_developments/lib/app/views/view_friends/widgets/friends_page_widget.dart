@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
@@ -50,238 +52,248 @@ class FriendsPageWidget extends StatelessWidget {
               textfieldWidth = context.dynamicWidth(0.4);
             }
 
-            return SingleChildScrollView(
-              clipBehavior: Clip.none,
-              child: Column(
-                children: [
-                  context.sizedHeightBoxLow,
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: context.dynamicWidth(0.2),
-                            right: context.dynamicWidth(0.06),
-                          ),
-                          child: const Divider(
-                            color: AppLightColorConstants.contentDisabled,
-                            height: 36,
-                            thickness: 1.5,
-                          ),
-                        ),
-                      ),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Friends',
-                          style: context.textStyleGrey(context).copyWith(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: AppLightColorConstants.bgInverse,
-                              ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: context.dynamicWidth(0.06),
-                            right: context.dynamicWidth(0.2),
-                          ),
-                          child: const Divider(
-                            color: AppLightColorConstants.contentDisabled,
-                            height: 36,
-                            thickness: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  context.sizedHeightBoxLower,
-                  Center(
-                    child: SizedBox(
-                      height: context.dynamicHeight(0.1),
-                      width: context.dynamicWidth(
-                          1), // or context.dynamicWidth(0.8) to leave some margin
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(Assets.images.svg.friendsIcon),
-                          context.sizedWidthBoxNormal,
-                          CustomTextField(
-                            fillColor: AppLightColorConstants.infoColor,
-                            hintTextColor:
-                                AppLightColorConstants.contentTeritaryColor,
-                            icon: const Icon(
-                              Icons.search,
-                              color:
-                                  AppLightColorConstants.contentTeritaryColor,
+            return RefreshIndicator(
+              color: AppLightColorConstants.primaryColor,
+              onRefresh: () async {
+                await Future.delayed(const Duration(seconds: 1));
+                // Dispatch the initial event to refresh the data
+                context
+                    .read<FriendsViewModel>()
+                    .add(FriendsInitialEvent(context: context));
+              },
+              child: SingleChildScrollView(
+                clipBehavior: Clip.none,
+                child: Column(
+                  children: [
+                    context.sizedHeightBoxLow,
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: context.dynamicWidth(0.2),
+                              right: context.dynamicWidth(0.06),
                             ),
-                            removePadding: true,
-                            width: textfieldWidth,
-                            controller: viewModel.friendsSearchController,
-                            hintText: 'Search Friends',
-                            outlineBorder: true,
-                            textInputAction: TextInputAction.done,
+                            child: const Divider(
+                              color: AppLightColorConstants.contentDisabled,
+                              height: 36,
+                              thickness: 1.5,
+                            ),
                           ),
-                        ],
+                        ),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'Friends',
+                            style: context.textStyleGrey(context).copyWith(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppLightColorConstants.bgInverse,
+                                ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: context.dynamicWidth(0.06),
+                              right: context.dynamicWidth(0.2),
+                            ),
+                            child: const Divider(
+                              color: AppLightColorConstants.contentDisabled,
+                              height: 36,
+                              thickness: 1.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    context.sizedHeightBoxLower,
+                    Center(
+                      child: SizedBox(
+                        height: context.dynamicHeight(0.1),
+                        width: context.dynamicWidth(
+                            1), // or context.dynamicWidth(0.8) to leave some margin
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(Assets.images.svg.friendsIcon),
+                            context.sizedWidthBoxNormal,
+                            CustomTextField(
+                              fillColor: AppLightColorConstants.infoColor,
+                              hintTextColor:
+                                  AppLightColorConstants.contentTeritaryColor,
+                              icon: const Icon(
+                                Icons.search,
+                                color:
+                                    AppLightColorConstants.contentTeritaryColor,
+                              ),
+                              removePadding: true,
+                              width: textfieldWidth,
+                              controller: viewModel.friendsSearchController,
+                              hintText: 'Search Friends',
+                              outlineBorder: true,
+                              textInputAction: TextInputAction.done,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  context.sizedHeightBoxLower,
-                  SizedBox(
-                    height: context.dynamicHeight(0.4),
-                    width: context.dynamicWidth(containerWidth),
-                    child: state is FriendsLoadingState
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : state.friends.isEmpty
-                            ? SizedBox(
-                                child: Center(
-                                  child: Text(
-                                    'No Friends found',
-                                    style: context
-                                        .textStyleTitleBarlow(context)
-                                        .copyWith(
-                                          fontSize: 18,
-                                        ),
+                    context.sizedHeightBoxLower,
+                    SizedBox(
+                      height: context.dynamicHeight(0.4),
+                      width: context.dynamicWidth(containerWidth),
+                      child: state is FriendsLoadingState
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : state.friends.isEmpty
+                              ? SizedBox(
+                                  child: Center(
+                                    child: Text(
+                                      'No Friends found',
+                                      style: context
+                                          .textStyleTitleBarlow(context)
+                                          .copyWith(
+                                            fontSize: 18,
+                                          ),
+                                    ),
                                   ),
-                                ),
-                              )
-                            : Scrollbar(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: state.friends.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      // remove splash effect
-                                      splashFactory: NoSplash.splashFactory,
-                                      onTap: () {},
-                                      child: Padding(
-                                        padding: context.onlyTopPaddingNormal,
-                                        child: SizedBox(
-                                          height: context.dynamicHeight(0.1),
-                                          width: context.dynamicWidth(0.8),
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius:
-                                                    context.dynamicWidth(0.07),
-                                                backgroundColor:
-                                                    AppLightColorConstants
-                                                        .contentTeritaryColor,
-                                                backgroundImage: NetworkImage(
-                                                  state.friends[index]
-                                                          ['profileImageUrl'] ??
-                                                      '', // Use index to get the correct user
+                                )
+                              : Scrollbar(
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: state.friends.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        // remove splash effect
+                                        splashFactory: NoSplash.splashFactory,
+                                        onTap: () {},
+                                        child: Padding(
+                                          padding: context.onlyTopPaddingNormal,
+                                          child: SizedBox(
+                                            height: context.dynamicHeight(0.1),
+                                            width: context.dynamicWidth(0.8),
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: context
+                                                      .dynamicWidth(0.07),
+                                                  backgroundColor:
+                                                      AppLightColorConstants
+                                                          .contentTeritaryColor,
+                                                  backgroundImage: NetworkImage(
+                                                    state.friends[index][
+                                                            'profileImageUrl'] ??
+                                                        '', // Use index to get the correct user
+                                                  ),
                                                 ),
-                                              ),
-                                              context.sizedWidthBoxNormal,
-                                              Expanded(
-                                                child: Text(
-                                                  state.friends[index]
-                                                          ['Name'] ??
-                                                      'Unknown User',
-                                                  style: context
-                                                      .textStyleGrey(context)
-                                                      .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                        color:
-                                                            AppLightColorConstants
-                                                                .bgInverse,
+                                                context.sizedWidthBoxNormal,
+                                                Expanded(
+                                                  child: Text(
+                                                    state.friends[index]
+                                                            ['Name'] ??
+                                                        'Unknown User',
+                                                    style: context
+                                                        .textStyleGrey(context)
+                                                        .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                          color:
+                                                              AppLightColorConstants
+                                                                  .bgInverse,
+                                                        ),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    // set up the buttons
+                                                    Widget cancelButton =
+                                                        TextButton(
+                                                      child: const Text(
+                                                        "Cancel",
                                                       ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  // set up the buttons
-                                                  Widget cancelButton =
-                                                      TextButton(
-                                                    child: const Text(
-                                                      "Cancel",
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(); // Dismiss the dialog
-                                                    },
-                                                  );
-                                                  Widget continueButton =
-                                                      TextButton(
-                                                    child: const Text(
-                                                      "Remove",
-                                                      style: TextStyle(
-                                                        color:
-                                                            AppLightColorConstants
-                                                                .errorColor,
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(); // Dismiss the dialog
+                                                      },
+                                                    );
+                                                    Widget continueButton =
+                                                        TextButton(
+                                                      child: const Text(
+                                                        "Remove",
+                                                        style: TextStyle(
+                                                          color:
+                                                              AppLightColorConstants
+                                                                  .errorColor,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    onPressed: () {
-                                                      context
-                                                          .read<
-                                                              FriendsViewModel>()
-                                                          .add(
-                                                            FriendsRemoveFriendEvent(
-                                                              context: context,
-                                                              friendId:
-                                                                  state.friends[
-                                                                          index]
-                                                                      [
-                                                                      'userId']!,
-                                                            ),
-                                                          );
-                                                      Navigator.of(context)
-                                                          .pop(); // Dismiss the dialog
-                                                    },
-                                                  );
+                                                      onPressed: () {
+                                                        context
+                                                            .read<
+                                                                FriendsViewModel>()
+                                                            .add(
+                                                              FriendsRemoveFriendEvent(
+                                                                context:
+                                                                    context,
+                                                                friendId: state
+                                                                            .friends[
+                                                                        index]
+                                                                    ['userId']!,
+                                                              ),
+                                                            );
+                                                        Navigator.of(context)
+                                                            .pop(); // Dismiss the dialog
+                                                      },
+                                                    );
 
-                                                  // set up the AlertDialog
-                                                  AlertDialog alert =
-                                                      AlertDialog(
-                                                    title: const Text(
-                                                        "Remove Friend"),
-                                                    content: Text(
-                                                        "Are you sure you want to remove ${state.friends[index]['Name'] ?? 'Unknown User'} as a friend?"),
-                                                    actions: [
-                                                      cancelButton,
-                                                      continueButton,
-                                                    ],
-                                                  );
+                                                    // set up the AlertDialog
+                                                    AlertDialog alert =
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          "Remove Friend"),
+                                                      content: Text(
+                                                          "Are you sure you want to remove ${state.friends[index]['Name'] ?? 'Unknown User'} as a friend?"),
+                                                      actions: [
+                                                        cancelButton,
+                                                        continueButton,
+                                                      ],
+                                                    );
 
-                                                  // show the dialog
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return alert;
-                                                    },
-                                                  );
-                                                },
-                                                child: Padding(
-                                                  padding: context
-                                                      .onlyRightPaddingNormal,
-                                                  child:
-                                                      const Icon(Icons.close),
-                                                ),
-                                              )
-                                            ],
+                                                    // show the dialog
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return alert;
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding: context
+                                                        .onlyRightPaddingNormal,
+                                                    child:
+                                                        const Icon(Icons.close),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                  ),
-                  context.sizedHeightBoxNormal,
-                  CustomContinueButton(
-                    buttonText: 'Add Friend',
-                    onPressed: () {
-                      context.router.push(const AddFriendsViewRoute());
-                    },
-                  )
-                ],
+                    ),
+                    context.sizedHeightBoxNormal,
+                    CustomContinueButton(
+                      buttonText: 'Add Friend',
+                      onPressed: () {
+                        context.router.push(const AddFriendsViewRoute());
+                      },
+                    )
+                  ],
+                ),
               ),
             );
           },
