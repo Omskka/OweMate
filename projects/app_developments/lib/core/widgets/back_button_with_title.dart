@@ -1,4 +1,3 @@
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_rounded_button.dart';
 import 'package:flutter/material.dart';

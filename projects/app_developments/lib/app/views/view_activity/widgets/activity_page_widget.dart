@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_developments/app/views/view_activity/view_model/activity_event.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_state.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
+import 'package:app_developments/core/widgets/recent_activity_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +18,45 @@ class ActivityPageWidget extends StatelessWidget {
       builder: (context, state) {
         final viewModel = BlocProvider.of<ActivityViewModel>(context);
 
+        // Fetch friends' data if not already fetched
+        if (state is ActivityDataLoadedState) {
+          final filteredRequestedMoney =
+              state.filteredRequestedMoney as List? ?? [];
+          final filteredOwedMoney = state.filteredOwedMoney as List? ?? [];
+          final combinedFilteredList =
+              state.combinedFilteredList as List? ?? [];
+
+          // Dispatch events to fetch each friend's data
+          for (var request in filteredRequestedMoney) {
+            String friendUserId = request['friendUserId'] ?? '';
+            // Fetch friend's data if not already fetched
+            if (!state.friendsUserData.containsKey(friendUserId)) {
+              context.read<ActivityViewModel>().add(
+                    ActivityFetchUserDataEvent(friendUserId: friendUserId),
+                  );
+            }
+          }
+
+          for (var debt in filteredOwedMoney) {
+            String friendUserId = debt['friendUserId'] ?? '';
+            // Fetch friend's data if not already fetched
+            if (!state.friendsUserData.containsKey(friendUserId)) {
+              context.read<ActivityViewModel>().add(
+                    ActivityFetchUserDataEvent(friendUserId: friendUserId),
+                  );
+            }
+          }
+
+          for (var all in combinedFilteredList) {
+            String friendUserId = all['friendUserId'] ?? '';
+            // Fetch friend's data if not already fetched
+            if (!state.friendsUserData.containsKey(friendUserId)) {
+              context.read<ActivityViewModel>().add(
+                    ActivityFetchUserDataEvent(friendUserId: friendUserId),
+                  );
+            }
+          }
+        }
         // Add listener
         viewModel.requestCurrencyController.addListener(
           () {
@@ -31,12 +73,19 @@ class ActivityPageWidget extends StatelessWidget {
         );
         // Define a list of currencies
         const List<Map<String, String>> currencies = [
-          {'value': 'USD', 'label': 'USD (\$)'},
-          {'value': 'TL', 'label': 'TL (₺)'},
-          {'value': 'EURO', 'label': 'EURO (€)'},
-          {'value': 'GBP', 'label': 'GBP (£)'},
-          {'value': 'JPY', 'label': 'JPY (¥)'},
-          {'value': 'CHF', 'label': 'CHF (₣)'},
+          {'value': 'USD (\$)', 'label': 'USD (\$)'},
+          {'value': 'TL (₺)', 'label': 'TL (₺)'},
+          {'value': 'EURO (€)', 'label': 'EURO (€)'},
+          {'value': 'GBP (£)', 'label': 'GBP (£)'},
+          {'value': 'JPY (¥)', 'label': 'JPY (¥)'},
+          {'value': 'CHF (₣)', 'label': 'CHF (₣)'},
+        ];
+
+        // Define a list of activities
+        const List<Map<String, String>> activities = [
+          //{'value': 'All', 'label': 'All'},
+          {'value': 'Requests', 'label': 'Requests'},
+          {'value': 'Debts', 'label': 'Debts'},
         ];
 
         final screenHeight = MediaQuery.of(context).size.height;
@@ -76,6 +125,7 @@ class ActivityPageWidget extends StatelessWidget {
           cardWidth = context.dynamicWidth(0.25);
         }
         return SingleChildScrollView(
+          clipBehavior: Clip.none,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -162,26 +212,89 @@ class ActivityPageWidget extends StatelessWidget {
                           ),
                         ),
 
-                        DropdownMenu<String>(
-                          width: containerWidth,
-                          menuHeight: context.dynamicHeight(0.15),
-                          textStyle: context
-                              .textStyleGrey(context)
-                              .copyWith(
-                                color: AppLightColorConstants.bgLight,
-                              )
-                              .copyWith(fontWeight: FontWeight.w600),
-                          controller: viewModel.requestCurrencyController,
-                          hintText: 'Currency',
-                          dropdownMenuEntries: currencies.map(
-                            (currency) {
-                              return DropdownMenuEntry<String>(
-                                value: currency['value']!,
-                                label: currency['label']!,
-                              );
-                            },
-                          ).toList(),
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedCurrency =
+                                await showModalBottomSheet<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: currencies.map((currency) {
+                                    return ListTile(
+                                      title: Text(currency['label']!),
+                                      onTap: () {
+                                        Navigator.pop(
+                                            context, currency['value']);
+                                      },
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            );
+
+                            if (selectedCurrency != null) {
+                              viewModel.requestCurrencyController.text =
+                                  selectedCurrency;
+                              context
+                                  .read<ActivityViewModel>()
+                                  .add(ActivityRequestCurrencyEvent());
+                            }
+                          },
+                          child: Container(
+                            padding: context.paddingNormal,
+                            width: containerWidth,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: viewModel
+                                    .requestCurrencyController.text.isEmpty
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        'Currrency',
+                                        style: context
+                                            .textStyleGrey(context)
+                                            .copyWith(
+                                              color: AppLightColorConstants
+                                                  .bgLight,
+                                            ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: AppLightColorConstants.bgLight,
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        viewModel
+                                            .requestCurrencyController.text,
+                                        style: context
+                                            .textStyleGrey(context)
+                                            .copyWith(
+                                              color: AppLightColorConstants
+                                                  .bgLight,
+                                            ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: AppLightColorConstants.bgLight,
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
+
                         Padding(
                           padding: context.onlyBottomPaddingLow,
                           child: state.requestCurrencyIndex != null
@@ -239,26 +352,87 @@ class ActivityPageWidget extends StatelessWidget {
                           ),
                         ),
 
-                        DropdownMenu<String>(
-                          width: containerWidth,
-                          menuHeight: context.dynamicHeight(0.15),
-                          textStyle: context
-                              .textStyleGrey(context)
-                              .copyWith(
-                                color: AppLightColorConstants.bgLight,
-                              )
-                              .copyWith(fontWeight: FontWeight.w600),
-                          controller: viewModel.debtCurrencyController,
-                          hintText: 'Currency',
-                          dropdownMenuEntries: currencies.map(
-                            (currency) {
-                              return DropdownMenuEntry<String>(
-                                value: currency['value']!,
-                                label: currency['label']!,
-                              );
-                            },
-                          ).toList(),
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedCurrency =
+                                await showModalBottomSheet<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: currencies.map((currency) {
+                                    return ListTile(
+                                      title: Text(currency['label']!),
+                                      onTap: () {
+                                        Navigator.pop(
+                                            context, currency['value']);
+                                      },
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            );
+
+                            if (selectedCurrency != null) {
+                              viewModel.debtCurrencyController.text =
+                                  selectedCurrency;
+                              context
+                                  .read<ActivityViewModel>()
+                                  .add(ActivityDebtCurrencyEvent());
+                            }
+                          },
+                          child: Container(
+                            padding: context.paddingNormal,
+                            width: containerWidth,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: viewModel.debtCurrencyController.text.isEmpty
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        'Currrency',
+                                        style: context
+                                            .textStyleGrey(context)
+                                            .copyWith(
+                                              color: AppLightColorConstants
+                                                  .bgLight,
+                                            ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: AppLightColorConstants.bgLight,
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        viewModel.debtCurrencyController.text,
+                                        style: context
+                                            .textStyleGrey(context)
+                                            .copyWith(
+                                              color: AppLightColorConstants
+                                                  .bgLight,
+                                            ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: AppLightColorConstants.bgLight,
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
+
                         Padding(
                           padding: context.onlyBottomPaddingLow,
                           child: state.debtCurrencyIndex != null
@@ -291,6 +465,278 @@ class ActivityPageWidget extends StatelessWidget {
                         fontSize: 20,
                         color: AppLightColorConstants.contentTeritaryColor),
                   ),
+                ),
+              ),
+              context.sizedHeightBoxLower,
+              Center(
+                child: GestureDetector(
+                  onTap: () async {
+                    final activityType = await showModalBottomSheet<String>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: activities.map(
+                            (currency) {
+                              return ListTile(
+                                title: Text(currency['label']!),
+                                onTap: () {
+                                  Navigator.pop(context, currency['value']);
+                                },
+                              );
+                            },
+                          ).toList(),
+                        );
+                      },
+                    );
+
+                    if (activityType != null) {
+                      viewModel.activityTypeController.text = activityType;
+                      context
+                          .read<ActivityViewModel>()
+                          .add(ActivitySelectEvent());
+                    }
+                  },
+                  child: Container(
+                    padding: context.paddingLow,
+                    width: containerWidth,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: viewModel.activityTypeController.text.isEmpty
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Activity Type',
+                                style: context.textStyleGreyBarlow(context),
+                              ),
+                              const Icon(Icons.arrow_drop_down_sharp),
+                            ],
+                          )
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                viewModel.activityTypeController.text,
+                                style: context.textStyleGreyBarlow(context),
+                              ),
+                              const Icon(Icons.arrow_drop_down_sharp),
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+              context.sizedHeightBoxLower,
+              Center(
+                child: SizedBox(
+                  height: context.dynamicHeight(0.3),
+                  width: context.dynamicWidth(0.75),
+                  child: viewModel.activityTypeController.text.isNotEmpty
+                      ? (() {
+                          // Determine which list to use based on activityTypeController
+                          List selectedList;
+                          bool isRequest;
+
+                          if (viewModel.activityTypeController.text == 'All') {
+                            selectedList = state.combinedFilteredList;
+                            isRequest = selectedList.isNotEmpty
+                                ? (selectedList.first['status'] == 'pending')
+                                : true;
+                          }
+                          if (viewModel.activityTypeController.text ==
+                              'Requests') {
+                            selectedList = state.filteredRequestedMoney;
+                            isRequest = true;
+                          } else if (viewModel.activityTypeController.text ==
+                              'Debts') {
+                            selectedList = state.filteredOwedMoney;
+                            isRequest = false;
+                          } else {
+                            selectedList = [];
+                            isRequest =
+                                true; // Default value or you might handle this case differently
+                          }
+
+                          return selectedList.isEmpty
+                              ? SizedBox(
+                                  child: Center(
+                                    child: Text(
+                                      'No Recent Activity Found',
+                                      style: context
+                                          .textStyleTitleBarlow(context)
+                                          .copyWith(
+                                            fontSize: 16,
+                                          ),
+                                    ),
+                                  ),
+                                )
+                              : Scrollbar(
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: selectedList.length,
+                                    itemBuilder: (context, index) {
+                                      final activity = selectedList[index];
+                                      final amount =
+                                          activity['amount']?.toString() ?? '0';
+                                      final status = activity['status'];
+                                      final date = activity['date'] ?? '';
+                                      final friendUserId =
+                                          activity['friendUserId'] ?? '';
+                                      final declineMessage =
+                                          activity['declineMessage'] ?? '';
+                                      final paidMessage =
+                                          activity['paidMessage'] ?? '';
+
+                                      // Fetch friend's data from state
+                                      final friendData =
+                                          state.friendsUserData[friendUserId] ??
+                                              {};
+                                      final friendName =
+                                          friendData['firstName'] ?? 'Unknown';
+                                      final profileImageUrl =
+                                          friendData['profileImageUrl'] ?? '';
+
+                                      return Dismissible(
+                                        key: Key(activity['requestId']
+                                                ?.toString() ??
+                                            'unknown'), // Ensure each item has a unique key
+                                        direction: DismissDirection.endToStart,
+                                        onDismissed: (direction) {
+                                          // Make sure to remove the item from the list and update the state
+                                          context.read<ActivityViewModel>().add(
+                                                ActivityDeleteEvent(
+                                                  requestId: activity[
+                                                      'requestId'], // Ensure this is the correct ID
+                                                  friendUserId: friendUserId,
+                                                ),
+                                              );
+
+                                          // Here, you should also remove the item from the UI's data source if needed.
+                                          // You may need to refresh the data or handle the state update accordingly.
+                                        },
+                                        background: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.all(
+                                                context.normalRadius),
+                                          ),
+                                          alignment: Alignment.centerRight,
+                                          padding: context.paddingNormal,
+                                          child: const Icon(
+                                            Icons.close,
+                                            color:
+                                                AppLightColorConstants.bgLight,
+                                            size: 32.0,
+                                          ),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            // Show the dialog on tap
+                                            Widget continueButton = TextButton(
+                                              child: const Text("Continue"),
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Dismiss the dialog
+                                              },
+                                            );
+                                            Widget deleteButton = TextButton(
+                                              child: const Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                  color: AppLightColorConstants
+                                                      .errorColor,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                // Action for the Delete button
+                                                context
+                                                    .read<ActivityViewModel>()
+                                                    .add(
+                                                      ActivityDeleteEvent(
+                                                        requestId: activity[
+                                                            'requestId'], // Ensure this is the correct ID
+                                                        friendUserId:
+                                                            friendUserId,
+                                                      ),
+                                                    );
+                                                Navigator.of(context)
+                                                    .pop(); // Dismiss the dialog
+                                              },
+                                            );
+                                            // Set up the AlertDialog
+                                            AlertDialog alert = AlertDialog(
+                                              title: isRequest
+                                                  ? Text(
+                                                      status == 'paid'
+                                                          ? "$friendName's Message"
+                                                          : "$friendName's Decline Message",
+                                                      style: context
+                                                          .textStyleGreyBarlow(
+                                                              context),
+                                                    )
+                                                  : Text(
+                                                      status == 'declined'
+                                                          ? "Your Decline Message"
+                                                          : "Your Message",
+                                                      style: context
+                                                          .textStyleGreyBarlow(
+                                                              context),
+                                                    ),
+                                              content: status == 'paid'
+                                                  ? Text("$paidMessage")
+                                                  : Text('$declineMessage'),
+                                              actions: [
+                                                deleteButton,
+                                                continueButton,
+                                              ],
+                                            );
+
+                                            // Show the dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return alert;
+                                              },
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: context.onlyTopPaddingLow,
+                                            child: Center(
+                                              child: RecentActivityCard(
+                                                profileImageUrl:
+                                                    profileImageUrl,
+                                                friendName: friendName,
+                                                amount: amount,
+                                                date: date,
+                                                status: status,
+                                                request: isRequest,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                        })()
+                      : SizedBox(
+                          height: context.dynamicHeight(0.1),
+                          width: context.dynamicWidth(1),
+                          child: Center(
+                            child: Text(
+                              'No Recent Activity Found',
+                              style: context
+                                  .textStyleTitleBarlow(context)
+                                  .copyWith(
+                                    fontSize: 16,
+                                  ),
+                            ),
+                          ),
+                        ),
                 ),
               )
             ],

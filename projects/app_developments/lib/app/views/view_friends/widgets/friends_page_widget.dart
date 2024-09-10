@@ -51,6 +51,7 @@ class FriendsPageWidget extends StatelessWidget {
             }
 
             return SingleChildScrollView(
+              clipBehavior: Clip.none,
               child: Column(
                 children: [
                   context.sizedHeightBoxLow,

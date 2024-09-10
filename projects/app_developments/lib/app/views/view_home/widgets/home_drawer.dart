@@ -41,16 +41,17 @@ class HomeNavbarWidget extends StatelessWidget {
         );
       } else if (maxHeight <= 800) {
         heightBox = context.sizedHeightBoxLow;
-        sizedboxHeight = context.dynamicHeight(0.28);
+        sizedboxHeight = context.dynamicHeight(0.25);
         initialHeightBox = const SizedBox(
           height: 0,
         );
       } else if (maxHeight <= 1080) {
+        sizedboxHeight = context.dynamicHeight(0.235);
         heightBox = context.sizedHeightBoxLow;
         initialHeightBox = const SizedBox(
           height: 0,
         );
-        sizedboxHeight = context.dynamicHeight(0.22);
+        sizedboxHeight = context.dynamicHeight(0.21);
       } else {
         heightBox = context.sizedHeightBoxNormal;
         initialHeightBox = context.sizedHeightBoxLow;
@@ -116,7 +117,7 @@ class HomeNavbarWidget extends StatelessWidget {
                               .withOpacity(0.9),
                         ),
                         title: Text(
-                          'profile',
+                          'Profile',
                           style: context.textStyleGrey(context).copyWith(
                                 color: AppLightColorConstants.bgInverse,
                                 fontSize: 16,
