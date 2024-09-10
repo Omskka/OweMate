@@ -99,7 +99,7 @@ class RequestPageWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: context.dynamicHeight(1),
+                height: context.dynamicHeight(0.65),
                 width: context.dynamicWidth(containerWidth),
                 child: state is RequestLoadingState
                     ? Align(

@@ -19,7 +19,8 @@ class ActivityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivityViewModel()..add(ActivityInitialEvent()),
+      create: (context) => ActivityViewModel()
+        ..add(ActivityInitialEvent(activityType: 'Requests')),
       child: BlocBuilder<ActivityViewModel, ActivityState>(
         builder: (context, state) {
           final homeViewModel = context.read<HomeViewModel>();

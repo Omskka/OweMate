@@ -234,13 +234,19 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       // Get the owedMoney array for the current user
       List<dynamic> owedMoney = currentUserData['owedMoney'] ?? [];
 
-      // Update the transaction status to 'declined' and add the decline message
+      // Update the transaction status to 'paid' and add the paid message
+      bool updated = false; // Track if the update was successful
       for (var transaction in owedMoney) {
         if (transaction['requestId'] == event.requestId) {
           transaction['status'] = 'paid';
           transaction['paidMessage'] = paidMessageController.text.trim();
+          updated = true;
           break;
         }
+      }
+
+      if (!updated) {
+        throw Exception('Transaction not found in owedMoney');
       }
 
       // Update the current user's owedMoney array in Firestore
@@ -268,14 +274,20 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       // Get the requestedMoney array for the friend
       List<dynamic> requestedMoney = friendUserData['requestedMoney'] ?? [];
 
-      // Update the transaction status to 'declined' and add the decline message
+      // Update the transaction status to 'paid' and add the paid message
+      updated = false; // Track if the update was successful
       for (var transaction in requestedMoney) {
         if (transaction['requestId'] == event.requestId &&
             transaction['friendUserId'] == userId) {
-          transaction['status'] = 'declined';
+          transaction['status'] = 'paid';
           transaction['paidMessage'] = paidMessageController.text.trim();
+          updated = true;
           break;
         }
+      }
+
+      if (!updated) {
+        throw Exception('Transaction not found in requestedMoney');
       }
 
       // Update the friend's requestedMoney array in Firestore
@@ -297,7 +309,7 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
     } catch (e) {
       // Dismiss the loading circle dialog
       Navigator.of(event.context).pop();
-      throw Exception('Failed to decline request: $e');
+      throw Exception('Failed to pay request: $e');
     }
   }
 }

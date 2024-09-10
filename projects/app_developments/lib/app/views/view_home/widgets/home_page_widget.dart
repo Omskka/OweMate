@@ -313,10 +313,35 @@ class HomePageWidget extends StatelessWidget {
                                               .pop(); // Dismiss the dialog
                                         },
                                       );
+                                      Widget deleteButton = TextButton(
+                                        child: const Text(
+                                          "Delete Request",
+                                          style: TextStyle(
+                                            color: AppLightColorConstants
+                                                .errorColor,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          // Action for the Delete button
+                                          context.read<HomeViewModel>().add(
+                                                HomefetchDeleteRequestEvent(
+                                                  requestId:
+                                                      state.friendsUserData[
+                                                                  friendUserId]
+                                                              ['owedMoney'][0]
+                                                          ['requestId'],
+                                                  friendUserId: friendUserId,
+                                                ),
+                                              );
+                                          Navigator.of(context)
+                                              .pop(); // Dismiss the dialog
+                                        },
+                                      );
+
                                       // set up the AlertDialog
                                       AlertDialog alert = AlertDialog(
                                         title: Text(
-                                          "$friendName's Request Message",
+                                          "Your Request Message",
                                           style: context
                                               .textStyleGreyBarlow(context),
                                         ),
@@ -324,6 +349,7 @@ class HomePageWidget extends StatelessWidget {
                                           "${request['message']}",
                                         ),
                                         actions: [
+                                          deleteButton,
                                           continueButton,
                                         ],
                                       );

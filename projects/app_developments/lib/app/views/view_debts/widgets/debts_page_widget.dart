@@ -51,6 +51,7 @@ class DebtsPageWidget extends StatelessWidget {
             }
 
             return SingleChildScrollView(
+              clipBehavior: Clip.none,
               child: Column(
                 children: [
                   context.sizedHeightBoxLow,
