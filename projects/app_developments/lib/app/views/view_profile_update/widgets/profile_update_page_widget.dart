@@ -160,7 +160,7 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Name & Surname',
+                              'Username',
                               style: context.textStyleGrey(context),
                             ),
                             CustomTextField(

@@ -6,8 +6,10 @@ import 'package:app_developments/app/views/view_activity/view_model/activity_vie
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/recent_activity_card.dart';
+import 'package:app_developments/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ActivityPageWidget extends StatelessWidget {
   const ActivityPageWidget({super.key});
@@ -582,15 +584,26 @@ class ActivityPageWidget extends StatelessWidget {
 
                             return selectedList.isEmpty
                                 ? SizedBox(
-                                    child: Center(
-                                      child: Text(
-                                        'No Recent Activity Found',
-                                        style: context
-                                            .textStyleTitleBarlow(context)
-                                            .copyWith(
-                                              fontSize: 16,
-                                            ),
-                                      ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          Assets.images.svg.noActivity,
+                                          width: 200,
+                                        ),
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            'No Recent Activity Found',
+                                            style: context
+                                                .textStyleGreyBarlow(context)
+                                                .copyWith(
+                                                  fontSize: 16,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   )
                                 : Scrollbar(
@@ -644,6 +657,7 @@ class ActivityPageWidget extends StatelessWidget {
                                             // You may need to refresh the data or handle the state update accordingly.
                                           },
                                           background: Container(
+                                            width: cardWidth,
                                             decoration: BoxDecoration(
                                               color: Colors.red,
                                               borderRadius: BorderRadius.all(
@@ -755,15 +769,9 @@ class ActivityPageWidget extends StatelessWidget {
                         : SizedBox(
                             height: context.dynamicHeight(0.1),
                             width: context.dynamicWidth(1),
-                            child: Center(
-                              child: Text(
-                                'No Recent Activity Found',
-                                style: context
-                                    .textStyleTitleBarlow(context)
-                                    .copyWith(
-                                      fontSize: 16,
-                                    ),
-                              ),
+                            child: const Center(
+                              child:
+                                  CircularProgressIndicator(), // Loading circle
                             ),
                           ),
                   ),

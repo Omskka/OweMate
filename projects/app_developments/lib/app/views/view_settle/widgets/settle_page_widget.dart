@@ -5,9 +5,11 @@ import 'package:app_developments/app/views/view_settle/view_model/settle_view_mo
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
 import 'package:app_developments/core/widgets/incoming_requests_card.dart';
+import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SettlePageWidget extends StatelessWidget {
   const SettlePageWidget({super.key});
@@ -149,10 +151,7 @@ class SettlePageWidget extends StatelessWidget {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : state.userData.containsKey('owedMoney') &&
-                                state.userData['owedMoney'] != null &&
-                                state.userData['owedMoney'] is List &&
-                                state.userData['owedMoney'].isNotEmpty
+                        : filteredOwedMoney.isNotEmpty
                             ? ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: filteredOwedMoney.length,
@@ -245,14 +244,22 @@ class SettlePageWidget extends StatelessWidget {
                                   );
                                 },
                               )
-                            : Center(
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                    style: context.textStyleGrey(context),
-                                    textAlign: TextAlign.center,
-                                  ),
+                            : Padding(
+                                padding: context.onlyLeftPaddingMedium,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                        Assets.images.svg.emptyInbox),
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                        style: context.textStyleGrey(context),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                   ),
