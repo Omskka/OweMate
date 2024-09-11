@@ -84,11 +84,21 @@ class AddFriendsPageWidget extends StatelessWidget {
               child: state.users.isEmpty
                   ? SizedBox(
                       child: Center(
-                        child: Text(
-                          'No Users found',
-                          style: context.textStyleTitleBarlow(context).copyWith(
-                                fontSize: 18,
-                              ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(Assets.images.svg.magnifyingGlass),
+                            Text(
+                              'No results found',
+                              style:
+                                  context.textStyleGreyBarlow(context).copyWith(
+                                        fontSize: 18,
+                                        color: AppLightColorConstants
+                                            .contentTeritaryColor,
+                                        fontWeight: FontWeight.w100,
+                                      ),
+                            ),
+                          ],
                         ),
                       ),
                     )

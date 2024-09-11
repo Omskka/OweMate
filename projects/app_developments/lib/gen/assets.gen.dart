@@ -72,8 +72,14 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/add_friend.svg
   String get addFriend => 'assets/images/svg/add_friend.svg';
 
+  /// File path: assets/images/svg/add_item.svg
+  String get addItem => 'assets/images/svg/add_item.svg';
+
   /// File path: assets/images/svg/chart.svg
   String get chart => 'assets/images/svg/chart.svg';
+
+  /// File path: assets/images/svg/empty_inbox.svg
+  String get emptyInbox => 'assets/images/svg/empty_inbox.svg';
 
   /// File path: assets/images/svg/friends.svg
   String get friends => 'assets/images/svg/friends.svg';
@@ -87,6 +93,18 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/home.svg
   String get home => 'assets/images/svg/home.svg';
 
+  /// File path: assets/images/svg/magnifying_glass.svg
+  String get magnifyingGlass => 'assets/images/svg/magnifying_glass.svg';
+
+  /// File path: assets/images/svg/mailbox.svg
+  String get mailbox => 'assets/images/svg/mailbox.svg';
+
+  /// File path: assets/images/svg/no_activity.svg
+  String get noActivity => 'assets/images/svg/no_activity.svg';
+
+  /// File path: assets/images/svg/no_friends.svg
+  String get noFriends => 'assets/images/svg/no_friends.svg';
+
   /// File path: assets/images/svg/profile_circle.svg
   String get profileCircle => 'assets/images/svg/profile_circle.svg';
 
@@ -99,11 +117,17 @@ class $AssetsImagesSvgGen {
   /// List of all assets
   List<String> get values => [
         addFriend,
+        addItem,
         chart,
+        emptyInbox,
         friends,
         friendsIcon,
         google,
         home,
+        magnifyingGlass,
+        mailbox,
+        noActivity,
+        noFriends,
         profileCircle,
         tagSquare,
         wallet

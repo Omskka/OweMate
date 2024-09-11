@@ -6,9 +6,11 @@ import 'package:app_developments/core/constants/ligth_theme_color_constants.dart
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
 import 'package:app_developments/core/widgets/friend_request_card.dart';
+import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NotificationsPageWidget extends StatelessWidget {
   const NotificationsPageWidget({super.key});
@@ -105,14 +107,24 @@ class NotificationsPageWidget extends StatelessWidget {
                 child: state.friendRequests.isEmpty
                     ? SizedBox(
                         child: Center(
-                          child: Text(
-                            'No new friend requests',
-                            style:
-                                context.textStyleTitleBarlow(context).copyWith(
+                            child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              Assets.images.svg.mailbox,
+                            ),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                'You currently have no notifications',
+                                style: context
+                                    .textStyleGreyBarlow(context)
+                                    .copyWith(
                                       fontSize: 18,
                                     ),
-                          ),
-                        ),
+                              ),
+                            ),
+                          ],
+                        )),
                       )
                     : ListView.builder(
                         scrollDirection: Axis.vertical,

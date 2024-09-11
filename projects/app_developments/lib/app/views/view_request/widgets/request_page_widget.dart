@@ -111,20 +111,32 @@ class RequestPageWidget extends StatelessWidget {
                       )
                     : state.friends.isEmpty
                         ? SizedBox(
-                            child: Padding(
-                              padding: context.onlyTopPaddingHigh,
-                              child: Align(
+                            child: Align(
                                 alignment: Alignment.topCenter,
-                                child: Text(
-                                  'No Friends found',
-                                  style: context
-                                      .textStyleTitleBarlow(context)
-                                      .copyWith(
-                                        fontSize: 18,
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.router
+                                            .push(const AddFriendsViewRoute());
+                                      },
+                                      child: SvgPicture.asset(
+                                        Assets.images.svg.noFriends,
                                       ),
-                                ),
-                              ),
-                            ),
+                                    ),
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Your friend list is empty',
+                                        style: context
+                                            .textStyleGreyBarlow(context)
+                                            .copyWith(
+                                              fontSize: 18,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
                           )
                         : Scrollbar(
                             child: ListView.builder(

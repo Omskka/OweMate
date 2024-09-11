@@ -149,15 +149,30 @@ class FriendsPageWidget extends StatelessWidget {
                           : state.friends.isEmpty
                               ? SizedBox(
                                   child: Center(
-                                    child: Text(
-                                      'No Friends found',
-                                      style: context
-                                          .textStyleTitleBarlow(context)
-                                          .copyWith(
-                                            fontSize: 18,
-                                          ),
-                                    ),
-                                  ),
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.router.push(
+                                              const AddFriendsViewRoute());
+                                        },
+                                        child: SvgPicture.asset(
+                                          Assets.images.svg.noFriends,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Your friend list is empty',
+                                        style: context
+                                            .textStyleGreyBarlow(context)
+                                            .copyWith(
+                                              fontSize: 18,
+                                              color: AppLightColorConstants
+                                                  .contentTeritaryColor,
+                                            ),
+                                      ),
+                                    ],
+                                  )),
                                 )
                               : Scrollbar(
                                   child: ListView.builder(
@@ -287,7 +302,7 @@ class FriendsPageWidget extends StatelessWidget {
                     ),
                     context.sizedHeightBoxNormal,
                     CustomContinueButton(
-                      buttonText: 'Add Friend',
+                      buttonText: 'Add Friends',
                       onPressed: () {
                         context.router.push(const AddFriendsViewRoute());
                       },
