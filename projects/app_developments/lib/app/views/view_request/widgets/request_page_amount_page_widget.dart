@@ -177,84 +177,109 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                               ),
                         ),
                         context.sizedHeightBoxLower,
-                        DropdownMenu(
-                          menuHeight: context.dynamicHeight(0.15),
-                          width: context.dynamicWidth(0.3),
-                          textStyle: context
-                              .textStyleGrey(context)
-                              .copyWith(fontWeight: FontWeight.w600),
-                          controller: viewModel.currencyController,
-                          hintText: 'Ex. USD',
-                          dropdownMenuEntries: <DropdownMenuEntry<String>>[
-                            DropdownMenuEntry(
-                              value: '₺',
-                              label: 'TL',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                      left: context.dynamicWidth(0.05)),
-                                ),
-                              ),
-                            ),
-                            DropdownMenuEntry(
-                              value: '\$',
-                              label: 'USD',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                      left: context.dynamicWidth(0.05)),
-                                ),
-                              ),
-                            ),
-                            DropdownMenuEntry(
-                              value: '€',
-                              label: 'EURO',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                      left: context.dynamicWidth(0.05)),
-                                ),
-                              ),
-                            ),
-                            DropdownMenuEntry(
-                              value: '£',
-                              label: 'GBP',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                      left: context.dynamicWidth(0.05)),
-                                ),
-                              ),
-                            ),
-                            DropdownMenuEntry(
-                              value: '¥',
-                              label: 'JPY',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                    left: context.dynamicWidth(0.05),
+                        // Replace the DropdownMenu with a button to show the bottom sheet
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final ScrollController scrollController =
+                                    ScrollController();
+
+                                return SizedBox(
+                                  height: context.dynamicHeight(0.3),
+                                  child: Scrollbar(
+                                    controller:
+                                        scrollController, // Attach scroll controller
+                                    thumbVisibility:
+                                        true, // Ensures the thumb is always visible
+                                    trackVisibility:
+                                        true, // Makes the scrollbar track visible
+                                    child: ListView(
+                                      controller:
+                                          scrollController, // Attach controller to ListView
+                                      children: [
+                                        ListTile(
+                                          title: const Text('TL'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'TL';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('USD'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'USD';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('EURO'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'EURO';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('GBP'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'GBP';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('JPY'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'JPY';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('CHF'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'CHF';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        // Add more currencies if needed
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: textfieldWidth / 2,
+                            padding: context.paddingNormal,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            DropdownMenuEntry(
-                              value: '₣',
-                              label: 'CHF',
-                              style: ButtonStyle(
-                                padding:
-                                    WidgetStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.only(
-                                      left: context.dynamicWidth(0.05)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  viewModel.currencyController.text.isEmpty
+                                      ? 'Select Currency'
+                                      : viewModel.currencyController.text,
+                                  style:
+                                      context.textStyleGrey(context).copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                 ),
-                              ),
+                                const Icon(Icons.arrow_drop_down),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
+
                         context.sizedHeightBoxLow,
                         Text(
                           'Enter Amount',
@@ -280,7 +305,7 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Enter a Message', // Main text
+                                text: 'Enter a Message',
                                 style: context
                                     .textStyleGreyBarlow(context)
                                     .copyWith(

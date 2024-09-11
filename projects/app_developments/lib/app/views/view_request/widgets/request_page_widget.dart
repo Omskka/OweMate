@@ -86,8 +86,9 @@ class RequestPageWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                        padding: leftPadding,
-                        child: SvgPicture.asset(Assets.images.svg.friendsIcon)),
+                      padding: leftPadding,
+                      child: SvgPicture.asset(Assets.images.svg.friendsIcon),
+                    ),
                     context.sizedWidthBoxLow,
                     Text(
                       'Friends',
