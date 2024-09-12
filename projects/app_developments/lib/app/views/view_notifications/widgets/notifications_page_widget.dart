@@ -102,7 +102,7 @@ class NotificationsPageWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: context.dynamicHeight(0.4),
+                height: context.dynamicHeight(0.45),
                 width: context.dynamicWidth(containerWidth),
                 child: state.friendRequests.isEmpty
                     ? SizedBox(

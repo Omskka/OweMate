@@ -123,6 +123,7 @@ class RequestPageWidget extends StatelessWidget {
                                       },
                                       child: SvgPicture.asset(
                                         Assets.images.svg.noFriends,
+                                        height: context.dynamicHeight(0.35),
                                       ),
                                     ),
                                     FittedBox(

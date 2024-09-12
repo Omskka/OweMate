@@ -159,6 +159,7 @@ class FriendsPageWidget extends StatelessWidget {
                                         },
                                         child: SvgPicture.asset(
                                           Assets.images.svg.noFriends,
+                                          height: context.dynamicHeight(0.3),
                                         ),
                                       ),
                                       Text(

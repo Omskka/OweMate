@@ -590,7 +590,7 @@ class ActivityPageWidget extends StatelessWidget {
                                       children: [
                                         SvgPicture.asset(
                                           Assets.images.svg.noActivity,
-                                          width: 200,
+                                          height: context.dynamicHeight(0.22),
                                         ),
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
