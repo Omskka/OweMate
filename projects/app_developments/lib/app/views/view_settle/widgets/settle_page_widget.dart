@@ -244,23 +244,22 @@ class SettlePageWidget extends StatelessWidget {
                                   );
                                 },
                               )
-                            : Padding(
-                                padding: context.onlyLeftPaddingMedium,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                        Assets.images.svg.emptyInbox),
-                                    FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Text(
-                                        'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                        style: context.textStyleGrey(context),
-                                        textAlign: TextAlign.center,
-                                      ),
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.images.svg.emptyInbox,
+                                    height: context.dynamicHeight(0.22),
+                                  ),
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                      style: context.textStyleGrey(context),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                   ),
                 ),

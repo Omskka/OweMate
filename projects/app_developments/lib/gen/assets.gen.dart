@@ -108,6 +108,9 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/profile_circle.svg
   String get profileCircle => 'assets/images/svg/profile_circle.svg';
 
+  /// File path: assets/images/svg/settled.svg
+  String get settled => 'assets/images/svg/settled.svg';
+
   /// File path: assets/images/svg/tag_square.svg
   String get tagSquare => 'assets/images/svg/tag_square.svg';
 
@@ -129,6 +132,7 @@ class $AssetsImagesSvgGen {
         noActivity,
         noFriends,
         profileCircle,
+        settled,
         tagSquare,
         wallet
       ];
