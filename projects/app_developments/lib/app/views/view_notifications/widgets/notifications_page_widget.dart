@@ -112,6 +112,7 @@ class NotificationsPageWidget extends StatelessWidget {
                             context.sizedHeightBoxLow,
                             SvgPicture.asset(
                               Assets.images.svg.mailbox,
+                              height: context.dynamicHeight(0.28),
                             ),
                             FittedBox(
                               fit: BoxFit.scaleDown,

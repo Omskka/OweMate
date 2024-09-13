@@ -33,3 +33,14 @@ class FriendsDataLoadedState extends FriendsState {
           requestNumber: requestNumber,
         );
 }
+
+class FriendsSearchedState extends FriendsState {
+  FriendsSearchedState({
+    required List<Map<String, String>> friends,
+    required List requestNumber,
+    required FriendsState state,
+  }) : super(
+          friends: friends,
+          requestNumber: requestNumber,
+        );
+}

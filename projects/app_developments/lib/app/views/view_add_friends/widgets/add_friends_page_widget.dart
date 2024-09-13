@@ -87,7 +87,13 @@ class AddFriendsPageWidget extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SvgPicture.asset(Assets.images.svg.magnifyingGlass),
+                            Padding(
+                              padding: context.onlyTopPaddingNormal,
+                              child: SvgPicture.asset(
+                                Assets.images.svg.magnifyingGlass,
+                                height: context.dynamicHeight(0.25),
+                              ),
+                            ),
                             Text(
                               'No results found',
                               style:

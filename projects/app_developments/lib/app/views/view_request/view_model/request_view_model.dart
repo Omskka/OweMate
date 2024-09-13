@@ -98,7 +98,6 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
 
       default:
         // Handle unknown currency label
-        print('Unknown currency label: $selectedLabel');
     }
     emit(
       RequestUpdateCurrencyState(

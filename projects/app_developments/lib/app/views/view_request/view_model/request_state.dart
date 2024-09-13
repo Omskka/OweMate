@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Abstract base class for all request states.
 abstract class RequestState {
   final int? selectedPage;
@@ -44,9 +42,11 @@ class RequestPageIncrementState extends RequestState {
   final int? selectedPage;
   final RequestState state;
   final List<Map<String, String>>? selectedUser;
-  RequestPageIncrementState(
-      {required this.state, required this.selectedPage, this.selectedUser})
-      : super(
+  RequestPageIncrementState({
+    required this.state,
+    required this.selectedPage,
+    this.selectedUser,
+  }) : super(
           friends: state.friends,
           selectedPage: selectedPage,
           selectedUser: selectedUser,

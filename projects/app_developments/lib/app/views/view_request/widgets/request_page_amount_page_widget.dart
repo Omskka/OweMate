@@ -37,13 +37,6 @@ class RequestPageAmountPageWidget extends StatelessWidget {
 
         // Height
         if (screenHeight <= 600) {
-        } else if (screenHeight <= 800) {
-        } else if (screenHeight <= 900) {
-        } else if (screenHeight <= 1080) {
-        } else {}
-
-        // Height
-        if (screenHeight <= 600) {
           containerHeight = 0.2;
         } else if (screenHeight <= 800) {
           containerHeight = 0.25;
