@@ -146,7 +146,8 @@ class FriendsPageWidget extends StatelessWidget {
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
-                          : state.friends.isEmpty
+                          : state.friends.isEmpty &&
+                                  state is FriendsDataLoadedState
                               ? SizedBox(
                                   child: Center(
                                       child: Column(
@@ -175,131 +176,173 @@ class FriendsPageWidget extends StatelessWidget {
                                     ],
                                   )),
                                 )
-                              : Scrollbar(
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: state.friends.length,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        // remove splash effect
-                                        splashFactory: NoSplash.splashFactory,
-                                        onTap: () {},
-                                        child: Padding(
-                                          padding: context.onlyTopPaddingNormal,
-                                          child: SizedBox(
-                                            height: context.dynamicHeight(0.1),
-                                            width: context.dynamicWidth(0.8),
-                                            child: Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: context
-                                                      .dynamicWidth(0.07),
-                                                  backgroundColor:
-                                                      AppLightColorConstants
-                                                          .contentTeritaryColor,
-                                                  backgroundImage: NetworkImage(
-                                                    state.friends[index][
-                                                            'profileImageUrl'] ??
-                                                        '', // Use index to get the correct user
-                                                  ),
-                                                ),
-                                                context.sizedWidthBoxNormal,
-                                                Expanded(
-                                                  child: Text(
-                                                    state.friends[index]
-                                                            ['Name'] ??
-                                                        'Unknown User',
-                                                    style: context
-                                                        .textStyleGrey(context)
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color:
-                                                              AppLightColorConstants
-                                                                  .bgInverse,
-                                                        ),
-                                                  ),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    // set up the buttons
-                                                    Widget cancelButton =
-                                                        TextButton(
-                                                      child: const Text(
-                                                        "Cancel",
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop(); // Dismiss the dialog
-                                                      },
-                                                    );
-                                                    Widget continueButton =
-                                                        TextButton(
-                                                      child: const Text(
-                                                        "Remove",
-                                                        style: TextStyle(
-                                                          color:
-                                                              AppLightColorConstants
-                                                                  .errorColor,
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        context
-                                                            .read<
-                                                                FriendsViewModel>()
-                                                            .add(
-                                                              FriendsRemoveFriendEvent(
-                                                                context:
-                                                                    context,
-                                                                friendId: state
-                                                                            .friends[
-                                                                        index]
-                                                                    ['userId']!,
-                                                              ),
-                                                            );
-                                                        Navigator.of(context)
-                                                            .pop(); // Dismiss the dialog
-                                                      },
-                                                    );
-
-                                                    // set up the AlertDialog
-                                                    AlertDialog alert =
-                                                        AlertDialog(
-                                                      title: const Text(
-                                                          "Remove Friend"),
-                                                      content: Text(
-                                                          "Are you sure you want to remove ${state.friends[index]['Name'] ?? 'Unknown User'} as a friend?"),
-                                                      actions: [
-                                                        cancelButton,
-                                                        continueButton,
-                                                      ],
-                                                    );
-
-                                                    // show the dialog
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return alert;
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Padding(
-                                                    padding: context
-                                                        .onlyRightPaddingNormal,
-                                                    child:
-                                                        const Icon(Icons.close),
-                                                  ),
-                                                )
-                                              ],
+                              : state.friends.isEmpty &&
+                                      state is FriendsSearchedState
+                                  ? SizedBox(
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  context.onlyTopPaddingNormal,
+                                              child: SvgPicture.asset(
+                                                Assets
+                                                    .images.svg.magnifyingGlass,
+                                                height:
+                                                    context.dynamicHeight(0.25),
+                                              ),
                                             ),
-                                          ),
+                                            Text(
+                                              'No results found',
+                                              style: context
+                                                  .textStyleGreyBarlow(context)
+                                                  .copyWith(
+                                                    fontSize: 18,
+                                                    color: AppLightColorConstants
+                                                        .contentTeritaryColor,
+                                                    fontWeight: FontWeight.w100,
+                                                  ),
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                      ),
+                                    )
+                                  : Scrollbar(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: state.friends.length,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            // remove splash effect
+                                            splashFactory:
+                                                NoSplash.splashFactory,
+                                            onTap: () {},
+                                            child: Padding(
+                                              padding:
+                                                  context.onlyTopPaddingNormal,
+                                              child: SizedBox(
+                                                height:
+                                                    context.dynamicHeight(0.1),
+                                                width:
+                                                    context.dynamicWidth(0.8),
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: context
+                                                          .dynamicWidth(0.07),
+                                                      backgroundColor:
+                                                          AppLightColorConstants
+                                                              .contentTeritaryColor,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        state.friends[index][
+                                                                'profileImageUrl'] ??
+                                                            '', // Use index to get the correct user
+                                                      ),
+                                                    ),
+                                                    context.sizedWidthBoxNormal,
+                                                    Expanded(
+                                                      child: Text(
+                                                        state.friends[index]
+                                                                ['Name'] ??
+                                                            'Unknown User',
+                                                        style: context
+                                                            .textStyleGrey(
+                                                                context)
+                                                            .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 20,
+                                                              color:
+                                                                  AppLightColorConstants
+                                                                      .bgInverse,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        // set up the buttons
+                                                        Widget cancelButton =
+                                                            TextButton(
+                                                          child: const Text(
+                                                            "Cancel",
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(); // Dismiss the dialog
+                                                          },
+                                                        );
+                                                        Widget continueButton =
+                                                            TextButton(
+                                                          child: const Text(
+                                                            "Remove",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  AppLightColorConstants
+                                                                      .errorColor,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    FriendsViewModel>()
+                                                                .add(
+                                                                  FriendsRemoveFriendEvent(
+                                                                    context:
+                                                                        context,
+                                                                    friendId: state
+                                                                            .friends[index]
+                                                                        [
+                                                                        'userId']!,
+                                                                  ),
+                                                                );
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(); // Dismiss the dialog
+                                                          },
+                                                        );
+
+                                                        // set up the AlertDialog
+                                                        AlertDialog alert =
+                                                            AlertDialog(
+                                                          title: const Text(
+                                                              "Remove Friend"),
+                                                          content: Text(
+                                                              "Are you sure you want to remove ${state.friends[index]['Name'] ?? 'Unknown User'} as a friend?"),
+                                                          actions: [
+                                                            cancelButton,
+                                                            continueButton,
+                                                          ],
+                                                        );
+
+                                                        // show the dialog
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return alert;
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Padding(
+                                                        padding: context
+                                                            .onlyRightPaddingNormal,
+                                                        child: const Icon(
+                                                            Icons.close),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                     ),
                     context.sizedHeightBoxNormal,
                     CustomContinueButton(

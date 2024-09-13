@@ -57,6 +57,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginView(),
       );
     },
+    MessagesViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MessagesView(),
+      );
+    },
     NotificationsViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -202,6 +208,20 @@ class LoginViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'LoginViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MessagesView]
+class MessagesViewRoute extends PageRouteInfo<void> {
+  const MessagesViewRoute({List<PageRouteInfo>? children})
+      : super(
+          MessagesViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MessagesViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

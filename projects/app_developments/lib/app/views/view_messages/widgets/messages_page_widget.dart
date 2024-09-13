@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
-import 'package:app_developments/app/views/view_request/view_model/request_event.dart';
-import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
-import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
+import 'package:app_developments/app/views/view_messages/view_model/messages_event.dart';
+import 'package:app_developments/app/views/view_messages/view_model/messages_state.dart';
+import 'package:app_developments/app/views/view_messages/view_model/messages_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
@@ -13,21 +13,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class RequestPageWidget extends StatelessWidget {
-  const RequestPageWidget({super.key});
+class MessagesPageWidget extends StatelessWidget {
+  const MessagesPageWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RequestViewModel, RequestState>(
+    return BlocBuilder<MessagesViewModel, MessagesState>(
       builder: (context, state) {
-        final viewModel = BlocProvider.of<RequestViewModel>(context);
-        // Handle the case where maxWidth or maxHeight is Infinity
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
+        final viewModel = BlocProvider.of<MessagesViewModel>(context);
 
-        // Define responsive variables
+        final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        // Initialise variables
         double containerWidth;
-        EdgeInsets leftPadding;
         double circleAvatarWidth;
 
         // Height
@@ -40,85 +39,61 @@ class RequestPageWidget extends StatelessWidget {
         // Width
         if (screenWidth <= 600) {
           containerWidth = 0.8;
-          leftPadding = context.onlyLeftPaddingMedium;
           circleAvatarWidth = 1.55;
         } else if (screenWidth <= 800) {
           containerWidth = 0.68;
-          leftPadding = context.onlyLeftPaddingMedium;
           circleAvatarWidth = 1.5;
         } else if (screenWidth <= 900) {
           containerWidth = 0.63;
-          leftPadding = context.onlyLeftPaddingHigh * 1.5;
           circleAvatarWidth = 1.4;
         } else if (screenWidth <= 1080) {
           containerWidth = 0.6;
-          leftPadding = context.onlyLeftPaddingHigh * 1.7;
           circleAvatarWidth = 1.1;
         } else {
           containerWidth = 0.5;
-          leftPadding = context.onlyLeftPaddingHigh * 4;
-
           circleAvatarWidth = 0.9;
         }
-
         return RefreshIndicator(
           color: AppLightColorConstants.primaryColor,
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
             // Dispatch the initial event to refresh the data
-            context.read<RequestViewModel>().add(RequestInitialEvent());
+            context.read<MessagesViewModel>().add(MessagesInitialEvent());
           },
           child: SingleChildScrollView(
             child: Column(
               children: [
                 BackButtonWithTitle(
-                  title: 'Request Money',
+                  title: 'Messages',
                   ontap: () {
-                    context.router.push(
-                      const DebtsViewRoute(),
-                    );
+                    context.router.push(const HomeViewRoute());
                   },
                 ),
                 SizedBox(
-                  width: context.dynamicWidth(0.85),
                   height: context.dynamicHeight(0.1),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Center(
-                      child: Text(
-                        'Choose from your friends list to quickly request money,\nmaking it easy to manage and track shared expenses.',
-                        textAlign: TextAlign.center,
-                        style: context.textStyleGrey(context).copyWith(
-                              fontSize: 15,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: context.dynamicWidth(1),
-                  height: context.dynamicHeight(0.06),
+                  width: screenWidth,
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: leftPadding,
-                        child: SvgPicture.asset(Assets.images.svg.friendsIcon),
-                      ),
+                      SvgPicture.asset(Assets.images.svg.friendsIcon),
                       context.sizedWidthBoxLow,
-                      Text(
-                        'Friends',
-                        style: context
-                            .textStyleGreyBarlow(context)
-                            .copyWith(fontSize: 17),
-                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          'See all messages from friends\nrelated to requests and declines.',
+                          textAlign: TextAlign.center,
+                          style: context
+                              .textStyleGrey(context)
+                              .copyWith(fontSize: 17),
+                        ),
+                      )
                     ],
                   ),
                 ),
                 SizedBox(
                   height: context.dynamicHeight(0.65),
                   width: context.dynamicWidth(containerWidth),
-                  child: state is RequestLoadingState
+                  child: state is MessagesLoadingState
                       ? Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
@@ -129,32 +104,33 @@ class RequestPageWidget extends StatelessWidget {
                       : state.friends.isEmpty
                           ? SizedBox(
                               child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          context.router.push(
-                                              const AddFriendsViewRoute());
-                                        },
-                                        child: SvgPicture.asset(
-                                          Assets.images.svg.noFriends,
-                                          height: context.dynamicHeight(0.3),
-                                        ),
+                                alignment: Alignment.topCenter,
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.router
+                                            .push(const AddFriendsViewRoute());
+                                      },
+                                      child: SvgPicture.asset(
+                                        Assets.images.svg.noFriends,
+                                        height: context.dynamicHeight(0.3),
                                       ),
-                                      FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          'Your friend list is empty',
-                                          style: context
-                                              .textStyleGreyBarlow(context)
-                                              .copyWith(
-                                                fontSize: 18,
-                                              ),
-                                        ),
+                                    ),
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Your friend list is empty',
+                                        style: context
+                                            .textStyleGreyBarlow(context)
+                                            .copyWith(
+                                              fontSize: 18,
+                                            ),
                                       ),
-                                    ],
-                                  )),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             )
                           : Scrollbar(
                               child: ListView.builder(
@@ -168,7 +144,16 @@ class RequestPageWidget extends StatelessWidget {
                                       InkWell(
                                         // remove splash effect
                                         splashFactory: NoSplash.splashFactory,
-                                        onTap: () {},
+                                        onTap: () {
+                                          viewModel.add(
+                                            MessagesViewActionsEvent(
+                                              context: context,
+                                              selectedUser: [
+                                                state.friends[index]
+                                              ],
+                                            ),
+                                          );
+                                        },
                                         child: Padding(
                                           padding: context.onlyTopPaddingNormal,
                                           child: SizedBox(
@@ -226,26 +211,18 @@ class RequestPageWidget extends StatelessWidget {
                                                         ),
                                                   ),
                                                 ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    viewModel.add(
-                                                      RequestNavigateToNextPageEvent(
-                                                        selectedPage: 2,
-                                                        context: context,
-                                                        selectedUser: [
-                                                          state.friends[index]
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      const Icon(Icons.send),
-                                                      context.sizedWidthBoxLow,
-                                                      const Text('Send')
-                                                    ],
+                                                Padding(
+                                                  padding: context
+                                                      .onlyRightPaddingNormal,
+                                                  child: Icon(
+                                                    Icons.mail,
+                                                    color:
+                                                        AppLightColorConstants
+                                                            .primaryColor,
+                                                    size: context
+                                                        .dynamicHeight(0.035),
                                                   ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ),

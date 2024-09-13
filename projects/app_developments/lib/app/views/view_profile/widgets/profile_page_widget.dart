@@ -118,12 +118,18 @@ class ProfilePageWidget extends StatelessWidget {
                     children: [
                       Align(
                         alignment: Alignment.center,
-                        child: CircleAvatar(
-                          radius: context.dynamicHeight(0.09),
-                          backgroundColor:
-                              AppLightColorConstants.contentTeritaryColor,
-                          backgroundImage: NetworkImage(
-                            state.profileImageUrl,
+                        child: GestureDetector(
+                          onTap: () {
+                            BlocProvider.of<ProfileViewModel>(context)
+                                .add(ProfileChangeImageEvent());
+                          },
+                          child: CircleAvatar(
+                            radius: context.dynamicHeight(0.09),
+                            backgroundColor:
+                                AppLightColorConstants.contentTeritaryColor,
+                            backgroundImage: NetworkImage(
+                              state.profileImageUrl,
+                            ),
                           ),
                         ),
                       ),
@@ -186,7 +192,7 @@ class ProfilePageWidget extends StatelessWidget {
                               ),
                               context.sizedHeightBoxLower,
                               CustomProfileCard(
-                                title: 'Name',
+                                title: 'Username',
                                 description: state.firstName,
                               ),
                               context.sizedHeightBoxLower,

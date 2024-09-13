@@ -78,6 +78,9 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/chart.svg
   String get chart => 'assets/images/svg/chart.svg';
 
+  /// File path: assets/images/svg/empty_envelope.svg
+  String get emptyEnvelope => 'assets/images/svg/empty_envelope.svg';
+
   /// File path: assets/images/svg/empty_inbox.svg
   String get emptyInbox => 'assets/images/svg/empty_inbox.svg';
 
@@ -122,6 +125,7 @@ class $AssetsImagesSvgGen {
         addFriend,
         addItem,
         chart,
+        emptyEnvelope,
         emptyInbox,
         friends,
         friendsIcon,

@@ -84,7 +84,7 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
       }
 
       // Emit the state with the matched friends data
-      emit(FriendsDataLoadedState(
+      emit(FriendsSearchedState(
         friends: matchedFriends,
         state: state,
         requestNumber: requestList,
