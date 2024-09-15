@@ -168,12 +168,6 @@ class LoginPageWidget extends StatelessWidget {
                             width: textfieldWidth,
                             hintText: '',
                             textInputAction: TextInputAction.next,
-                            validator: (value) =>
-                                SignUpValidation().checkPasswordErrors(
-                              value,
-                              context,
-                              viewModel.passwordController,
-                            ),
                             showVisibilityToggle: true,
                             controller: viewModel.passwordController,
                           ),

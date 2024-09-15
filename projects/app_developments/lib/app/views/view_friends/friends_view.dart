@@ -146,7 +146,6 @@ class FriendsView extends StatelessWidget {
               ),
               drawer: HomeNavbarWidget(
                 name: context.read<FriendsViewModel>().name,
-                phoneNumber: context.read<FriendsViewModel>().phoneNumber,
                 email: context.read<FriendsViewModel>().email,
                 profileImageUrl:
                     context.read<FriendsViewModel>().profileImageUrl,

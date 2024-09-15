@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:app_developments/app/views/view_debts/view_model/debts_event.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
-import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
-import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +22,6 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
   String name = '';
   String gender = '';
   String email = '';
-  String phoneNumber = '';
   String profileImageUrl = '';
   List friendsList = [];
   List requestList = [];
@@ -39,7 +36,6 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
       gender = userData['gender']!;
-      phoneNumber = userData['phoneNumber']!;
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
       friendsList = userData['friendsList']!;

@@ -145,7 +145,6 @@ class ActivitySelectState extends ActivityState {
         );
 }
 
-
 class ActivityfriendsDataLoadedState extends ActivityState {
   ActivityfriendsDataLoadedState({
     required ActivityState state,

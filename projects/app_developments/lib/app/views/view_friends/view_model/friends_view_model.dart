@@ -15,7 +15,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
   String name = '';
   String gender = '';
   String email = '';
-  String phoneNumber = '';
   String profileImageUrl = '';
   List friendsList = [];
   List requestList = [];
@@ -38,7 +37,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
       gender = userData['gender']!;
-      phoneNumber = userData['phoneNumber']!;
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
       friendsList = userData['friendsList']!;

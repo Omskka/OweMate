@@ -11,14 +11,13 @@ class ProfileInitialState extends ProfileState {}
 
 // State when user data is loaded
 class ProfileLoadDataState extends ProfileState {
-  final String firstName, lastName, phoneNumber, schoolName, email, profileImageUrl;
+  final String firstName, schoolName, email, profileImageUrl, gender;
 
   ProfileLoadDataState({
     required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
     required this.schoolName,
     required this.email,
+    required this.gender,
     required this.profileImageUrl,
     required ProfileState state,
   }) : super(selectedPage: state.selectedPage);

@@ -1,22 +1,40 @@
-import 'package:app_developments/app/l10n/app_localizations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProfileUpdateValidation{
-  // Function to check valid name
-  String? checkValidName(String? value, BuildContext context) {
-    // validation logic for name and surname
-    // name should be longer than one characters
-    RegExp namePattern = RegExp(r'^[a-zA-ZğüşıöçĞÜŞİÖÇ]');
+// Modify ProfileUpdateValidation for synchronous checks
+class ProfileUpdateValidation {
+  // Synchronous name validation (no async logic)
+  String? syncCheckValidName(String? value, BuildContext context) {
+    RegExp namePattern = RegExp(r'^[a-zA-ZğüşıöçĞÜŞİÖÇ]+$');
 
     // Check if textfield is empty
     if (value == null || value.isEmpty) {
       return 'Value Required';
-      // Check if name has more than two characters
     }
 
+    // Check if name has more than two characters and is valid
     if (!namePattern.hasMatch(value) || value.length < 3) {
       return 'Invalid Name';
     }
+
+    return null; // Synchronous validation passed
+  }
+
+  // Asynchronous check if the name exists in Firebase
+  Future<String?> asyncCheckNameExists(String value) async {
+    bool nameExists = await _checkNameExistsInFirebase(value);
+    if (nameExists) {
+      return 'A user with that username already exists';
+    }
     return null;
+  }
+
+  // Firebase helper method (same as before)
+  Future<bool> _checkNameExistsInFirebase(String name) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('name', isEqualTo: name)
+        .get();
+    return querySnapshot.docs.isNotEmpty;
   }
 }

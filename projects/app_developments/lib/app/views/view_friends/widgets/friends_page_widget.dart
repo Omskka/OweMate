@@ -22,11 +22,13 @@ class FriendsPageWidget extends StatelessWidget {
     return BlocBuilder<FriendsViewModel, FriendsState>(
       builder: (context, state) {
         final viewModel = BlocProvider.of<FriendsViewModel>(context);
-        viewModel.friendsSearchController.addListener(() {
-          context
-              .read<FriendsViewModel>()
-              .add(FriendsSearchEvent(context: context));
-        });
+        viewModel.friendsSearchController.addListener(
+          () {
+            context.read<FriendsViewModel>().add(
+                  FriendsSearchEvent(context: context),
+                );
+          },
+        );
         return LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;

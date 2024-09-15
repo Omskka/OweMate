@@ -13,7 +13,6 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
   String name = '';
   String gender = '';
   String email = '';
-  String phoneNumber = '';
   String profileImageUrl = '';
   List friendsList = [];
   List requestList = [];
@@ -43,7 +42,6 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
       gender = userData['gender']!;
-      phoneNumber = userData['phoneNumber']!;
       email = userData['email']!;
       profileImageUrl = userData['profileImageUrl']!;
       friendsList = userData['friendsList']!;

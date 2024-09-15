@@ -10,13 +10,11 @@ import 'package:flutter/material.dart';
 class HomeNavbarWidget extends StatelessWidget {
   final String name;
   final String email;
-  final String phoneNumber;
   final String profileImageUrl;
 
   const HomeNavbarWidget({
     super.key,
     required this.name,
-    required this.phoneNumber,
     required this.email,
     required this.profileImageUrl,
   });

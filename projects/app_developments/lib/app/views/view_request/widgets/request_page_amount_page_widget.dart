@@ -193,14 +193,6 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                                           scrollController, // Attach controller to ListView
                                       children: [
                                         ListTile(
-                                          title: const Text('TL'),
-                                          onTap: () {
-                                            viewModel.currencyController.text =
-                                                'TL';
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        ListTile(
                                           title: const Text('USD'),
                                           onTap: () {
                                             viewModel.currencyController.text =
@@ -213,6 +205,14 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                                           onTap: () {
                                             viewModel.currencyController.text =
                                                 'EURO';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('TL'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'TL';
                                             Navigator.pop(context);
                                           },
                                         ),

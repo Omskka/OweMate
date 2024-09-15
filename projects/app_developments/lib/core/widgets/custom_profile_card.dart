@@ -70,11 +70,14 @@ class CustomProfileCard extends StatelessWidget {
         children: [
           Padding(
             padding: context.onlyLeftPaddingNormal,
-            child: Text(
-              title,
-              style: context.textStyleGrey(context).copyWith(
-                    color: AppLightColorConstants.primaryColor,
-                  ),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                style: context.textStyleGrey(context).copyWith(
+                      color: AppLightColorConstants.primaryColor,
+                    ),
+              ),
             ),
           ),
           const Spacer(),

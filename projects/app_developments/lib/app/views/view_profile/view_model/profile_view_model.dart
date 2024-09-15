@@ -36,11 +36,10 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
       TextEditingController();
 
   String firstName = '';
-  String lastName = '';
   String email = '';
-  String phoneNumber = '';
   String schoolName = '';
   String profileImageUrl = '';
+  String gender = '';
 
   FutureOr<void> _initial(
       ProfileInitialEvent event, Emitter<ProfileState> emit) {}
@@ -58,18 +57,17 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
         final userData = await fetchUserDataService.fetchUserData();
 
         firstName = userData['firstName'] ?? '';
-        lastName = userData['lastName'] ?? '';
-        phoneNumber = userData['phoneNumber'] ?? '';
         schoolName = userData['schoolName'] ?? '';
         email = userData['email'] ?? '';
         profileImageUrl = userData['profileImageUrl'] ?? '';
+        // Extract gender, remove pronouns (he/him or she/her)
+        gender = userData['gender']?.split('(')[0].trim() ?? '';
 
         emit(ProfileLoadDataState(
           state: state,
           firstName: firstName,
-          lastName: lastName,
-          phoneNumber: phoneNumber,
           schoolName: schoolName,
+          gender: gender,
           email: email,
           profileImageUrl: profileImageUrl,
         ));
@@ -122,10 +120,9 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileLoadDataState(
           state: state,
           firstName: firstName,
-          lastName: lastName,
-          phoneNumber: phoneNumber,
           schoolName: schoolName,
           email: email,
+          gender: gender,
           profileImageUrl: profileImageUrl,
         ));
       }
