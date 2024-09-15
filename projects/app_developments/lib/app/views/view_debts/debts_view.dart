@@ -147,7 +147,6 @@ class DebtsView extends StatelessWidget {
               ),
               drawer: HomeNavbarWidget(
                 name: context.read<DebtsViewModel>().name,
-                phoneNumber: context.read<DebtsViewModel>().phoneNumber,
                 email: context.read<DebtsViewModel>().email,
                 profileImageUrl: context.read<DebtsViewModel>().profileImageUrl,
               ),

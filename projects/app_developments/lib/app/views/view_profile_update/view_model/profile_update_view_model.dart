@@ -31,7 +31,6 @@ class ProfileUpdateViewModel
     on<ProfileUpdateSelectImageEvent>(_selectImage);
     on<ProfileUpdateAddUserEvent>(_addUserDetails);
     on<ProfileUpdateSelectedPageEvent>(_selectPage);
-    on<ProfileUpdateAddPhoneNumberEvent>(_addPhoneNumber);
   }
 
   // ProfileUpdateInitialEvent handler method.
@@ -70,7 +69,6 @@ class ProfileUpdateViewModel
         {
           'name': firstnameController.text.trim(),
           'gender': genderController.text.trim(),
-          'phoneNumber': phoneNumberController.text.trim(),
           'profile_image_url':
               '', // Default empty URL, will be updated if an image is selected
           'friendsList': [], // Initialize with an empty list
@@ -93,12 +91,11 @@ class ProfileUpdateViewModel
         String downloadURL = await snapshot.ref.getDownloadURL();
 
         // Update Firestore with the image URL
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userid)
-            .update({
-          'profile_image_url': downloadURL,
-        });
+        await FirebaseFirestore.instance.collection('users').doc(userid).update(
+          {
+            'profile_image_url': downloadURL,
+          },
+        );
       } else {
         // Give user a default profile image if no image was selected
         await FirebaseFirestore.instance
@@ -134,46 +131,5 @@ class ProfileUpdateViewModel
         state: state,
       ),
     );
-  }
-
-  FutureOr<void> _addPhoneNumber(ProfileUpdateAddPhoneNumberEvent event,
-      Emitter<ProfileUpdateState> emit) async {
-    try {
-      // Loading circle
-      showDialog(
-        context: event.context,
-        builder: (context) {
-          return const Center(child: CircularProgressIndicator());
-        },
-      );
-      String? userid = AuthenticationRepository().getCurrentUserId();
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userid)
-          .update({'phoneNumber': phoneNumberController.text.trim()});
-
-      // If addPhoneNumber method completes without throwing an exception,
-      // it indicates a successful process.
-
-      // Emit a success state and display FlutterToast
-      emit(ProfileUpdateSuccessState());
-      CustomFlutterToast(
-              backgroundColor: AppLightColorConstants.successColor,
-              context: event.context,
-              msg: 'Phone Number Successfully Added')
-          .flutterToast();
-      // Navigate to next page
-      emit(ProfileUpdateSelectedPageState(selectedPage: 4, state: state));
-      // Dismiss the loading circle dialog
-      Navigator.of(event.context).pop();
-      // Handle error if proccess failed
-    } catch (e) {
-      // Dismiss the loading circle dialog
-      Navigator.of(event.context).pop();
-      CustomFlutterToast(
-        context: event.context,
-        msg: e.toString(),
-      ).flutterToast();
-    }
   }
 }

@@ -147,7 +147,6 @@ class ActivityView extends StatelessWidget {
               ),
               drawer: HomeNavbarWidget(
                 name: context.read<ActivityViewModel>().name,
-                phoneNumber: context.read<ActivityViewModel>().phoneNumber,
                 email: context.read<ActivityViewModel>().email,
                 profileImageUrl:
                     context.read<ActivityViewModel>().profileImageUrl,

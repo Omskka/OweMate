@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_event.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
@@ -167,13 +168,14 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                               textInputAction: TextInputAction.next,
                               controller: viewModel.firstnameController,
                               hintText: 'John Doe',
-                              validator: (value) => ProfileUpdateValidation()
-                                  .checkValidName(value, context),
+                              validator: (value) {
+                                // Perform synchronous validation
+                                return ProfileUpdateValidation()
+                                    .syncCheckValidName(value, context);
+                              },
                               isValid: (value) =>
-                                  ProfileUpdateValidation().checkValidName(
-                                    value,
-                                    context,
-                                  ) ==
+                                  ProfileUpdateValidation()
+                                      .syncCheckValidName(value, context) ==
                                   null,
                             ),
                             context.sizedHeightBoxNormal,
@@ -201,8 +203,8 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                                     label: 'Female (She/Her)',
                                   ),
                                   DropdownMenuEntry(
-                                    value: 'Other',
-                                    label: 'Other (They/Them)',
+                                    value: 'Non-binary',
+                                    label: 'Non-binary (They/Them)',
                                   ),
                                 ],
                               ),
@@ -214,14 +216,29 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                     context.sizedHeightBoxMedium,
                     CustomContinueButton(
                       buttonText: 'Set',
-                      // Add user details when set button is pressed
-                      onPressed: () {
-                        // Check validaitons
-                        if (viewModel.formKey.currentState!.validate()) {
-                          // Only add the event if validation passes
-                          context
-                              .read<ProfileUpdateViewModel>()
-                              .add(ProfileUpdateAddUserEvent(context: context));
+                      onPressed: () async {
+                        // Perform synchronous validation first
+                        if (viewModel.formKey.currentState?.validate() ??
+                            false) {
+                          // Retrieve the name from the controller
+                          final name = viewModel.firstnameController.text;
+
+                          // Perform asynchronous validation for name existence
+                          final errorMessage = await ProfileUpdateValidation()
+                              .asyncCheckNameExists(name);
+
+                          if (errorMessage != null) {
+                            // Show error message (you could use a Snackbar, Dialog, etc.)
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(errorMessage)),
+                            );
+                            return; // Exit early if name check fails
+                          }
+
+                          // If everything is valid, add the event
+                          context.read<ProfileUpdateViewModel>().add(
+                                ProfileUpdateAddUserEvent(context: context),
+                              );
                         }
                       },
                     ),

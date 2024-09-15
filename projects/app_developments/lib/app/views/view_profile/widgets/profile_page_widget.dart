@@ -33,7 +33,6 @@ class ProfilePageWidget extends StatelessWidget {
         double containerWidth;
         double containerHeight;
         double tagSquarePosition;
-        double textfieldWidth;
 
         //  left padding
         EdgeInsets leftPadding;
@@ -91,10 +90,11 @@ class ProfilePageWidget extends StatelessWidget {
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: BackButtonWithTitle(
-                      title: 'Profile Settings',
-                      ontap: () {
-                        context.router.push(const HomeViewRoute());
-                      }),
+                    title: 'Profile',
+                    ontap: () {
+                      context.router.push(const HomeViewRoute());
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: context.dynamicHeight(0.085),
@@ -185,15 +185,15 @@ class ProfilePageWidget extends StatelessWidget {
                           child: Column(
                             children: [
                               CustomProfileCard(
+                                title: 'Username',
+                                description: state.firstName,
+                              ),
+                              context.sizedHeightBoxLower,
+                              CustomProfileCard(
                                 title: 'UserID',
                                 description: AuthenticationRepository()
                                         .getCurrentUserId() ??
                                     '',
-                              ),
-                              context.sizedHeightBoxLower,
-                              CustomProfileCard(
-                                title: 'Username',
-                                description: state.firstName,
                               ),
                               context.sizedHeightBoxLower,
                               CustomProfileCard(
@@ -202,8 +202,8 @@ class ProfilePageWidget extends StatelessWidget {
                               ),
                               context.sizedHeightBoxLower,
                               CustomProfileCard(
-                                title: 'Phone Number',
-                                description: '+90 ${state.phoneNumber}',
+                                title: 'Gender',
+                                description: state.gender,
                               ),
                             ],
                           ),

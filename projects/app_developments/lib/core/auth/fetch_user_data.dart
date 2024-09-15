@@ -20,7 +20,6 @@ class FetchUserData {
 
     String name = userDoc['name'];
     String profileImageUrl = userDoc['profile_image_url'];
-    String phoneNumber = userDoc['phoneNumber'];
     String gender = userDoc['gender'];
     List friendsList = userDoc['friendsList'];
     List requestList = userDoc['requestList'];
@@ -31,7 +30,6 @@ class FetchUserData {
     Map<String, dynamic> userData = {
       'firstName': name,
       'profileImageUrl': profileImageUrl,
-      'phoneNumber': phoneNumber,
       'gender': gender,
       'email': email,
       'friendsList': friendsList,
@@ -64,7 +62,6 @@ class FetchUserData {
       // Retrieve user data
       String name = doc['name'];
       String profileImageUrl = doc['profile_image_url'];
-      String phoneNumber = doc['phoneNumber'];
       String gender = doc['gender'];
 
       // Include the user ID in the data map
@@ -72,7 +69,6 @@ class FetchUserData {
         'userId': userId,
         'Name': name,
         'profileImageUrl': profileImageUrl,
-        'phoneNumber': phoneNumber,
         'gender': gender,
       };
 
@@ -111,7 +107,6 @@ class FetchUserData {
       if (friendDoc.exists) {
         String name = friendDoc['name'];
         String profileImageUrl = friendDoc['profile_image_url'];
-        String phoneNumber = friendDoc['phoneNumber'];
         String gender = friendDoc['gender'];
 
         // Include the friend ID in the data map
@@ -119,7 +114,6 @@ class FetchUserData {
           'userId': friendId,
           'Name': name,
           'profileImageUrl': profileImageUrl,
-          'phoneNumber': phoneNumber,
           'gender': gender,
         };
 

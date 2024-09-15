@@ -117,7 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : null,
           prefixIconConstraints: _isPrefixIconGiven()
               ? const BoxConstraints(
-                  minWidth: 30,
+                  minWidth: 22,
                   minHeight: 20,
                   maxWidth: 50,
                   maxHeight: 20,

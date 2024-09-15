@@ -144,7 +144,6 @@ class HomeView extends StatelessWidget {
               ),
               drawer: HomeNavbarWidget(
                 name: context.read<HomeViewModel>().name,
-                phoneNumber: context.read<HomeViewModel>().phoneNumber,
                 email: context.read<HomeViewModel>().email,
                 profileImageUrl: context.read<HomeViewModel>().profileImageUrl,
               ),

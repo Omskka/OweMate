@@ -20,6 +20,8 @@ class MessagesViewPageWidget extends StatelessWidget {
       builder: (context, state) {
         final viewModel = BlocProvider.of<MessagesViewModel>(context);
 
+        final friendName = state.selectedUser?[0]['Name'] ?? 'No Name';
+
         final screenHeight = MediaQuery.of(context).size.height;
         final screenWidth = MediaQuery.of(context).size.width;
         // Define responsive variables
@@ -127,8 +129,7 @@ class MessagesViewPageWidget extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        state.selectedUser?[0]['Name'] ??
-                            'No Name', // Provide a default name if null
+                        friendName, // Provide a default name if null
                         style: context.textStyleTitleBarlow(context).copyWith(
                               fontSize: 18,
                             ),
@@ -223,6 +224,9 @@ class MessagesViewPageWidget extends StatelessWidget {
                                 final date = combinedFilteredList['date'] ?? '';
                                 final status =
                                     combinedFilteredList['status'] ?? 'pending';
+                                final userMessage =
+                                    combinedFilteredList['message'] ??
+                                        'Error fetching message!';
                                 final declineMessage =
                                     combinedFilteredList['declineMessage'] ??
                                         'Error fetching message!';
@@ -247,11 +251,75 @@ class MessagesViewPageWidget extends StatelessWidget {
                                         style: context
                                             .textStyleGreyBarlow(context),
                                       ),
-                                      content: Text(
-                                        status == 'paid'
-                                            ? "$paidMessage"
-                                            : "$declineMessage",
-                                      ),
+                                      content: status == 'paid'
+                                          ? RichText(
+                                              text: TextSpan(
+                                                style: context.textStyleGreyBarlow(
+                                                    context), // Default style for all text
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "$friendName's Message:\n", // Bold only for this label
+                                                    style: context
+                                                        .textStyleGreyBarlow(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "$paidMessage\n\n", // Normal weight for the message
+                                                    style: context
+                                                        .textStyleGrey(context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "Your message:\n", // Bold only for this label
+                                                    style: context
+                                                        .textStyleGreyBarlow(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "$userMessage", // Normal weight for the message
+                                                    style: context
+                                                        .textStyleGrey(context),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : RichText(
+                                              text: TextSpan(
+                                                style: context.textStyleGreyBarlow(
+                                                    context), // Default style for all text
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "Your message:\n", // Bold only for this label
+                                                    style: context
+                                                        .textStyleGreyBarlow(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "$userMessage\n\n", // Normal weight for the message
+                                                    style: context
+                                                        .textStyleGrey(context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "$friendName's Message:\n",
+                                                    style: context
+                                                        .textStyleGreyBarlow(
+                                                            context),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "$declineMessage\n", // Normal weight for the message
+                                                    style: context
+                                                        .textStyleGrey(context),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                       actions: [
                                         continueButton,
                                       ],

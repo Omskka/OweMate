@@ -33,9 +33,3 @@ class ProfileUpdateSelectedPageEvent extends ProfileUpdateEvent {
   });
 }
 
-class ProfileUpdateAddPhoneNumberEvent extends ProfileUpdateEvent {
-  final BuildContext context;
-  ProfileUpdateAddPhoneNumberEvent({
-    required this.context,
-  });
-}
