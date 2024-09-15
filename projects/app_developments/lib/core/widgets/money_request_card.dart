@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 
-import 'package:flutter/material.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
-import 'package:app_developments/core/extension/context_extension.dart';
-
 class MoneyRequestCard extends StatelessWidget {
   final String profileImageUrl;
   final String name;

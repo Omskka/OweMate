@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 abstract class ActivityState {
   final List requestNumber;
   final List<double> requestedMoneyTotals;
