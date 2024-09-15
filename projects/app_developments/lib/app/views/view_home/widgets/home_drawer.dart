@@ -145,10 +145,7 @@ class HomeNavbarWidget extends StatelessWidget {
                     heightBox,
                     InkWell(
                       onTap: () {
-                        CustomFlutterToast(
-                          context: context,
-                          msg: 'Under Construction',
-                        ).flutterToast();
+                        context.router.push(const StatisticsViewRoute());
                       },
                       child: ListTile(
                         leading: Icon(

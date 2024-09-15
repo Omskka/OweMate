@@ -13,6 +13,7 @@ import 'package:app_developments/app/views/view_request/request_view.dart';
 import 'package:app_developments/app/views/view_settle/settle_view.dart';
 import 'package:app_developments/app/views/view_signup/signup_view.dart';
 import 'package:app_developments/app/views/view_splash/splash_view.dart';
+import 'package:app_developments/app/views/view_statistics/statistics_view.dart';
 import 'package:app_developments/core/widgets/custom_navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -66,5 +67,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: RequestViewRoute.page),
     AutoRoute(page: SettleViewRoute.page),
     AutoRoute(page: MessagesViewRoute.page),
+    AutoRoute(page: StatisticsViewRoute.page),
   ];
 }
