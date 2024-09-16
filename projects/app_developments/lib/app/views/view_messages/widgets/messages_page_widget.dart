@@ -61,6 +61,7 @@ class MessagesPageWidget extends StatelessWidget {
             context.read<MessagesViewModel>().add(MessagesInitialEvent());
           },
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 BackButtonWithTitle(

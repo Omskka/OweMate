@@ -69,6 +69,7 @@ class RequestPageWidget extends StatelessWidget {
             context.read<RequestViewModel>().add(RequestInitialEvent());
           },
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 BackButtonWithTitle(

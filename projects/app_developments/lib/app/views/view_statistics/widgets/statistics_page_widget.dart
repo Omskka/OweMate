@@ -89,6 +89,7 @@ class StatisticsPageWidget extends StatelessWidget {
             context.read<StatisticsViewModel>().add(StatisticsInitialEvent());
           },
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 BackButtonWithTitle(

@@ -51,11 +51,15 @@ class HomePageWidget extends StatelessWidget {
         final filteredRequestedMoney =
             (state.userData['requestedMoney'] as List?)
                     ?.where((item) => item['status'] == 'pending')
+                    .toList()
+                    .reversed
                     .toList() ??
                 [];
 
         final filteredOwedMoney = (state.userData['owedMoney'] as List?)
                 ?.where((item) => item['status'] == 'pending')
+                .toList()
+                .reversed
                 .toList() ??
             [];
 

@@ -64,6 +64,7 @@ class FriendsPageWidget extends StatelessWidget {
                     .add(FriendsInitialEvent(context: context));
               },
               child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 clipBehavior: Clip.none,
                 child: Column(
                   children: [

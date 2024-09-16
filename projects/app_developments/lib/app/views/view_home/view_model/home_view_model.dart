@@ -47,8 +47,10 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       profileImageUrl = userData['profileImageUrl']!;
       friendsList = userData['friendsList']!;
       requestList = userData['requestList']!;
-      requestedMoney = userData['requestedMoney'];
-      owedMoney = userData['owedMoney'];
+      // Fetch requestedMoney and owedMoney and reverse them
+      requestedMoney = List.from(userData['requestedMoney'].reversed);
+      owedMoney = List.from(userData['owedMoney'].reversed);
+
       emit(
         HomeDataLoadedState(
           userData: userData,
