@@ -27,6 +27,7 @@ class StatisticsPageWidget extends StatelessWidget {
 
         // Define responsive variables
         double containerWidth;
+        double tableWidth;
 
         // Height
         if (screenHeight <= 680) {
@@ -45,18 +46,23 @@ class StatisticsPageWidget extends StatelessWidget {
         if (screenWidth <= 600) {
           // very Small screens
           containerWidth = 0.4;
+          tableWidth = context.dynamicWidth(0.9);
         } else if (screenWidth <= 800) {
           // Small screens
-          containerWidth = 0.35;
+          containerWidth = 0.25;
+          tableWidth = context.dynamicWidth(0.6);
         } else if (screenWidth <= 900) {
           // Medium screens
-          containerWidth = 0.35;
+          containerWidth = 0.25;
+          tableWidth = context.dynamicWidth(0.6);
         } else if (screenWidth <= 1080) {
           // Medium Large screens
-          containerWidth = 0.25;
+          containerWidth = 0.2;
+          tableWidth = context.dynamicWidth(0.5);
         } else {
           // Large screens
           containerWidth = 0.15;
+          tableWidth = context.dynamicWidth(0.4);
         }
 
         final filteredOwedMoneyLen = state.filteredOwedMoney.length;
@@ -118,26 +124,31 @@ class StatisticsPageWidget extends StatelessWidget {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  '$formattedRequestedMoneyPercentage%', // Use the formatted string here
-                                  style: context
-                                      .textStyleGrey(context)
-                                      .copyWith(
-                                        color:
-                                            AppLightColorConstants.primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    '$formattedRequestedMoneyPercentage%', // Use the formatted string here
+                                    style:
+                                        context.textStyleGrey(context).copyWith(
+                                              color: AppLightColorConstants
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                  ),
                                 ),
                                 context.sizedHeightBoxLower,
-                                Text(
-                                  '$formattedOwedMoneyPercentage%', // Use the formatted string here
-                                  style: context
-                                      .textStyleGrey(context)
-                                      .copyWith(
-                                        color:
-                                            AppLightColorConstants.thirdColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    '$formattedOwedMoneyPercentage%', // Use the formatted string here
+                                    style: context
+                                        .textStyleGrey(context)
+                                        .copyWith(
+                                          color:
+                                              AppLightColorConstants.thirdColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -173,42 +184,60 @@ class StatisticsPageWidget extends StatelessWidget {
                           ],
                         ),
                       )
-                    : SizedBox(
-                        height: context.dynamicHeight(0.28),
-                        width: context.dynamicWidth(1),
-                        child: FutureBuilder(
-                          future: Future.delayed(
-                            const Duration(milliseconds: 900),
-                          ), // Half a second delay
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
+                    : state is StatisticsDataLoadedState
+                        ? SizedBox(
+                            height: context.dynamicHeight(0.28),
+                            width: context.dynamicWidth(1),
+                            child: FutureBuilder(
+                              future: Future.delayed(
+                                const Duration(milliseconds: 1000),
+                              ), // Half a second delay
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color:
+                                          AppLightColorConstants.primaryColor,
+                                    ),
+                                  );
+                                } else {
+                                  return Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        Assets.images.svg.emptyInbox,
+                                        height: context.dynamicHeight(0.22),
+                                      ),
+                                      Text(
+                                        'Your requests and debts are currently empty.\nAdd some to see the chart.',
+                                        style: context
+                                            .textStyleGreyBarlow(context),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          )
+                        : SizedBox(
+                            height: context.dynamicHeight(0.15),
+                            width: context.dynamicWidth(1),
+                            child: const Center(
+                              child: SizedBox(
+                                height:
+                                    40, // Adjust the height of the indicator
+                                width: 40, // Adjust the width of the indicator
                                 child: CircularProgressIndicator(
-                                  color: AppLightColorConstants.primaryColor,
+                                  strokeWidth:
+                                      3, // Make the progress circle thinner
                                 ),
-                              );
-                            } else {
-                              return Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    Assets.images.svg.emptyInbox,
-                                    height: context.dynamicHeight(0.22),
-                                  ),
-                                  Text(
-                                    'Your requests and debts are currently empty.\nAdd some to see the chart.',
-                                    style: context.textStyleGreyBarlow(context),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              );
-                            }
-                          },
-                        ),
-                      ),
+                              ),
+                            ),
+                          ),
                 context.sizedHeightBoxLow,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: context.dynamicHeight(0.1),
@@ -238,6 +267,7 @@ class StatisticsPageWidget extends StatelessWidget {
                         ],
                       ),
                     ),
+                    context.sizedWidthBoxNormal,
                     Container(
                       height: context.dynamicHeight(0.1),
                       width: context.dynamicWidth(containerWidth),
@@ -294,66 +324,121 @@ class StatisticsPageWidget extends StatelessWidget {
                         formattedOwedMoneyPercentage != 'NaN'
                     ? SizedBox(
                         height: context.dynamicHeight(0.3),
-                        width: context.dynamicWidth(0.95),
+                        width: tableWidth,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: Scrollbar(
-                            child: DataTable(
-                              columns: const [
-                                DataColumn(label: Text('Name')),
-                                DataColumn(label: Text('Requests')),
-                                DataColumn(label: Text('Debts')),
-                              ],
-                              rows: state.friends.map((friend) {
-                                // Extract the friend's name from the map
-                                final String friendName =
-                                    friend['Name'] ?? 'Unknown';
+                            trackVisibility: true,
+                            interactive: true,
+                            child: Center(
+                              child: DataTable(
+                                columns: [
+                                  DataColumn(
+                                    label: Text(
+                                      'Name',
+                                      style:
+                                          context.textStyleGreyBarlow(context),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      'Requests',
+                                      style:
+                                          context.textStyleGreyBarlow(context),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      'Debts',
+                                      style:
+                                          context.textStyleGreyBarlow(context),
+                                    ),
+                                  ),
+                                ],
+                                rows: state.friends.map(
+                                  (friend) {
+                                    // Extract the friend's name from the map
+                                    final String friendName =
+                                        friend['Name'] ?? 'Unknown';
 
-                                // Extract the number of requests and debts from the friend data
-                                final int numberOfRequests =
-                                    friend['requests'] ?? 0;
-                                final int numberOfDebts = friend['debts'] ?? 0;
+                                    // Extract the number of requests and debts from the friend data
+                                    final int numberOfRequests =
+                                        friend['requests'] ?? 0;
+                                    final int numberOfDebts =
+                                        friend['debts'] ?? 0;
 
-                                return DataRow(cells: [
-                                  DataCell(Text(
-                                      friendName)), // Display the friend's name
-                                  DataCell(Text(numberOfRequests
-                                      .toString())), // Display requests
-                                  DataCell(Text(numberOfDebts
-                                      .toString())), // Display debts
-                                ]);
-                              }).toList(),
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Text(
+                                            friendName,
+                                            style: context
+                                                .textStyleGrey(context)
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ), // Display the friend's name
+                                        DataCell(
+                                          Text(numberOfRequests.toString()),
+                                        ), // Display requests
+                                        DataCell(
+                                          Text(numberOfDebts.toString()),
+                                        ), // Display debts
+                                      ],
+                                    );
+                                  },
+                                ).toList(),
+                              ),
                             ),
                           ),
                         ),
                       )
-                    : SizedBox(
-                        height: context.dynamicHeight(0.15),
-                        width: context.dynamicWidth(1),
-                        child: FutureBuilder(
-                            future: Future.delayed(
-                              const Duration(milliseconds: 900),
-                            ), // Half a second delay
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppLightColorConstants.primaryColor,
-                                  ),
-                                );
-                              } else {
-                                return FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    'Your request and debt lists are empty!',
-                                    style: context.textStyleGrey(context),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
-                              }
-                            }),
-                      ),
+                    : state is StatisticsDataLoadedState
+                        ? SizedBox(
+                            height: context.dynamicHeight(0.15),
+                            width: context.dynamicWidth(1),
+                            child: FutureBuilder(
+                                future: Future.delayed(
+                                  const Duration(milliseconds: 1000),
+                                ), // Half a second delay
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            AppLightColorConstants.primaryColor,
+                                      ),
+                                    );
+                                  } else {
+                                    return FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        'Your request and debt\nlists are empty!',
+                                        style: context
+                                            .textStyleGreyBarlow(context),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                  }
+                                }),
+                          )
+                        : SizedBox(
+                            height: context.dynamicHeight(0.15),
+                            width: context.dynamicWidth(1),
+                            child: const Center(
+                              child: SizedBox(
+                                height:
+                                    40, // Adjust the height of the indicator
+                                width: 40, // Adjust the width of the indicator
+                                child: CircularProgressIndicator(
+                                  strokeWidth:
+                                      3, // Make the progress circle thinner
+                                ),
+                              ),
+                            ),
+                          ),
               ],
             ),
           ),
