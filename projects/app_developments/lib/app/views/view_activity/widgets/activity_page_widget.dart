@@ -76,10 +76,11 @@ class ActivityPageWidget extends StatelessWidget {
         // Define a list of currencies
         const List<Map<String, String>> currencies = [
           {'value': 'USD (\$)', 'label': 'USD (\$)'},
-          {'value': 'TL (₺)', 'label': 'TL (₺)'},
           {'value': 'EURO (€)', 'label': 'EURO (€)'},
+          {'value': 'TL (₺)', 'label': 'TL (₺)'},
           {'value': 'GBP (£)', 'label': 'GBP (£)'},
           {'value': 'JPY (¥)', 'label': 'JPY (¥)'},
+          {'value': 'INR (₹)', 'label': 'INR (₹)'},
           {'value': 'CHF (₣)', 'label': 'CHF (₣)'},
         ];
 

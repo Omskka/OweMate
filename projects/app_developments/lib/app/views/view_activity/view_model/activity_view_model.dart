@@ -62,21 +62,23 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
 
       // Initialize lists for requested and owed money totals
       List<double> requestedMoneyTotals = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; // [USD, TL, EURO, GBP, JPY, CHF]
+        0.0, // USD
+        0.0, // TL
+        0.0, // EURO
+        0.0, // GBP
+        0.0, // JPY
+        0.0, // CHF
+        0.0 // INR
+      ];
       List<double> owedMoneyTotals = [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]; // [USD, TL, EURO, GBP, JPY, CHF]
+        0.0, // USD
+        0.0, // TL
+        0.0, // EURO
+        0.0, // GBP
+        0.0, // JPY
+        0.0, // CHF
+        0.0 // INR
+      ];
 
       // Process requested money (pending status)
       requestedMoney
@@ -96,6 +98,8 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
             requestedMoneyTotals[4] += _parseAmount(amountString); // JPY
           } else if (amountString.startsWith('₣')) {
             requestedMoneyTotals[5] += _parseAmount(amountString); // CHF
+          } else if (amountString.startsWith('₹')) {
+            requestedMoneyTotals[6] += _parseAmount(amountString); // INR
           }
         }
       });
@@ -116,6 +120,8 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
             owedMoneyTotals[4] += _parseAmount(amountString); // JPY
           } else if (amountString.startsWith('₣')) {
             owedMoneyTotals[5] += _parseAmount(amountString); // CHF
+          } else if (amountString.startsWith('₹')) {
+            owedMoneyTotals[6] += _parseAmount(amountString); // INR
           }
         }
       });
@@ -138,7 +144,7 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
       List combinedFilteredList =
           [...filteredRequestedMoney, ...filteredOwedMoney].reversed.toList();
 
-      // Initiliase controller to requests
+      // Initialize controller to requests
       activityTypeController.text = event.activityType;
 
       // Emit the loaded state with the totals for both requested and owed money
@@ -214,6 +220,9 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
       case 'CHF (₣)':
         currencyIndex = 5;
         break;
+      case 'INR (₹)':
+        currencyIndex = 6;
+        break;
     }
 
     // Emit a new state with the updated currency index
@@ -255,6 +264,9 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
         break;
       case 'CHF (₣)':
         currencyIndex = 5;
+        break;
+      case 'INR (₹)':
+        currencyIndex = 6;
         break;
     }
 
