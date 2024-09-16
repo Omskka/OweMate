@@ -92,12 +92,16 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
         selectedLabel = '¥';
         break; // Added break
 
+      case 'INR':
+        selectedLabel = '₹';
+        break; // Added break
+
       case 'CHF':
         selectedLabel = '₣';
         break; // Added break
 
       default:
-        // Handle unknown currency label
+      // Handle unknown currency label
     }
     emit(
       RequestUpdateCurrencyState(

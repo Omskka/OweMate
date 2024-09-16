@@ -126,7 +126,7 @@ class SettlePageWidget extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      'Mark requests as paid or decline with a message, giving\nyou control over how you settle up.',
+                      'Mark requests as paid or decline with a message,\ngiving you control over how you settle up.',
                       style:
                           context.textStyleGrey(context).copyWith(fontSize: 15),
                       textAlign: TextAlign.center,

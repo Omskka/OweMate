@@ -233,6 +233,14 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                                           },
                                         ),
                                         ListTile(
+                                          title: const Text('INR'),
+                                          onTap: () {
+                                            viewModel.currencyController.text =
+                                                'INR';
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
                                           title: const Text('CHF'),
                                           onTap: () {
                                             viewModel.currencyController.text =
