@@ -17,6 +17,7 @@ class SettingsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsViewModel, SettingsState>(
       builder: (context, state) {
+        final viewModel = BlocProvider.of<SettingsViewModel>(context);
         final screenWidth = MediaQuery.of(context).size.width;
         double containerWidth = (screenWidth <= 600)
             ? 0.85
@@ -119,7 +120,14 @@ class SettingsPageWidget extends StatelessWidget {
                       // Remove the Center widget wrapping this
                       title: 'How to...',
                       description: 'Learn how to use key features of the app',
-                      onPressed: () {},
+                      onPressed: () {
+                        viewModel.add(
+                          SettingsNavigateToNextPageEvent(
+                            context: context,
+                            selectedPage: 2,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -143,7 +151,12 @@ class SettingsPageWidget extends StatelessWidget {
                       // Remove the Center widget wrapping this
                       title: 'User Feedback',
                       description: 'Share your experience to help us improve',
-                      onPressed: () {},
+                      onPressed: () {
+                        viewModel.add(
+                          SettingsNavigateToNextPageEvent(
+                              context: context, selectedPage: 3),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -185,6 +198,7 @@ class SettingsPageWidget extends StatelessWidget {
                   ],
                 ),
               ),
+              context.sizedHeightBoxNormal,
             ],
           ),
         );
