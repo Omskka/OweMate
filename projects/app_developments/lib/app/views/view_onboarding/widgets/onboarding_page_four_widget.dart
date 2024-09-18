@@ -1,5 +1,4 @@
 import 'package:app_developments/app/routes/app_router.dart';
-import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_event.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_state.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_view_model.dart';
 import 'package:app_developments/core/extension/context_extension.dart';

@@ -22,8 +22,7 @@ class OnboardingPageThreeWidget extends StatelessWidget {
               height: context.dynamicHeight(0.1),
               width: context.dynamicWidth(1),
             ),
-            Container(
-              //color: Colors.pinkAccent,
+            SizedBox(
               height: context.dynamicHeight(0.4),
               width: context.dynamicWidth(1),
               child: Center(

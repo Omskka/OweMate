@@ -2,7 +2,6 @@ import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:app_developments/core/widgets/custom_smaller_continue_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -164,10 +163,9 @@ class HomeNavbarWidget extends StatelessWidget {
                     heightBox,
                     InkWell(
                       onTap: () {
-                        CustomFlutterToast(
-                          context: context,
-                          msg: 'Under Construction',
-                        ).flutterToast();
+                        context.router.push(
+                          const SettingsViewRoute(),
+                        );
                       },
                       child: ListTile(
                         leading: Icon(
