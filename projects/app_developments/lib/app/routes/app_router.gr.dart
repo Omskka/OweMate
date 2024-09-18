@@ -93,6 +93,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RequestView(),
       );
     },
+    SettingsViewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingsView(),
+      );
+    },
     SettleViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -298,6 +304,20 @@ class RequestViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'RequestViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingsView]
+class SettingsViewRoute extends PageRouteInfo<void> {
+  const SettingsViewRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingsViewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
