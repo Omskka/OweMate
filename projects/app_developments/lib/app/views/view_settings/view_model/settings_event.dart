@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class SettingsEvent {
   SettingsEvent();
 }
@@ -10,5 +12,24 @@ class SettingsSwitchEvent extends SettingsEvent {
   final String eventType;
   SettingsSwitchEvent({
     required this.eventType,
+  });
+}
+
+// Event to navigate to the next page, holds the context for navigation
+class SettingsNavigateToNextPageEvent extends SettingsEvent {
+  final int selectedPage;
+  final BuildContext context;
+
+  // Constructor to initialize the context
+  SettingsNavigateToNextPageEvent({
+    required this.context,
+    required this.selectedPage,
+  });
+}
+
+class SettingsSubmitFeedbackEvent extends SettingsEvent {
+  final BuildContext context;
+  SettingsSubmitFeedbackEvent({
+    required this.context,
   });
 }

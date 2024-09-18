@@ -48,25 +48,28 @@ class SettingsCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Title and description
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  title,
-                  style: context.textStyleGreyBarlow(context),
+          Padding(
+            padding: context.onlyLeftPaddingLow,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    title,
+                    style: context.textStyleGreyBarlow(context),
+                  ),
                 ),
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  description,
-                  style: context.textStyleGrey(context),
-                ),
-              )
-            ],
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    description,
+                    style: context.textStyleGrey(context),
+                  ),
+                )
+              ],
+            ),
           ),
 
           // Switch (if showSwitch is true)
@@ -86,7 +89,10 @@ class SettingsCard extends StatelessWidget {
                 )
               : GestureDetector(
                   onTap: onPressed,
-                  child: const Icon(Icons.arrow_forward_ios),
+                  child: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Icon(Icons.arrow_forward_ios),
+                  ),
                 )
         ],
       ),
