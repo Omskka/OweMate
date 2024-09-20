@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_event.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_state.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_view_model.dart';
@@ -128,7 +129,7 @@ class ActivityPageWidget extends StatelessWidget {
           cardWidth = context.dynamicWidth(0.25);
         }
         return RefreshIndicator(
-          color: AppLightColorConstants.primaryColor,
+          color: ColorThemeUtil.getPrimaryColor(context),
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
             // Dispatch the initial event to refresh the data
@@ -164,7 +165,7 @@ class ActivityPageWidget extends StatelessWidget {
                         style: context.textStyleGrey(context).copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
-                              color: AppLightColorConstants.bgInverse,
+                              color: ColorThemeUtil.getBgInverseColor(context),
                             ),
                       ),
                     ),
@@ -192,7 +193,7 @@ class ActivityPageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.2),
                       width: cardWidth,
                       decoration: BoxDecoration(
-                        color: AppLightColorConstants.primaryColor,
+                        color: ColorThemeUtil.getPrimaryColor(context),
                         borderRadius: BorderRadius.all(context.normalRadius),
                         boxShadow: [
                           BoxShadow(
@@ -336,7 +337,7 @@ class ActivityPageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.2),
                       width: cardWidth,
                       decoration: BoxDecoration(
-                        color: AppLightColorConstants.thirdColor,
+                        color: ColorThemeUtil.getPrimaryColor(context),
                         borderRadius: BorderRadius.all(context.normalRadius),
                         boxShadow: [
                           BoxShadow(
@@ -483,8 +484,10 @@ class ActivityPageWidget extends StatelessWidget {
                     child: Text(
                       'Recent Activities',
                       style: context.textStyleH2(context).copyWith(
-                          fontSize: 20,
-                          color: AppLightColorConstants.contentTeritaryColor),
+                            fontSize: 20,
+                            color:
+                                ColorThemeUtil.getContentTeritaryColor(context),
+                          ),
                     ),
                   ),
                 ),
@@ -680,7 +683,15 @@ class ActivityPageWidget extends StatelessWidget {
                                               // Show the dialog on tap
                                               Widget continueButton =
                                                   TextButton(
-                                                child: const Text("Continue"),
+                                                child: Text(
+                                                  "Continue",
+                                                  style: TextStyle(
+                                                    color: ColorThemeUtil
+                                                        .getContentTeritaryColor(
+                                                      context,
+                                                    ),
+                                                  ),
+                                                ),
                                                 onPressed: () {
                                                   Navigator.of(context)
                                                       .pop(); // Dismiss the dialog

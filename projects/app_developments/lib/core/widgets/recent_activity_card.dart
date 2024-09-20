@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class RecentActivityCard extends StatelessWidget {
       height: context.dynamicHeight(0.11),
       width: containerWidth,
       decoration: BoxDecoration(
-        color: AppLightColorConstants.bgLight,
+        color: ColorThemeUtil.getDrawerColor(context),
         borderRadius: BorderRadius.all(context.normalRadius),
       ),
       child: Column(

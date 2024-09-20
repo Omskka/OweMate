@@ -7,8 +7,8 @@ class FeedbackValidation {
       return 'Message is required';
     }
 
-    if (value.length > 30) {
-      return 'Message must be less than 30 characters';
+    if (value.length > 50) {
+      return 'Message must be less than 50 characters';
     }
 
     return null; // Valid

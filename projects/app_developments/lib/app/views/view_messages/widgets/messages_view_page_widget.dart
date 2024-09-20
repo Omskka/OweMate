@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_messages/view_model/messages_event.dart';
 import 'package:app_developments/app/views/view_messages/view_model/messages_state.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -253,7 +254,15 @@ class MessagesViewPageWidget extends StatelessWidget {
                                     onTap: () {
                                       // set up the buttons
                                       Widget continueButton = TextButton(
-                                        child: const Text("Continue"),
+                                        child: Text(
+                                          "Continue",
+                                          style: TextStyle(
+                                            color: ColorThemeUtil
+                                                .getContentTeritaryColor(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pop(); // Dismiss the dialog
@@ -276,20 +285,6 @@ class MessagesViewPageWidget extends StatelessWidget {
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                          "$friendName's Message:\n", // Bold only for this label
-                                                      style: context
-                                                          .textStyleGreyBarlow(
-                                                              context),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          "$paidMessage\n\n", // Normal weight for the message
-                                                      style:
-                                                          context.textStyleGrey(
-                                                              context),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
                                                           "Your message:\n", // Bold only for this label
                                                       style: context
                                                           .textStyleGreyBarlow(
@@ -297,7 +292,21 @@ class MessagesViewPageWidget extends StatelessWidget {
                                                     ),
                                                     TextSpan(
                                                       text:
-                                                          "$userMessage", // Normal weight for the message
+                                                          "$userMessage\n\n", // Normal weight for the message
+                                                      style:
+                                                          context.textStyleGrey(
+                                                              context),
+                                                    ),
+                                                    TextSpan(
+                                                      text:
+                                                          "$friendName's Message:\n", // Bold only for this label
+                                                      style: context
+                                                          .textStyleGreyBarlow(
+                                                              context),
+                                                    ),
+                                                    TextSpan(
+                                                      text:
+                                                          "$paidMessage", // Normal weight for the message
                                                       style:
                                                           context.textStyleGrey(
                                                               context),
@@ -334,7 +343,7 @@ class MessagesViewPageWidget extends StatelessWidget {
                                                     ),
                                                     TextSpan(
                                                       text:
-                                                          "$declineMessage\n", // Normal weight for the message
+                                                          "$declineMessage", // Normal weight for the message
                                                       style:
                                                           context.textStyleGrey(
                                                               context),

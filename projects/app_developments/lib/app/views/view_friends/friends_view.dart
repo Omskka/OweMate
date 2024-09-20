@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_view_model.dart';
@@ -20,7 +21,8 @@ class FriendsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeViewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocProvider(
-      create: (context) => FriendsViewModel()..add(FriendsInitialEvent(context: context)),
+      create: (context) =>
+          FriendsViewModel()..add(FriendsInitialEvent(context: context)),
       child: BlocBuilder<FriendsViewModel, FriendsState>(
         builder: (context, state) {
           int requestNumber = HomeViewModel().fetchRequestNumber(
@@ -28,8 +30,9 @@ class FriendsView extends StatelessWidget {
           );
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgDark,
+              backgroundColor: ColorThemeUtil.getBgDarkColor(context),
               appBar: AppBar(
+                backgroundColor: ColorThemeUtil.getBgDarkColor(context),
                 leading: Builder(
                   builder: (context) => IconButton(
                     icon: const Icon(Icons.menu),
@@ -51,10 +54,12 @@ class FriendsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
-                                      3.0, 0.0), // Offset to the right
+                                    3.0,
+                                    0.0,
+                                  ), // Offset to the right
                                   blurRadius: 2.0,
                                 ),
                               ],
@@ -69,7 +74,7 @@ class FriendsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right

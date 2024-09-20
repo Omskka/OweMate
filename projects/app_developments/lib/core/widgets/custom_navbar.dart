@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
@@ -27,7 +28,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
           return AutoTabsScaffold(
-            backgroundColor: AppLightColorConstants.bgDark,
+            backgroundColor: ColorThemeUtil.getBgDarkColor(context),
             extendBody: false,
             resizeToAvoidBottomInset: true,
             extendBodyBehindAppBar: false,
@@ -49,7 +50,8 @@ class _CustomNavbarState extends State<CustomNavbar> {
                           bottom: context.normalRadius,
                         ),
                         child: NavigationBar(
-                          backgroundColor: AppLightColorConstants.bgLight,
+                          backgroundColor:
+                              ColorThemeUtil.getMoneyCardColor(context),
                           selectedIndex: tabsRouter.activeIndex,
                           indicatorShape: CustomRoundedTopBorderShape(),
                           onDestinationSelected: (index) {

@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,9 @@ class CustomProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     // Get screen height and width using MediaQuery
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -75,7 +79,10 @@ class CustomProfileCard extends StatelessWidget {
               child: Text(
                 title,
                 style: context.textStyleGrey(context).copyWith(
-                      color: AppLightColorConstants.primaryColor,
+                      color: isDarkMode
+                          ? ColorThemeUtil.getBgInverseColor(context)
+                              .withOpacity(0.85)
+                          : AppLightColorConstants.primaryColor,
                     ),
               ),
             ),

@@ -1,17 +1,15 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_view_model.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/constants/validation/sign_up_validation.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/core/widgets/custom_text_field.dart';
-import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SignupPageWidget extends StatelessWidget {
   const SignupPageWidget({super.key});
@@ -26,7 +24,6 @@ class SignupPageWidget extends StatelessWidget {
 
     // Determine height and width based on screen dimensions
     double containerHeight;
-    double googleContainerWidth;
     double textfieldWidth;
     EdgeInsets leftPadding;
 
@@ -53,29 +50,24 @@ class SignupPageWidget extends StatelessWidget {
       // very Small screens
       leftPadding = context.onlyLeftPaddingMedium;
       textfieldWidth = context.dynamicWidth(0.8);
-      googleContainerWidth = screenWidth * 0.65;
     } else if (screenWidth <= 800) {
       // Small screens
       leftPadding = context.onlyLeftPaddingHigh;
       textfieldWidth = context.dynamicWidth(0.7);
-      googleContainerWidth = screenWidth * 0.45;
     } else if (screenWidth <= 900) {
       // Medium screens
       leftPadding = context.onlyLeftPaddingHigh;
       textfieldWidth = context.dynamicWidth(0.7);
-      googleContainerWidth = screenWidth * 0.3;
     } else if (screenWidth <= 1080) {
       // Medium Large screens
       leftPadding = EdgeInsets.symmetric(
           horizontal: (screenWidth - context.dynamicWidth(0.6)) / 2);
       textfieldWidth = context.dynamicWidth(0.6);
-      googleContainerWidth = screenWidth * 0.3;
     } else {
       // Large screens
       leftPadding = EdgeInsets.symmetric(
           horizontal: (screenWidth - context.dynamicWidth(0.6)) / 2);
       textfieldWidth = context.dynamicWidth(0.6);
-      googleContainerWidth = screenWidth * 0.2;
     }
 
     return SizedBox(
@@ -102,7 +94,9 @@ class SignupPageWidget extends StatelessWidget {
                             TextSpan(
                               text: 'Sign ',
                               style: context.textStyleH2(context).copyWith(
-                                  color: AppLightColorConstants.primaryColor),
+                                    color: ColorThemeUtil.getPrimaryColor(
+                                        context), // Get primary color based on theme
+                                  ),
                             ),
                             TextSpan(
                               text: 'Up',
@@ -205,6 +199,7 @@ class SignupPageWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              context.sizedHeightBoxNormal,
               // Sign up button
               Center(
                 child: CustomContinueButton(
@@ -219,92 +214,21 @@ class SignupPageWidget extends StatelessWidget {
                   },
                 ),
               ),
-              context.sizedHeightBoxLow,
-              // Or
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: screenWidth * 0.2,
-                        right: screenWidth * 0.06,
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
-                      ),
-                    ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'or',
-                      style: context.textStyleGrey(context).copyWith(
-                            fontSize: 20,
-                            color: AppLightColorConstants.contentDisabled,
-                          ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: screenWidth * 0.06,
-                        right: screenWidth * 0.2,
-                      ),
-                      child: const Divider(
-                        color: AppLightColorConstants.contentDisabled,
-                        height: 36,
-                        thickness: 1.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              context.sizedHeightBoxLow,
-              Center(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: screenHeight * 0.075,
-                    width: googleContainerWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(context.normalRadius),
-                      border: Border.all(
-                        color: AppLightColorConstants.primaryColor,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(Assets.images.svg.google),
-                        context.sizedWidthBoxLow,
-                        Text(
-                          'Sign Up With Google',
-                          style: context.textStyleGreyBarlow(context).copyWith(
-                                color: AppLightColorConstants.primaryColor,
-                                fontSize: 18,
-                              ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              context.sizedHeightBoxLow,
+              context.sizedHeightBoxHigh,
+              context.sizedHeightBoxMedium,
               Center(
                 child: RichText(
                   text: TextSpan(
                     text: 'Already have an account? ',
                     style: DefaultTextStyle.of(context).style.copyWith(
-                          color: AppLightColorConstants.contentTeritaryColor,
+                          color:
+                              ColorThemeUtil.getContentTeritaryColor(context),
                         ),
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Login',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: ColorThemeUtil.getPrimaryColor(context),
                               fontSize: 16,
                             ),
                         recognizer: TapGestureRecognizer()

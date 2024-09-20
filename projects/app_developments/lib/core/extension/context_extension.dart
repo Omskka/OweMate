@@ -1,3 +1,5 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
+import 'package:app_developments/core/constants/dark_theme_color_constants.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -128,36 +130,75 @@ extension SizedBoxNum on BuildContext {
 }
 
 extension TextStyleExtension on BuildContext {
-  TextStyle textStyleH1(BuildContext context) => const TextStyle(
-        fontSize: 64,
-        fontWeight: FontWeight.w600,
-        color: AppLightColorConstants.primaryColor,
-        fontFamily: 'Barlow Semi Condensed bold',
-      );
+  TextStyle textStyleH1(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final primaryColor = isDarkMode
+        ? AppDarkColorConstants.primaryColor
+        : AppLightColorConstants.primaryColor;
+    return TextStyle(
+      fontSize: 64,
+      fontWeight: FontWeight.w600,
+      color: primaryColor,
+      fontFamily: 'Barlow Semi Condensed bold',
+    );
+  }
 
-  TextStyle textStyleH2(BuildContext context) => const TextStyle(
-        fontSize: 35,
-        fontWeight: FontWeight.bold,
-        color: AppLightColorConstants.thirdColor,
-        fontFamily: 'Barlow Semi Condensed bold',
-      );
+  TextStyle textStyleH2(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final thirdColor = isDarkMode
+        ? AppDarkColorConstants.thirdColor
+        : AppLightColorConstants.thirdColor;
+    return TextStyle(
+      fontSize: 35,
+      fontWeight: FontWeight.bold,
+      color: thirdColor,
+      fontFamily: 'Barlow Semi Condensed bold',
+    );
+  }
 
-  TextStyle textStyleGrey(BuildContext context) => const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppLightColorConstants.contentTeritaryColor,
-        fontFamily: 'San Francisco',
-      );
-  TextStyle textStyleGreyBarlow(BuildContext context) => const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppLightColorConstants.contentTeritaryColor,
-        fontFamily: 'Barlow Semi Condensed bold',
-      );
-  TextStyle textStyleTitleBarlow(BuildContext context) => const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-        color: AppLightColorConstants.bgInverse,
-        fontFamily: 'Barlow Semi Condensed bold',
-      );
+  TextStyle textStyleGrey(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    // Use the appropriate content grey color based on the theme
+    final greyColor = isDarkMode
+        ? AppDarkColorConstants.contentGreyColor // Dark theme color
+        : AppLightColorConstants.contentGreyColor; // Light theme color
+
+    return TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: greyColor,
+      fontFamily: 'San Francisco',
+    );
+  }
+
+  TextStyle textStyleGreyBarlow(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final greyColor = isDarkMode
+        ? AppDarkColorConstants.contentGreyColor
+        : AppLightColorConstants.contentGreyColor;
+
+    return TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      color: greyColor,
+      fontFamily: 'Barlow Semi Condensed bold',
+    );
+  }
+
+  TextStyle textStyleTitleBarlow(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final bgInverse = isDarkMode
+        ? AppDarkColorConstants.bgInverse
+        : AppLightColorConstants.bgInverse;
+    return TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      color: bgInverse,
+      fontFamily: 'Barlow Semi Condensed bold',
+    );
+  }
 }

@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
-import 'package:app_developments/core/extension/context_extension.dart';
-
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
@@ -73,7 +70,7 @@ class MoneyDebtCard extends StatelessWidget {
         width: context.dynamicWidth(containerWidth),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(context.normalRadius),
-          color: AppLightColorConstants.bgLight,
+          color: ColorThemeUtil.getMoneyCardColor(context),
         ),
         child: Padding(
           padding: context.paddingLow,
@@ -111,9 +108,11 @@ class MoneyDebtCard extends StatelessWidget {
               ),
               Text(
                 amount,
-                style: context
-                    .textStyleGreyBarlow(context)
-                    .copyWith(color: AppLightColorConstants.thirdColor),
+                style: context.textStyleGreyBarlow(context).copyWith(
+                      color: ColorThemeUtil.getMoneyDebtAmountColor(
+                        context,
+                      ),
+                    ),
               ),
               Text(
                 date,

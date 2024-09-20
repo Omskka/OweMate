@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_view_model.dart';
@@ -91,7 +92,8 @@ class FriendsPageWidget extends StatelessWidget {
                             style: context.textStyleGrey(context).copyWith(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
-                                  color: AppLightColorConstants.bgInverse,
+                                  color:
+                                      ColorThemeUtil.getBgInverseColor(context),
                                 ),
                           ),
                         ),
@@ -115,14 +117,20 @@ class FriendsPageWidget extends StatelessWidget {
                       child: SizedBox(
                         height: context.dynamicHeight(0.1),
                         width: context.dynamicWidth(
-                            1), // or context.dynamicWidth(0.8) to leave some margin
+                          1,
+                        ), // or context.dynamicWidth(0.8) to leave some margin
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(Assets.images.svg.friendsIcon),
+                            SvgPicture.asset(
+                              Assets.images.svg.friendsIcon,
+                              colorFilter: ColorFilter.mode(
+                                ColorThemeUtil.getBgInverseColor(context),
+                                BlendMode.srcIn,
+                              ),
+                            ),
                             context.sizedWidthBoxNormal,
                             CustomTextField(
-                              fillColor: AppLightColorConstants.infoColor,
                               hintTextColor:
                                   AppLightColorConstants.contentTeritaryColor,
                               icon: const Icon(
@@ -259,9 +267,9 @@ class FriendsPageWidget extends StatelessWidget {
                                                                   FontWeight
                                                                       .bold,
                                                               fontSize: 20,
-                                                              color:
-                                                                  AppLightColorConstants
-                                                                      .bgInverse,
+                                                              color: ColorThemeUtil
+                                                                  .getBgInverseColor(
+                                                                      context),
                                                             ),
                                                       ),
                                                     ),
@@ -270,8 +278,14 @@ class FriendsPageWidget extends StatelessWidget {
                                                         // set up the buttons
                                                         Widget cancelButton =
                                                             TextButton(
-                                                          child: const Text(
+                                                          child: Text(
                                                             "Cancel",
+                                                            style: TextStyle(
+                                                              color: ColorThemeUtil
+                                                                  .getContentTeritaryColor(
+                                                                context,
+                                                              ),
+                                                            ),
                                                           ),
                                                           onPressed: () {
                                                             Navigator.of(

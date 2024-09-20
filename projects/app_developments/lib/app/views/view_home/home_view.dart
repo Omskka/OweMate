@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
@@ -26,11 +27,14 @@ class HomeView extends StatelessWidget {
           );
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgDark,
+              backgroundColor: ColorThemeUtil.getBgDarkColor(context),
               appBar: AppBar(
+                backgroundColor: ColorThemeUtil.getBgDarkColor(context),
                 leading: Builder(
                   builder: (context) => IconButton(
-                    icon: const Icon(Icons.menu),
+                    icon: const Icon(
+                      Icons.menu,
+                    ),
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
                 ),
@@ -49,7 +53,7 @@ class HomeView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right
@@ -67,7 +71,7 @@ class HomeView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right
@@ -95,9 +99,11 @@ class HomeView extends StatelessWidget {
                               height: 30,
                               child: Stack(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.notifications,
-                                    color: Colors.black,
+                                    color:
+                                        ColorThemeUtil.getContentPrimaryColor(
+                                            context),
                                     size: 30,
                                   ),
                                   Container(
@@ -109,11 +115,14 @@ class HomeView extends StatelessWidget {
                                       width: 15,
                                       height: 15,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              AppLightColorConstants.errorColor,
-                                          border: Border.all(
-                                              color: Colors.white, width: 1)),
+                                        shape: BoxShape.circle,
+                                        color:
+                                            AppLightColorConstants.errorColor,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 1,
+                                        ),
+                                      ),
                                       child: Center(
                                         child: Text(
                                           '${state.userData['requestList'].length}',

@@ -1,8 +1,8 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_state.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_view_model.dart';
 import 'package:app_developments/app/views/view_profile/widgets/profile_page_widget.dart';
 import 'package:app_developments/app/views/view_profile/widgets/profile_password_page_widget.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +19,7 @@ class ProfileView extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgLight,
+              backgroundColor: ColorThemeUtil.getBgLightColor(context),
               // Displaying bodyWidget
               body: bodyWidget(state, context),
             ),

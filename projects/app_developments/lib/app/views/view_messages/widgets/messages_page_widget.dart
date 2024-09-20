@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_messages/view_model/messages_event.dart';
 import 'package:app_developments/app/views/view_messages/view_model/messages_state.dart';
 import 'package:app_developments/app/views/view_messages/view_model/messages_view_model.dart';
@@ -76,7 +77,13 @@ class MessagesPageWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(Assets.images.svg.friendsIcon),
+                      SvgPicture.asset(
+                        Assets.images.svg.friendsIcon,
+                        colorFilter: ColorFilter.mode(
+                          ColorThemeUtil.getBgInverseColor(context),
+                          BlendMode.srcIn,
+                        ),
+                      ),
                       context.sizedWidthBoxLow,
                       FittedBox(
                         fit: BoxFit.scaleDown,
@@ -206,9 +213,9 @@ class MessagesPageWidget extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 20,
-                                                          color:
-                                                              AppLightColorConstants
-                                                                  .bgInverse,
+                                                          color: ColorThemeUtil
+                                                              .getBgInverseColor(
+                                                                  context),
                                                         ),
                                                   ),
                                                 ),
@@ -217,9 +224,10 @@ class MessagesPageWidget extends StatelessWidget {
                                                       .onlyRightPaddingNormal,
                                                   child: Icon(
                                                     Icons.mail,
-                                                    color:
-                                                        AppLightColorConstants
-                                                            .primaryColor,
+                                                    color: ColorThemeUtil
+                                                        .getPrimaryColor(
+                                                      context,
+                                                    ),
                                                     size: context
                                                         .dynamicHeight(0.035),
                                                   ),

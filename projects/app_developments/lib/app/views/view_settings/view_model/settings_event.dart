@@ -10,8 +10,10 @@ class SettingsInitialEvent extends SettingsEvent {
 
 class SettingsSwitchEvent extends SettingsEvent {
   final String eventType;
+  final BuildContext context;
   SettingsSwitchEvent({
     required this.eventType,
+    required this.context,
   });
 }
 

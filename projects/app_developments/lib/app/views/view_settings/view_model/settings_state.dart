@@ -1,9 +1,9 @@
 abstract class SettingsState {
-  bool isDarkTheme = false;
-  bool isOrderReversed = false;
+  final bool isDarkTheme;
+  final bool isOrderReversed;
   final int? selectedPage;
 
-  SettingsState({
+  const SettingsState({
     required this.isDarkTheme,
     required this.isOrderReversed,
     this.selectedPage,
@@ -11,7 +11,7 @@ abstract class SettingsState {
 }
 
 class SettingsInitialState extends SettingsState {
-  SettingsInitialState()
+  const SettingsInitialState()
       : super(
           isDarkTheme: false,
           isOrderReversed: false,
@@ -20,29 +20,26 @@ class SettingsInitialState extends SettingsState {
 }
 
 class SettingsSwitchState extends SettingsState {
-  final SettingsState state;
-  final bool isDarkTheme;
-  final bool isOrderReversed;
-  SettingsSwitchState({
-    required this.isDarkTheme,
-    required this.isOrderReversed,
-    required this.state,
+  const SettingsSwitchState({
+    required bool isDarkTheme,
+    required bool isOrderReversed,
+    int? selectedPage,
   }) : super(
           isDarkTheme: isDarkTheme,
           isOrderReversed: isOrderReversed,
+          selectedPage: selectedPage,
         );
 }
 
 // State for incrementing the selected page
 class SettingsPageIncrementState extends SettingsState {
-  final int? selectedPage;
-  final SettingsState state;
-  SettingsPageIncrementState({
-    this.selectedPage,
-    required this.state,
+  const SettingsPageIncrementState({
+    int? selectedPage,
+    required bool isDarkTheme,
+    required bool isOrderReversed,
   }) : super(
-          isOrderReversed: state.isOrderReversed,
-          isDarkTheme: state.isDarkTheme,
+          isDarkTheme: isDarkTheme,
+          isOrderReversed: isOrderReversed,
           selectedPage: selectedPage,
         );
 }

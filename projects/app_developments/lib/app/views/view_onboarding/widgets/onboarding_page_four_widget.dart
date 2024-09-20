@@ -1,6 +1,7 @@
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_state.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_view_model.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/carousel_dots.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
@@ -16,6 +17,9 @@ class OnboardingPageFourWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardingViewModel, OnboardingState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         final viewModel = BlocProvider.of<OnboardingViewModel>(context);
         return Column(
           children: [
@@ -86,7 +90,11 @@ class OnboardingPageFourWidget extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Settle Up Quickly',
-                    style: context.textStyleH2(context),
+                    style: context.textStyleH2(context).copyWith(
+                          color: isDarkMode
+                              ? AppLightColorConstants.bgLight
+                              : AppLightColorConstants.primaryColor,
+                        ),
                   ),
                 ),
               ),
@@ -114,7 +122,7 @@ class OnboardingPageFourWidget extends StatelessWidget {
             CustomContinueButton(
               buttonText: 'Continue',
               onPressed: () {
-                context.router.push(const SignupViewRoute());
+                context.router.push(const LoginViewRoute());
               },
             ),
           ],

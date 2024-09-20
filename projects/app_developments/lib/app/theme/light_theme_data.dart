@@ -10,9 +10,10 @@ final class AppThemeLight {
         primaryColorDark: AppLightColorConstants.bgLight,
         primaryColorLight: AppLightColorConstants.bgInverse,
         colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: AppLightColorConstants.primaryColor,
           secondary: AppLightColorConstants.secondaryColor,
           error: AppLightColorConstants.errorColor,
-          background: AppLightColorConstants.bgLight,
+          tertiary: AppLightColorConstants.contentGreyColor,
         ),
         appBarTheme: appBarTheme(),
         cardTheme: cardTheme(),
@@ -41,7 +42,10 @@ final class AppThemeLight {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppLightColorConstants.buttonPrimaryColor,
         foregroundColor: Colors.white,
-        textStyle: const TextStyle(fontSize: 16),
+        textStyle: const TextStyle(
+          fontSize: 16,
+          inherit: true,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
@@ -56,6 +60,7 @@ final class AppThemeLight {
         foregroundColor: AppLightColorConstants.primaryColor,
         backgroundColor: Colors.white,
         textStyle: const TextStyle(
+          inherit: true,
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
@@ -75,9 +80,11 @@ final class AppThemeLight {
       prefixIconColor: AppLightColorConstants.textFormFieldIconColor,
       suffixIconColor: AppLightColorConstants.textFormFieldIconColor,
       hintStyle: const TextStyle(
+        inherit: true,
         color: AppLightColorConstants.border,
       ),
       labelStyle: const TextStyle(
+        inherit: true,
         color: AppLightColorConstants.border,
       ),
       outlineBorder: const BorderSide(
@@ -155,6 +162,7 @@ final class AppThemeLight {
         color: AppLightColorConstants.contentPrimary,
       ),
       titleTextStyle: TextStyle(
+        inherit: true,
         color: AppLightColorConstants.contentPrimary,
       ),
     );

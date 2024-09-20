@@ -17,6 +17,9 @@ class SettingsFeedbackPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsViewModel, SettingsState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
         final screenWidth = MediaQuery.of(context).size.width;
@@ -90,7 +93,9 @@ class SettingsFeedbackPageWidget extends StatelessWidget {
                       'Enter your feedback',
                       textAlign: TextAlign.center,
                       style: context.textStyleGreyBarlow(context).copyWith(
-                            color: AppLightColorConstants.primaryColor,
+                            color: isDarkMode
+                                ? AppLightColorConstants.bgLight
+                                : AppLightColorConstants.primaryColor,
                             fontSize: 16,
                           ),
                     ),

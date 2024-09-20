@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 
@@ -23,7 +24,7 @@ class SplashPageWidget extends StatelessWidget {
                     fontFamily: 'Barlow Semi Condensed bold',
                     shadows: [
                       Shadow(
-                        color: AppLightColorConstants.hueShadow
+                        color: ColorThemeUtil.getHueColor(context)
                             .withOpacity(0.3), // Hue shadow color
                         offset: const Offset(3.0, 0.0), // Offset to the right
                         blurRadius: 2.0,
@@ -40,7 +41,7 @@ class SplashPageWidget extends StatelessWidget {
                     fontFamily: 'Barlow Semi Condensed bold',
                     shadows: [
                       Shadow(
-                        color: AppLightColorConstants.hueShadow
+                        color: ColorThemeUtil.getHueColor(context)
                             .withOpacity(0.3), // Hue shadow color
                         offset: const Offset(3.0, 0.0), // Offset to the right
                         blurRadius: 2.0,

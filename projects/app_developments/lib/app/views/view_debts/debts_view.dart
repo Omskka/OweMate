@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_event.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
@@ -29,8 +30,9 @@ class DebtsView extends StatelessWidget {
           );
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgDark,
+              backgroundColor: ColorThemeUtil.getBgDarkColor(context),
               appBar: AppBar(
+                backgroundColor: ColorThemeUtil.getBgDarkColor(context),
                 leading: Builder(
                   builder: (context) => IconButton(
                     icon: const Icon(Icons.menu),
@@ -52,7 +54,7 @@ class DebtsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right
@@ -70,7 +72,7 @@ class DebtsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: AppLightColorConstants.hueShadow
+                                  color: ColorThemeUtil.getHueColor(context)
                                       .withOpacity(0.3), // Hue shadow color
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right
@@ -98,9 +100,11 @@ class DebtsView extends StatelessWidget {
                               height: 30,
                               child: Stack(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.notifications,
-                                    color: Colors.black,
+                                    color:
+                                        ColorThemeUtil.getContentPrimaryColor(
+                                            context),
                                     size: 30,
                                   ),
                                   Container(

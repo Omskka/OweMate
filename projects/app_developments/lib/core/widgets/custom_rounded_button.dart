@@ -1,4 +1,4 @@
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +55,7 @@ class CustomRoundedButton extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor:
-                AppLightColorConstants.primaryColor, // Background color
+                ColorThemeUtil.getPrimaryColor(context), // Background color
             foregroundColor: Colors.white, // Text color
             minimumSize: Size(buttonWidth, buttonHeight), // Button size
             shape: RoundedRectangleBorder(

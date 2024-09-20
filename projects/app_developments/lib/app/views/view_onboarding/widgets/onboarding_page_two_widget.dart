@@ -1,6 +1,7 @@
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_event.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_state.dart';
 import 'package:app_developments/app/views/view_onboarding/view_model/onboarding_view_model.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/carousel_dots.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
@@ -13,6 +14,9 @@ class OnboardingPageTwoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return BlocBuilder<OnboardingViewModel, OnboardingState>(
       builder: (context, state) {
         final viewModel = BlocProvider.of<OnboardingViewModel>(context);
@@ -41,7 +45,11 @@ class OnboardingPageTwoWidget extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Peace of Mind',
-                    style: context.textStyleH2(context),
+                    style: context.textStyleH2(context).copyWith(
+                          color: isDarkMode
+                              ? AppLightColorConstants.bgLight
+                              : AppLightColorConstants.primaryColor,
+                        ),
                   ),
                 ),
               ),

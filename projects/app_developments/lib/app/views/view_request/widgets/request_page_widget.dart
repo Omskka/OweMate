@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_event.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
@@ -104,7 +105,13 @@ class RequestPageWidget extends StatelessWidget {
                     children: [
                       Padding(
                         padding: leftPadding,
-                        child: SvgPicture.asset(Assets.images.svg.friendsIcon),
+                        child: SvgPicture.asset(
+                          Assets.images.svg.friendsIcon,
+                          colorFilter: ColorFilter.mode(
+                            ColorThemeUtil.getBgInverseColor(context),
+                            BlendMode.srcIn,
+                          ),
+                        ),
                       ),
                       context.sizedWidthBoxLow,
                       Text(
@@ -221,9 +228,9 @@ class RequestPageWidget extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 20,
-                                                          color:
-                                                              AppLightColorConstants
-                                                                  .bgInverse,
+                                                          color: ColorThemeUtil
+                                                              .getBgInverseColor(
+                                                                  context),
                                                         ),
                                                   ),
                                                 ),

@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/constants/validation/money_request_validation.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
@@ -18,6 +19,9 @@ class SettlePaidPageWidget extends StatelessWidget {
     final viewModel = BlocProvider.of<SettleViewModel>(context);
     return BlocBuilder<SettleViewModel, SettleState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         // Handle the case where maxWidth or maxHeight is Infinity
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
@@ -110,7 +114,7 @@ class SettlePaidPageWidget extends StatelessWidget {
                     height: context.dynamicHeight(0.11),
                     width: context.dynamicWidth(0.75),
                     decoration: BoxDecoration(
-                      color: AppLightColorConstants.infoColor,
+                      color: ColorThemeUtil.getFinanceCardColor(context),
                       borderRadius: BorderRadius.all(context.normalRadius),
                     ),
                     child: Column(
@@ -189,7 +193,9 @@ class SettlePaidPageWidget extends StatelessWidget {
                         Text(
                           'Enter Message',
                           style: context.textStyleGreyBarlow(context).copyWith(
-                                color: AppLightColorConstants.primaryColor,
+                                color: isDarkMode
+                                    ? AppLightColorConstants.bgLight
+                                    : AppLightColorConstants.primaryColor,
                                 fontSize: 18,
                               ),
                         ),

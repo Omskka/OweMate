@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_event.dart';
 import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_state.dart';
 import 'package:app_developments/app/views/view_add_friends/view_model/add_friends_view_model.dart';
@@ -57,12 +58,18 @@ class AddFriendsPageWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(Assets.images.svg.friendsIcon),
+                    SvgPicture.asset(
+                      Assets.images.svg.friendsIcon,
+                      colorFilter: ColorFilter.mode(
+                        ColorThemeUtil.getBgInverseColor(context),
+                        BlendMode.srcIn,
+                      ),
+                    ),
                     context.sizedWidthBoxNormal,
                     CustomTextField(
                       hintTextColor:
                           AppLightColorConstants.contentTeritaryColor,
-                      fillColor: AppLightColorConstants.infoColor,
+                      fillColor: ColorThemeUtil.getFinanceCardColor(context),
                       icon: const Icon(
                         Icons.search,
                         color: AppLightColorConstants.contentTeritaryColor,
@@ -163,8 +170,8 @@ class AddFriendsPageWidget extends StatelessWidget {
                                             .copyWith(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
-                                              color: AppLightColorConstants
-                                                  .bgInverse,
+                                              color: ColorThemeUtil
+                                                  .getBgInverseColor(context),
                                             ),
                                       ),
                                       context.sizedWidthBoxHigh,

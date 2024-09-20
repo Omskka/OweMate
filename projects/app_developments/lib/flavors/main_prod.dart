@@ -1,9 +1,12 @@
+import 'package:app_developments/app/app.dart';
+import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
 import 'package:app_developments/starter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:app_developments/firebase_options.dart';
 import 'package:flavor/flavor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main(List<String> args) async {
   // Initialize Firebase
@@ -40,5 +43,10 @@ Future<void> main(List<String> args) async {
     name: "Production",
     color: Colors.blue,
   );
-  launchApp();
+  launchApp(
+    BlocProvider(
+      create: (context) => SettingsViewModel(),
+      child: const App(), // Replace with your app widget
+    ),
+  );
 }

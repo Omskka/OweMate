@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_state.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_view_model.dart';
@@ -72,7 +73,7 @@ class ProfilePasswordPageWidget extends StatelessWidget {
               horizontal: (screenWidth - context.dynamicWidth(0.6)) / 2);
         }
         return Scaffold(
-          backgroundColor: AppLightColorConstants.bgLight,
+          backgroundColor: ColorThemeUtil.getBgLightColor(context),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -115,7 +116,8 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                         context.sizedHeightBoxLower,
                         CustomTextField(
                           width: textfieldWidth,
-                          fillColor: AppLightColorConstants.infoColor,
+                          fillColor:
+                              ColorThemeUtil.getFinanceCardColor(context),
                           outlineBorder: true,
                           removePadding: true,
                           controller: viewModel.oldPasswordController,
@@ -132,7 +134,8 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                         context.sizedHeightBoxLower,
                         CustomTextField(
                           width: textfieldWidth,
-                          fillColor: AppLightColorConstants.infoColor,
+                          fillColor:
+                              ColorThemeUtil.getFinanceCardColor(context),
                           outlineBorder: true,
                           removePadding: true,
                           controller: viewModel.newPasswordController,
@@ -153,7 +156,8 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                         context.sizedHeightBoxLower,
                         CustomTextField(
                           width: textfieldWidth,
-                          fillColor: AppLightColorConstants.infoColor,
+                          fillColor:
+                              ColorThemeUtil.getFinanceCardColor(context),
                           outlineBorder: true,
                           removePadding: true,
                           controller: viewModel.newConfirmPasswordController,

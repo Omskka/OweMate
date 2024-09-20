@@ -1,9 +1,9 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +15,9 @@ class DebtsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DebtsViewModel, DebtsState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         return LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
@@ -77,7 +80,8 @@ class DebtsPageWidget extends StatelessWidget {
                           style: context.textStyleGrey(context).copyWith(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
-                                color: AppLightColorConstants.bgInverse,
+                                color:
+                                    ColorThemeUtil.getBgInverseColor(context),
                               ),
                         ),
                       ),
@@ -111,7 +115,10 @@ class DebtsPageWidget extends StatelessWidget {
                             style: context.textStyleGrey(context).copyWith(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
-                                  color: AppLightColorConstants.primaryColor,
+                                  color: isDarkMode
+                                      ? ColorThemeUtil.getBgInverseColor(
+                                          context)
+                                      : AppLightColorConstants.primaryColor,
                                 ),
                           ),
                         ),
@@ -141,7 +148,7 @@ class DebtsPageWidget extends StatelessWidget {
                         height: containerHeight,
                         width: containerWidth,
                         decoration: BoxDecoration(
-                          color: AppLightColorConstants.infoColor,
+                          color: ColorThemeUtil.getFinanceCardColor(context),
                           borderRadius: BorderRadius.all(context.normalRadius),
                           boxShadow: [
                             BoxShadow(
@@ -150,7 +157,9 @@ class DebtsPageWidget extends StatelessWidget {
                               spreadRadius: 1, // Spread radius
                               blurRadius: 3, // Blur radius
                               offset: const Offset(
-                                  0, 0.5), // Offset in x and y direction
+                                0,
+                                0.5,
+                              ), // Offset in x and y direction
                             ),
                           ],
                         ),
@@ -189,7 +198,10 @@ class DebtsPageWidget extends StatelessWidget {
                             style: context.textStyleGrey(context).copyWith(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
-                                  color: AppLightColorConstants.primaryColor,
+                                  color: isDarkMode
+                                      ? ColorThemeUtil.getBgInverseColor(
+                                          context)
+                                      : AppLightColorConstants.primaryColor,
                                 ),
                           ),
                         ),
@@ -219,7 +231,7 @@ class DebtsPageWidget extends StatelessWidget {
                         height: containerHeight,
                         width: containerWidth,
                         decoration: BoxDecoration(
-                          color: AppLightColorConstants.infoColor,
+                          color: ColorThemeUtil.getFinanceCardColor(context),
                           borderRadius: BorderRadius.all(context.normalRadius),
                           boxShadow: [
                             BoxShadow(
