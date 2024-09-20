@@ -1,4 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_view_model.dart';
@@ -7,7 +8,6 @@ import 'package:app_developments/app/views/view_settle/widgets/settle_page_widge
 import 'package:app_developments/app/views/view_settle/widgets/settle_paid_page_widget.dart';
 import 'package:app_developments/app/views/view_settle/widgets/settle_pay_success_page_widget.dart';
 import 'package:app_developments/app/views/view_settle/widgets/setttle_decline_page_widget.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,7 @@ class SettleView extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgLight,
+              backgroundColor: ColorThemeUtil.getBgLightColor(context),
               // Set the body of the Scaffold to display the page widget
               body: bodyWidget(state, context),
             ),

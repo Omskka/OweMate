@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
@@ -17,6 +18,8 @@ class SettleDeclineSuccessPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettleViewModel, SettleState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -48,8 +51,12 @@ class SettleDeclineSuccessPageWidget extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: Text(
                         'Request Declined',
-                        style:
-                            context.textStyleH1(context).copyWith(fontSize: 40),
+                        style: context.textStyleH1(context).copyWith(
+                              fontSize: 40,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : ColorThemeUtil.getPrimaryColor(context),
+                            ),
                       ),
                     ),
                     context.sizedHeightBoxLow,

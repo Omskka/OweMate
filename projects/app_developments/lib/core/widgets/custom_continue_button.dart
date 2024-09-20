@@ -1,4 +1,4 @@
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -76,7 +76,7 @@ class CustomContinueButton extends StatelessWidget {
           onPressed: onPressed,
           icon: icon ?? Container(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppLightColorConstants.primaryColor,
+            backgroundColor: ColorThemeUtil.getPrimaryColor(context),
             foregroundColor: Colors.white,
             minimumSize: Size(buttonWidth, buttonHeight),
             shape: RoundedRectangleBorder(

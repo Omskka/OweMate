@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
@@ -17,6 +18,9 @@ class SettingsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsViewModel, SettingsState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         final viewModel = BlocProvider.of<SettingsViewModel>(context);
         final screenWidth = MediaQuery.of(context).size.width;
         double containerWidth = (screenWidth <= 600)
@@ -49,7 +53,9 @@ class SettingsPageWidget extends StatelessWidget {
                       child: Text(
                         'Appearance',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : AppLightColorConstants.primaryColor,
                               fontSize: 16,
                             ),
                       ),
@@ -62,9 +68,12 @@ class SettingsPageWidget extends StatelessWidget {
                       switchValue: state
                           .isDarkTheme, // Pass the current state of the switch
                       onSwitchChanged: (bool value) {
-                        context
-                            .read<SettingsViewModel>()
-                            .add(SettingsSwitchEvent(eventType: 'Appearance'));
+                        context.read<SettingsViewModel>().add(
+                              SettingsSwitchEvent(
+                                context: context,
+                                eventType: 'Appearance',
+                              ),
+                            );
                       },
                     ),
                   ],
@@ -80,7 +89,9 @@ class SettingsPageWidget extends StatelessWidget {
                       child: Text(
                         'Order',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : AppLightColorConstants.primaryColor,
                               fontSize: 16,
                             ),
                       ),
@@ -94,7 +105,10 @@ class SettingsPageWidget extends StatelessWidget {
                           .isOrderReversed, // Pass the current state of the switch
                       onSwitchChanged: (bool value) {
                         context.read<SettingsViewModel>().add(
-                              SettingsSwitchEvent(eventType: 'order'),
+                              SettingsSwitchEvent(
+                                context: context,
+                                eventType: 'order',
+                              ),
                             );
                       },
                     ),
@@ -111,7 +125,9 @@ class SettingsPageWidget extends StatelessWidget {
                       child: Text(
                         'App Overview',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : AppLightColorConstants.primaryColor,
                               fontSize: 16,
                             ),
                       ),
@@ -142,7 +158,9 @@ class SettingsPageWidget extends StatelessWidget {
                       child: Text(
                         'Feedback',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : AppLightColorConstants.primaryColor,
                               fontSize: 16,
                             ),
                       ),
@@ -171,7 +189,9 @@ class SettingsPageWidget extends StatelessWidget {
                       child: Text(
                         'Account',
                         style: context.textStyleGreyBarlow(context).copyWith(
-                              color: AppLightColorConstants.primaryColor,
+                              color: isDarkMode
+                                  ? ColorThemeUtil.getBgInverseColor(context)
+                                  : AppLightColorConstants.primaryColor,
                               fontSize: 16,
                             ),
                       ),
@@ -181,7 +201,7 @@ class SettingsPageWidget extends StatelessWidget {
                       width: context.dynamicWidth(containerWidth),
                       height: context.dynamicHeight(0.085),
                       decoration: BoxDecoration(
-                        color: AppLightColorConstants.infoColor,
+                        color: ColorThemeUtil.getFinanceCardColor(context),
                         borderRadius: BorderRadius.all(context.normalRadius),
                       ),
                       child: FittedBox(
@@ -189,9 +209,10 @@ class SettingsPageWidget extends StatelessWidget {
                         child: Text(
                           'Delete Account',
                           style: context.textStyleTitleBarlow(context).copyWith(
-                              color:
-                                  AppLightColorConstants.contentTeritaryColor,
-                              fontSize: 19),
+                                color: ColorThemeUtil.getContentTeritaryColor(
+                                    context),
+                                fontSize: 19,
+                              ),
                         ),
                       ),
                     )

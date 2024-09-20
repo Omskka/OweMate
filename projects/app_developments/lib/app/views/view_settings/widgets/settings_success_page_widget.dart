@@ -1,6 +1,7 @@
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,9 @@ class SettingsSuccessPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsViewModel, SettingsState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         final viewModel = BlocProvider.of<SettingsViewModel>(context);
         return SingleChildScrollView(
           child: LayoutBuilder(
@@ -67,9 +71,12 @@ class SettingsSuccessPageWidget extends StatelessWidget {
                             child: Text(
                               'Thank you!',
                               textAlign: TextAlign.center,
-                              style: context
-                                  .textStyleH1(context)
-                                  .copyWith(fontSize: 40),
+                              style: context.textStyleH1(context).copyWith(
+                                    fontSize: 40,
+                                    color: isDarkMode
+                                        ? AppLightColorConstants.bgLight
+                                        : AppLightColorConstants.primaryColor,
+                                  ),
                             ),
                           ),
                           context.sizedHeightBoxLower,

@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_state.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_view_model.dart';
@@ -25,6 +26,9 @@ class ProfilePageWidget extends StatelessWidget {
 
     return BlocBuilder<ProfileViewModel, ProfileState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
         final screenWidth = MediaQuery.of(context).size.width;
@@ -144,8 +148,8 @@ class ProfilePageWidget extends StatelessWidget {
                           child: Container(
                             height: containerHeight,
                             width: containerWidth,
-                            decoration: const BoxDecoration(
-                                color: AppLightColorConstants.primaryColor,
+                            decoration: BoxDecoration(
+                                color: ColorThemeUtil.getPrimaryColor(context),
                                 shape: BoxShape.circle),
                             child: SvgPicture.asset(
                               Assets.images.svg.tagSquare,
@@ -173,8 +177,11 @@ class ProfilePageWidget extends StatelessWidget {
                             style:
                                 context.textStyleTitleBarlow(context).copyWith(
                                       fontSize: 18,
-                                      color: AppLightColorConstants.primaryColor
-                                          .withOpacity(0.85),
+                                      color: isDarkMode
+                                          ? ColorThemeUtil.getBgInverseColor(
+                                                  context)
+                                              .withOpacity(0.85)
+                                          : AppLightColorConstants.primaryColor,
                                     ),
                           ),
                         ),
@@ -215,8 +222,11 @@ class ProfilePageWidget extends StatelessWidget {
                             style:
                                 context.textStyleTitleBarlow(context).copyWith(
                                       fontSize: 18,
-                                      color: AppLightColorConstants.primaryColor
-                                          .withOpacity(0.85),
+                                      color: isDarkMode
+                                          ? ColorThemeUtil.getBgInverseColor(
+                                                  context)
+                                              .withOpacity(0.85)
+                                          : AppLightColorConstants.primaryColor,
                                     ),
                           ),
                         ),

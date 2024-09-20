@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_event.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -6,10 +7,12 @@ import 'package:app_developments/core/constants/validation/sign_up_validation.da
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_continue_button.dart';
 import 'package:app_developments/core/widgets/custom_text_field.dart';
+import 'package:app_developments/gen/assets.gen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginPageWidget extends StatelessWidget {
   const LoginPageWidget({super.key});
@@ -22,7 +25,7 @@ class LoginPageWidget extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final maxWidth = constraints.maxWidth;
-          final maxHeight = constraints.maxHeight;
+          final screenHeight = MediaQuery.of(context).size.height;
 
           // Determine height and width based on screen width
           double containerHeight;
@@ -31,21 +34,21 @@ class LoginPageWidget extends StatelessWidget {
           EdgeInsets leftPadding;
 
           // Height
-          if (maxHeight <= 600) {
+          if (screenHeight <= 600) {
             // Small screens
-            containerHeight = context.dynamicHeight(0.1);
-          } else if (maxHeight <= 800) {
+            containerHeight = context.dynamicHeight(0.12);
+          } else if (screenHeight <= 800) {
             // Small screens
-            containerHeight = context.dynamicHeight(0.2);
-          } else if (maxHeight <= 900) {
+            containerHeight = context.dynamicHeight(0.22);
+          } else if (screenHeight <= 900) {
             // Medium screens
-            containerHeight = context.dynamicHeight(0.3);
-          } else if (maxHeight <= 1080) {
+            containerHeight = context.dynamicHeight(0.32);
+          } else if (screenHeight <= 1080) {
             // Medium screens
-            containerHeight = context.dynamicHeight(0.4);
+            containerHeight = context.dynamicHeight(0.42);
           } else {
             // Large screens
-            containerHeight = context.dynamicHeight(0.35);
+            containerHeight = context.dynamicHeight(0.37);
           }
 
           // Width
@@ -100,13 +103,14 @@ class LoginPageWidget extends StatelessWidget {
                                 TextSpan(
                                   text: 'Sign ',
                                   style: context.textStyleH2(context).copyWith(
-                                        color:
-                                            AppLightColorConstants.primaryColor,
+                                        color: ColorThemeUtil.getPrimaryColor(
+                                            context),
                                       ),
                                 ),
                                 TextSpan(
-                                    text: 'In',
-                                    style: context.textStyleH2(context)),
+                                  text: 'In',
+                                  style: context.textStyleH2(context),
+                                ),
                               ],
                             ),
                           ),
@@ -170,12 +174,19 @@ class LoginPageWidget extends StatelessWidget {
                             textInputAction: TextInputAction.next,
                             showVisibilityToggle: true,
                             controller: viewModel.passwordController,
+                            validator: (value) =>
+                                SignUpValidation().checkLoginPasswordErrors(
+                              value,
+                              context,
+                              viewModel.passwordController,
+                            ),
                           ),
                           context.sizedHeightBoxMedium,
                         ],
                       ),
                     ),
                   ),
+                  context.sizedHeightBoxNormal,
                   // Sign up button
                   Center(
                     child: CustomContinueButton(
@@ -234,46 +245,52 @@ class LoginPageWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  context.sizedHeightBoxLow,
+                  context.sizedHeightBoxNormal,
                   Center(
                     child: GestureDetector(
                       onTap: () {},
                       child: Container(
-                        height: context.dynamicHeight(0.08),
+                        height: screenHeight * 0.075,
                         width: containerWidth,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(context.normalRadius),
                           border: Border.all(
-                            color: AppLightColorConstants.primaryColor,
+                            color: ColorThemeUtil.getPrimaryColor(context),
                             width: 1.5,
                           ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            SvgPicture.asset(
+                              Assets.images.svg.google,
+                            ),
+                            context.sizedWidthBoxNormal,
                             Text(
-                              'Sign In with pin code',
+                              'Sign In With Google',
                               style: context
                                   .textStyleGreyBarlow(context)
                                   .copyWith(
-                                      color:
-                                          AppLightColorConstants.primaryColor,
-                                      fontSize: 18),
+                                    color:
+                                        ColorThemeUtil.getContentTeritaryColor(
+                                            context),
+                                    fontSize: 18,
+                                  ),
                             )
                           ],
                         ),
                       ),
                     ),
                   ),
-                  context.sizedHeightBoxNormal,
+                  context.sizedHeightBoxMedium,
                   context.sizedHeightBoxLow,
                   Center(
                     child: RichText(
                       text: TextSpan(
                         text: 'Don\'t have an account? ',
                         style: DefaultTextStyle.of(context).style.copyWith(
-                              color:
-                                  AppLightColorConstants.contentTeritaryColor,
+                              color: ColorThemeUtil.getContentTeritaryColor(
+                                  context),
                             ),
                         children: <TextSpan>[
                           TextSpan(
@@ -281,7 +298,8 @@ class LoginPageWidget extends StatelessWidget {
                             style: context
                                 .textStyleGreyBarlow(context)
                                 .copyWith(
-                                  color: AppLightColorConstants.primaryColor,
+                                  color:
+                                      ColorThemeUtil.getPrimaryColor(context),
                                   fontSize: 16,
                                 ),
                             recognizer: TapGestureRecognizer()

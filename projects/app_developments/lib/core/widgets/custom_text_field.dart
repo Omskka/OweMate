@@ -1,3 +1,4 @@
+import 'package:app_developments/core/constants/dark_theme_color_constants.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SizedBox(
       width: widget.width ?? context.dynamicWidth(0.83),
       child: TextFormField(
@@ -101,7 +104,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         textInputAction: widget.textInputAction,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          fillColor: widget.fillColor ?? AppLightColorConstants.bgLight,
+          fillColor: widget.fillColor ??
+              (isDarkMode
+                  ? AppDarkColorConstants.bgLight // Dark theme background color
+                  : AppLightColorConstants
+                      .bgLight), // Light theme background color
           filled: true,
           prefixIcon: _isPrefixIconGiven() && _isTyping
               ? Padding(
@@ -138,7 +145,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           border: widget.outlineBorder
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.all(context.normalRadius),
-                  borderSide: BorderSide.none)
+                  borderSide: BorderSide.none,
+                )
               : const UnderlineInputBorder(),
           suffixIcon: Row(
             mainAxisSize: MainAxisSize.min,

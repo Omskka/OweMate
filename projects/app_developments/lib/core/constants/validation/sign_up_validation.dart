@@ -56,6 +56,25 @@ String? checkPasswordErrors(
   return null; // Password is valid
 }
 
+// Check for errors in password field
+String? checkLoginPasswordErrors(
+  String? value,
+  BuildContext context,
+  TextEditingController passwordController,
+) {        // At least one number
+
+  // Check if 'password' field is empty
+  if (passwordController.text.isEmpty) {
+    return 'Value is Required';
+  }
+  // Check if password length is at least 6 characters
+  else if (passwordController.text.length <= 5) {
+    return 'Password must contain at least 6 characters';
+  }
+
+  return null; // Password is valid
+}
+
 
   // Check for errors in confirm password field
   String? checkConfirmPasswordErrors(

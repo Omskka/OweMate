@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class IncomingRequestsCard extends StatelessWidget {
       height: context.dynamicHeight(0.15),
       width: context.dynamicWidth(0.75),
       decoration: BoxDecoration(
-        color: AppLightColorConstants.infoColor,
+        color: ColorThemeUtil.getDrawerColor(context),
         borderRadius: BorderRadius.all(context.normalRadius),
       ),
       child: Column(

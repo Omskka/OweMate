@@ -18,6 +18,8 @@ class OnboardingPageOneWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardingViewModel, OnboardingState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         final viewModel = BlocProvider.of<OnboardingViewModel>(context);
         return Column(
           children: [
@@ -89,7 +91,11 @@ class OnboardingPageOneWidget extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Never Forget a Debt',
-                    style: context.textStyleH2(context),
+                    style: context.textStyleH2(context).copyWith(
+                          color: isDarkMode
+                              ? AppLightColorConstants.bgLight
+                              : AppLightColorConstants.primaryColor,
+                        ),
                   ),
                 ),
               ),
@@ -154,7 +160,7 @@ class OnboardingPageOneWidget extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: GestureDetector(
                 onTap: () {
-                  context.router.push(const SignupViewRoute());
+                  context.router.push(const LoginViewRoute());
                 },
                 child: Text(
                   'Skip Introduction',

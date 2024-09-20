@@ -60,7 +60,11 @@ class BackButtonWithTitle extends StatelessWidget {
               top: context.dynamicHeight(0.02),
               left: buttonLeftPosition,
               child: CustomRoundedButton(
-                  icon: const Icon(Icons.arrow_back), onPressed: ontap),
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: ontap,
+              ),
             ),
             Center(
               child: Text(

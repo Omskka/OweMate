@@ -1,11 +1,11 @@
 // Creates the application's splash screen.
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_event.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
 import 'package:app_developments/app/views/view_request/widgets/request_page_amount_page_widget.dart';
 import 'package:app_developments/app/views/view_request/widgets/request_page_widget.dart';
 import 'package:app_developments/app/views/view_request/widgets/request_success_page_widget.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,7 @@ class RequestView extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Scaffold(
-              backgroundColor: AppLightColorConstants.bgLight,
+              backgroundColor: ColorThemeUtil.getBgLightColor(context),
               // Set the body of the Scaffold to display the profile update widget
               body: bodyWidget(state, context),
             ),

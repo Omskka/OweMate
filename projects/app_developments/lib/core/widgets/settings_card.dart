@@ -1,3 +1,5 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
+import 'package:app_developments/core/constants/dark_theme_color_constants.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class SettingsCard extends StatelessWidget {
       width: context.dynamicWidth(containerWidth),
       height: context.dynamicHeight(0.1),
       decoration: BoxDecoration(
-        color: AppLightColorConstants.infoColor,
+        color: ColorThemeUtil.getFinanceCardColor(context),
         borderRadius: BorderRadius.all(context.normalRadius),
       ),
       child: Row(
@@ -75,7 +77,8 @@ class SettingsCard extends StatelessWidget {
           // Switch (if showSwitch is true)
           showSwitch
               ? Switch(
-                  activeColor: AppLightColorConstants.primaryColor,
+                  activeColor: AppDarkColorConstants.moneyCardColor,
+                  activeTrackColor: AppDarkColorConstants.contentTeritaryColor,
                   inactiveThumbColor: AppLightColorConstants.infoColor,
                   inactiveTrackColor:
                       AppLightColorConstants.contentTeritaryColor,

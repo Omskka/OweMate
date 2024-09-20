@@ -35,6 +35,8 @@ class NotificationsViewModel
       // Filter the users whose IDs are in the requestList
       List<Map<String, String>> friendRequestsData = allUsersData
           .where((user) => requestList.contains(user['userId']))
+          .toList()
+          .reversed
           .toList();
 
       // Emit the state with the fetched friend request data

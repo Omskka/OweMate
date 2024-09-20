@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class UserMessages extends StatelessWidget {
       height: context.dynamicHeight(0.11),
       width: containerWidth,
       decoration: BoxDecoration(
-        color: AppLightColorConstants.bgDark,
+        color: ColorThemeUtil.getMessageCardColor(context),
         borderRadius: BorderRadius.all(context.normalRadius),
       ),
       child: Column(
@@ -79,7 +80,7 @@ class UserMessages extends StatelessWidget {
                 padding: context.onlyLeftPaddingNormal,
                 child: Icon(
                   Icons.mail,
-                  color: AppLightColorConstants.primaryColor,
+                  color: ColorThemeUtil.getPrimaryColor(context),
                   size: context.dynamicHeight(0.035),
                 ),
               ),

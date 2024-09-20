@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
@@ -16,6 +17,9 @@ class RequestSuccessPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RequestViewModel, RequestState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         final viewModel = BlocProvider.of<RequestViewModel>(context);
         // Handle the case where maxWidth or maxHeight is Infinity
         final screenWidth = MediaQuery.of(context).size.width;
@@ -81,7 +85,12 @@ class RequestSuccessPageWidget extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'Request Send\nSuccessfully',
-                    style: context.textStyleH1(context).copyWith(fontSize: 35),
+                    style: context.textStyleH1(context).copyWith(
+                          fontSize: 35,
+                          color: isDarkMode
+                              ? ColorThemeUtil.getBgInverseColor(context)
+                              : ColorThemeUtil.getPrimaryColor(context),
+                        ),
                   ),
                 ),
               ),

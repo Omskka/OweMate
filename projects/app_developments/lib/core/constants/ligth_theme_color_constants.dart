@@ -13,6 +13,7 @@ final class AppLightColorConstants {
   static const Color successColor = Color(0xFF43A048);
   static const Color warningColor = Color(0xffFB8A00);
   static const Color infoColor = Color(0xFFE9ECEF);
+  static const Color drawerColor = Color(0xFFFFFFFF);
 
   //button color
 
@@ -36,18 +37,12 @@ final class AppLightColorConstants {
   static const Color bgWarningLight = Color(0xFFFFF3E0);
 
   //text and icon color
-
-  static const Color contentPrimary = Color(0xFF2A2A2A);
-  static const Color contentSecondary = Color(0xFF414141);
+  static const Color contentPrimary = Color(0xFF111111);
   static const Color contentTeritaryColor = Color(0xFF5A5A5A);
+  static const Color contentGreyColor = Color(0xFF5A5A5A);
   static const Color contentDisabled = Color(0xFFB8B8B8);
-  static const Color contentAccent = Color(0xFF1E3AE5);
-  static const Color contentSecondaryColor = Color(0xFFF57F17);
-  static const Color contentError = Color(0xFFB71B1C);
-  static const Color contentSuccess = Color(0xFF1B5E21);
-  static const Color contentWarning = Color(0xFF983301);
-  static const Color contentOnColor = Colors.white;
-  static const Color contentOnInverse = Color(0xFF121212);
+  static const Color debtAmountTextColor = Color(0xFFFF3131);
+  static const Color requestAmountTextColor = Color(0xFF004AAD);
 
   //custom icon and text color
   static const Color primaryIconColor = Color(0xff444444);
@@ -73,4 +68,9 @@ final class AppLightColorConstants {
 
   //TextInputBorder
   static const Color textInputBorderColor = Color(0xFFb8b8b8);
+
+  // Card colors
+  static const Color moneyCardColor = Color(0xFFFFFFFF);
+  static const Color financeCardColor = Color(0xFFE9ECEF);
+  static const Color messageCardColor = Color(0xC2EEEDED);
 }

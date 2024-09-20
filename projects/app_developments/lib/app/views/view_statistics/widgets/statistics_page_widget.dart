@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_statistics/view_model/statistics_event.dart';
 import 'package:app_developments/app/views/view_statistics/view_model/statistics_state.dart';
 import 'package:app_developments/app/views/view_statistics/view_model/statistics_view_model.dart';
@@ -21,6 +22,9 @@ class StatisticsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StatisticsViewModel, StatisticsState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
         final screenWidth = MediaQuery.of(context).size.width;
@@ -129,12 +133,15 @@ class StatisticsPageWidget extends StatelessWidget {
                                   fit: BoxFit.scaleDown,
                                   child: Text(
                                     '$formattedRequestedMoneyPercentage%', // Use the formatted string here
-                                    style:
-                                        context.textStyleGrey(context).copyWith(
-                                              color: AppLightColorConstants
+                                    style: context
+                                        .textStyleGrey(context)
+                                        .copyWith(
+                                          color: isDarkMode
+                                              ? AppLightColorConstants.bgLight
+                                              : AppLightColorConstants
                                                   .primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ),
                                 context.sizedHeightBoxLower,
@@ -145,8 +152,10 @@ class StatisticsPageWidget extends StatelessWidget {
                                     style: context
                                         .textStyleGrey(context)
                                         .copyWith(
-                                          color:
-                                              AppLightColorConstants.thirdColor,
+                                          color: isDarkMode
+                                              ? AppLightColorConstants.bgLight
+                                              : AppLightColorConstants
+                                                  .thirdColor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                   ),
@@ -244,7 +253,7 @@ class StatisticsPageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.1),
                       width: context.dynamicWidth(containerWidth),
                       decoration: BoxDecoration(
-                        color: AppLightColorConstants.infoColor,
+                        color: ColorThemeUtil.getFinanceCardColor(context),
                         borderRadius: BorderRadius.all(context.normalRadius),
                       ),
                       child: Column(
@@ -273,7 +282,7 @@ class StatisticsPageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.1),
                       width: context.dynamicWidth(containerWidth),
                       decoration: BoxDecoration(
-                        color: AppLightColorConstants.infoColor,
+                        color: ColorThemeUtil.getFinanceCardColor(context),
                         borderRadius: BorderRadius.all(context.normalRadius),
                       ),
                       child: Column(

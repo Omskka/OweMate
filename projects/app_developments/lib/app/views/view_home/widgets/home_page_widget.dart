@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
@@ -124,7 +125,7 @@ class HomePageWidget extends StatelessWidget {
                         style: context.textStyleGrey(context).copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
-                              color: AppLightColorConstants.bgInverse,
+                              color: ColorThemeUtil.getBgInverseColor(context),
                             ),
                       ),
                     ),
@@ -214,7 +215,15 @@ class HomePageWidget extends StatelessWidget {
                                     onTap: () {
                                       // set up the buttons
                                       Widget continueButton = TextButton(
-                                        child: const Text("Continue"),
+                                        child: Text(
+                                          "Continue",
+                                          style: TextStyle(
+                                            color: ColorThemeUtil
+                                                .getContentTeritaryColor(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pop(); // Dismiss the dialog
@@ -328,7 +337,15 @@ class HomePageWidget extends StatelessWidget {
                                     onTap: () {
                                       // set up the buttons
                                       Widget continueButton = TextButton(
-                                        child: const Text("Continue"),
+                                        child: Text(
+                                          "Continue",
+                                          style: TextStyle(
+                                            color: ColorThemeUtil
+                                                .getContentTeritaryColor(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pop(); // Dismiss the dialog
