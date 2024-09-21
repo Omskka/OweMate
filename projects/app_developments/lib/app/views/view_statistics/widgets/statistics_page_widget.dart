@@ -205,10 +205,10 @@ class StatisticsPageWidget extends StatelessWidget {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const Center(
+                                  return Center(
                                     child: CircularProgressIndicator(
-                                      color:
-                                          AppLightColorConstants.primaryColor,
+                                      color: ColorThemeUtil
+                                          .getContentTeritaryColor(context),
                                     ),
                                   );
                                 } else {
@@ -233,12 +233,14 @@ class StatisticsPageWidget extends StatelessWidget {
                         : SizedBox(
                             height: context.dynamicHeight(0.15),
                             width: context.dynamicWidth(1),
-                            child: const Center(
+                            child: Center(
                               child: SizedBox(
                                 height:
                                     40, // Adjust the height of the indicator
                                 width: 40, // Adjust the width of the indicator
                                 child: CircularProgressIndicator(
+                                  color: ColorThemeUtil.getContentTeritaryColor(
+                                      context),
                                   strokeWidth:
                                       3, // Make the progress circle thinner
                                 ),
@@ -415,10 +417,10 @@ class StatisticsPageWidget extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return const Center(
+                                    return Center(
                                       child: CircularProgressIndicator(
-                                        color:
-                                            AppLightColorConstants.primaryColor,
+                                        color: ColorThemeUtil
+                                            .getContentTeritaryColor(context),
                                       ),
                                     );
                                   } else {
@@ -437,12 +439,14 @@ class StatisticsPageWidget extends StatelessWidget {
                         : SizedBox(
                             height: context.dynamicHeight(0.15),
                             width: context.dynamicWidth(1),
-                            child: const Center(
+                            child: Center(
                               child: SizedBox(
                                 height:
                                     40, // Adjust the height of the indicator
                                 width: 40, // Adjust the width of the indicator
                                 child: CircularProgressIndicator(
+                                  color: ColorThemeUtil.getContentTeritaryColor(
+                                      context),
                                   strokeWidth:
                                       3, // Make the progress circle thinner
                                 ),

@@ -154,8 +154,11 @@ class FriendsPageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.4),
                       width: context.dynamicWidth(containerWidth),
                       child: state is FriendsLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(),
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: ColorThemeUtil.getContentTeritaryColor(
+                                    context),
+                              ),
                             )
                           : state.friends.isEmpty &&
                                   state is FriendsDataLoadedState

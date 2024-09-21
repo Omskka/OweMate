@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_state.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -50,7 +51,10 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 

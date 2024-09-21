@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -119,7 +120,10 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 

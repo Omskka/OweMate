@@ -39,13 +39,13 @@ class LoginPageWidget extends StatelessWidget {
             containerHeight = context.dynamicHeight(0.12);
           } else if (screenHeight <= 800) {
             // Small screens
-            containerHeight = context.dynamicHeight(0.22);
+            containerHeight = context.dynamicHeight(0.38);
           } else if (screenHeight <= 900) {
             // Medium screens
-            containerHeight = context.dynamicHeight(0.32);
+            containerHeight = context.dynamicHeight(0.33);
           } else if (screenHeight <= 1080) {
             // Medium screens
-            containerHeight = context.dynamicHeight(0.42);
+            containerHeight = context.dynamicHeight(0.33);
           } else {
             // Large screens
             containerHeight = context.dynamicHeight(0.37);
@@ -119,22 +119,20 @@ class LoginPageWidget extends StatelessWidget {
                     ),
                   ),
                   context.sizedHeightBoxNormal,
-                  Padding(
-                    padding: leftPadding,
+                  Center(
                     child: SizedBox(
                       height: containerHeight,
-                      width: constraints
-                          .maxWidth, // Use maxWidth for the container width
+                      width:
+                          textfieldWidth, // Use the specific textfield width here
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // Align contents inside the column to start
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           // Email text
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'Email',
-                              style: context.textStyleGrey(context),
-                            ),
+                          Text(
+                            'Email',
+                            style: context.textStyleGrey(context),
                           ),
                           // Custom text field with hint text
                           CustomTextField(
@@ -160,12 +158,9 @@ class LoginPageWidget extends StatelessWidget {
                           ),
                           context.sizedHeightBoxMedium,
                           // Password text
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'Password',
-                              style: context.textStyleGrey(context),
-                            ),
+                          Text(
+                            'Password',
+                            style: context.textStyleGrey(context),
                           ),
                           // Custom text field with visibility toggle
                           CustomTextField(
@@ -186,7 +181,8 @@ class LoginPageWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  context.sizedHeightBoxNormal,
+
+                  context.sizedHeightBoxLow,
                   // Sign up button
                   Center(
                     child: CustomContinueButton(
@@ -283,7 +279,7 @@ class LoginPageWidget extends StatelessWidget {
                     ),
                   ),
                   context.sizedHeightBoxMedium,
-                  context.sizedHeightBoxLow,
+                  context.sizedHeightBoxLower,
                   Center(
                     child: RichText(
                       text: TextSpan(

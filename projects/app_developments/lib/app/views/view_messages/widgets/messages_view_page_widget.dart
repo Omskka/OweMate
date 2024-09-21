@@ -174,7 +174,10 @@ class MessagesViewPageWidget extends StatelessWidget {
                           alignment: Alignment.topCenter,
                           child: Padding(
                             padding: context.onlyTopPaddingHigh,
-                            child: const CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: ColorThemeUtil.getContentTeritaryColor(
+                                  context),
+                            ),
                           ),
                         )
                       : state.combinedFilteredList.isEmpty
@@ -189,8 +192,11 @@ class MessagesViewPageWidget extends StatelessWidget {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     // Show loading spinner while waiting for 1 second
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: ColorThemeUtil
+                                            .getContentTeritaryColor(context),
+                                      ),
                                     );
                                   } else {
                                     // After 1 second, show the main content

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_event.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -57,7 +58,10 @@ class ProfileUpdateViewModel
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 

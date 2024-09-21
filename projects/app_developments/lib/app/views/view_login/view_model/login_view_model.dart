@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_event.dart';
 import 'package:app_developments/app/views/view_login/view_model/login_state.dart';
 import 'package:app_developments/core/auth/exceptions/log_in_with_email_and_password_failure.dart';
@@ -47,7 +48,10 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return  Center(child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(
+                                    context),
+          ));
         },
       );
 

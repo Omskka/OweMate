@@ -16,30 +16,42 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
   final formKey = GlobalKey<FormState>();
 
   static const _themePreferenceKey = 'isDarkTheme';
+  static const _orderPreferenceKey = 'isOrderReversed'; // Added for order
 
-  SettingsViewModel() : super(SettingsInitialState()) {
+  SettingsViewModel() : super(const SettingsInitialState()) {
     on<SettingsInitialEvent>(_initial);
     on<SettingsSwitchEvent>(_changeSwitch);
     on<SettingsNavigateToNextPageEvent>(_navigateToNextPage);
     on<SettingsSubmitFeedbackEvent>(_submitFeedback);
 
-    _loadThemePreference(); // Load theme preference when initialized
+    _loadPreferences(); // Load preferences when initialized
   }
 
-  // Load the theme preference from SharedPreferences
-  Future<void> _loadThemePreference() async {
+  // Load the theme and order preferences from SharedPreferences
+  Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final isDarkTheme = prefs.getBool(_themePreferenceKey) ?? false;
-    emit(SettingsSwitchState(
-      isDarkTheme: isDarkTheme,
-      isOrderReversed: state.isOrderReversed,
-    ));
+    final isOrderReversed =
+        prefs.getBool(_orderPreferenceKey) ?? false; // Load order
+
+    emit(
+      SettingsSwitchState(
+        isDarkTheme: isDarkTheme,
+        isOrderReversed: isOrderReversed,
+      ),
+    );
   }
 
   // Save the theme preference to SharedPreferences
   Future<void> _saveThemePreference(bool isDarkTheme) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_themePreferenceKey, isDarkTheme);
+  }
+
+  // Save the order preference to SharedPreferences
+  Future<void> _saveOrderPreference(bool isOrderReversed) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_orderPreferenceKey, isOrderReversed); // Save order
   }
 
   FutureOr<void> _initial(
@@ -57,6 +69,9 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
       await _saveThemePreference(newThemeValue);
     } else if (event.eventType == 'order') {
       newOrder = !state.isOrderReversed;
+
+      // Save the new order state in shared preferences
+      await _saveOrderPreference(newOrder);
     }
 
     // Emit the new state with updated values

@@ -131,7 +131,10 @@ class RequestPageWidget extends StatelessWidget {
                           alignment: Alignment.topCenter,
                           child: Padding(
                             padding: context.onlyTopPaddingHigh,
-                            child: const CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: ColorThemeUtil.getContentTeritaryColor(
+                                  context),
+                            ),
                           ),
                         )
                       : state.friends.isEmpty

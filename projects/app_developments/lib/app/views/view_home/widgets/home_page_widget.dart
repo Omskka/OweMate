@@ -184,8 +184,11 @@ class HomePageWidget extends StatelessWidget {
                   height: context.dynamicHeight(0.25),
                   width: context.dynamicWidth(1),
                   child: state is HomeLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(),
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color:
+                                ColorThemeUtil.getContentTeritaryColor(context),
+                          ),
                         )
                       : filteredOwedMoney.isNotEmpty
                           ? Padding(
@@ -307,8 +310,11 @@ class HomePageWidget extends StatelessWidget {
                   height: context.dynamicHeight(0.25),
                   width: context.dynamicWidth(1),
                   child: state is HomeLoadingState
-                      ? const Center(
-                          child: CircularProgressIndicator(),
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color:
+                                ColorThemeUtil.getContentTeritaryColor(context),
+                          ),
                         )
                       : filteredRequestedMoney.isNotEmpty
                           ? Padding(

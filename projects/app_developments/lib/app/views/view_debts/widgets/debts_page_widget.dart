@@ -127,7 +127,7 @@ class DebtsPageWidget extends StatelessWidget {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            'Quickly send payment requests to friends or family,\nensuring everyone is on the same page and payments\nare made on time.',
+                            'Quickly send payment requests to friends or family,\nensuring everyone is on the same page.',
                             style: context.textStyleGrey(context).copyWith(
                                   fontWeight: FontWeight.w700,
                                 ),
