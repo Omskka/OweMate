@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_view_model.dart';
@@ -159,8 +160,11 @@ class SettlePageWidget extends StatelessWidget {
                       height: context.dynamicHeight(0.5),
                       width: context.dynamicWidth(0.8),
                       child: state is SettleLoadingState
-                          ? const Center(
-                              child: CircularProgressIndicator(),
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: ColorThemeUtil.getContentTeritaryColor(
+                                    context),
+                              ),
                             )
                           : filteredOwedMoney.isNotEmpty
                               ? ListView.builder(

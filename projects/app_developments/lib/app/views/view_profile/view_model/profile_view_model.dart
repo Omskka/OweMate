@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:app_developments/app/l10n/app_localizations.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
@@ -142,7 +143,10 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 

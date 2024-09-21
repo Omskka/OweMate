@@ -110,21 +110,20 @@ class SignupPageWidget extends StatelessWidget {
                 ),
               ),
               context.sizedHeightBoxNormal,
-              Padding(
-                padding: leftPadding,
+              Center(
                 child: SizedBox(
                   height: containerHeight,
-                  width: screenWidth,
+                  width:
+                      textfieldWidth, // Use specific textfield width to center
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Align contents inside the column to start
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Email text
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Email',
-                          style: context.textStyleGrey(context),
-                        ),
+                      Text(
+                        'Email',
+                        style: context.textStyleGrey(context),
                       ),
                       // Custom text field with hint text
                       CustomTextField(
@@ -150,12 +149,9 @@ class SignupPageWidget extends StatelessWidget {
                       ),
                       context.sizedHeightBoxMedium,
                       // Password text
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Password',
-                          style: context.textStyleGrey(context),
-                        ),
+                      Text(
+                        'Password',
+                        style: context.textStyleGrey(context),
                       ),
                       // Custom text field with visibility toggle
                       CustomTextField(
@@ -173,12 +169,9 @@ class SignupPageWidget extends StatelessWidget {
                       ),
                       context.sizedHeightBoxMedium,
                       // Confirm password text
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Confirm Password',
-                          style: context.textStyleGrey(context),
-                        ),
+                      Text(
+                        'Confirm Password',
+                        style: context.textStyleGrey(context),
                       ),
                       // Custom text field with visibility toggle
                       CustomTextField(
@@ -199,6 +192,7 @@ class SignupPageWidget extends StatelessWidget {
                   ),
                 ),
               ),
+
               context.sizedHeightBoxNormal,
               // Sign up button
               Center(

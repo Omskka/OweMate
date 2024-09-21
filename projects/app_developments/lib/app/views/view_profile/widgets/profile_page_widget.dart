@@ -255,7 +255,10 @@ class ProfilePageWidget extends StatelessWidget {
             ),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         }
       },
     );

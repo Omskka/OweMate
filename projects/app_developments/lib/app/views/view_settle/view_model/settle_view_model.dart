@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
@@ -106,7 +107,10 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 
@@ -206,7 +210,10 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
+          ));
         },
       );
 

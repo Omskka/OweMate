@@ -865,9 +865,11 @@ class ActivityPageWidget extends StatelessWidget {
                         : SizedBox(
                             height: context.dynamicHeight(0.1),
                             width: context.dynamicWidth(1),
-                            child: const Center(
-                              child:
-                                  CircularProgressIndicator(), // Loading circle
+                            child:  Center(
+                              child: CircularProgressIndicator(
+                                color: ColorThemeUtil.getContentTeritaryColor(
+                                    context),
+                              ), // Loading circle
                             ),
                           ),
                   ),
