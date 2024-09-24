@@ -60,7 +60,6 @@ class _AppState extends State<App> {
 
     setState(() {
       _isDarkTheme = isDarkTheme;
-      debugPrint("Theme changed to: ${_isDarkTheme ? 'Dark' : 'Light'}");
     });
   }
 

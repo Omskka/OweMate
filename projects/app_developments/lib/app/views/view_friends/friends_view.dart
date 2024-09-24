@@ -19,6 +19,8 @@ class FriendsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final homeViewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocProvider(
       create: (context) =>
@@ -54,12 +56,12 @@ class FriendsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: ColorThemeUtil.getHueColor(context)
-                                      .withOpacity(0.3), // Hue shadow color
-                                  offset: const Offset(
-                                    3.0,
-                                    0.0,
-                                  ), // Offset to the right
+                                  color: isDarkMode
+                                      ? ColorThemeUtil.getHueColor(context)
+                                          .withOpacity(0.6)
+                                      : ColorThemeUtil.getHueColor(context)
+                                          .withOpacity(0.3),
+                                  offset: const Offset(3.0, 0.0),
                                   blurRadius: 2.0,
                                 ),
                               ],
@@ -74,8 +76,11 @@ class FriendsView extends StatelessWidget {
                               fontFamily: 'Barlow Semi Condensed bold',
                               shadows: [
                                 Shadow(
-                                  color: ColorThemeUtil.getHueColor(context)
-                                      .withOpacity(0.3), // Hue shadow color
+                                  color: isDarkMode
+                                      ? ColorThemeUtil.getHueColor(context)
+                                          .withOpacity(0.6)
+                                      : ColorThemeUtil.getHueColor(context)
+                                          .withOpacity(0.3),
                                   offset: const Offset(
                                       3.0, 0.0), // Offset to the right
                                   blurRadius: 2.0,

@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_view_model.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
@@ -15,6 +16,8 @@ class ProfileUpdateSuccessPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileUpdateViewModel, ProfileUpdateState>(
       builder: (context, state) {
+        // Check if the current theme is dark or light
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         final viewModel = BlocProvider.of<ProfileUpdateViewModel>(context);
         return SingleChildScrollView(
           child: LayoutBuilder(
@@ -68,9 +71,14 @@ class ProfileUpdateSuccessPageWidget extends StatelessWidget {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               'Sign Up Successful',
-                              style: context
-                                  .textStyleH1(context)
-                                  .copyWith(fontSize: 40),
+                              style: context.textStyleH1(context).copyWith(
+                                    fontSize: 40,
+                                    color: isDarkMode
+                                        ? ColorThemeUtil.getBgInverseColor(
+                                            context)
+                                        : ColorThemeUtil.getPrimaryColor(
+                                            context),
+                                  ),
                             ),
                           ),
                           context.sizedHeightBoxMedium,

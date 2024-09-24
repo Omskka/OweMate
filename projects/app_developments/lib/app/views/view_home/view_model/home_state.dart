@@ -2,9 +2,11 @@
 abstract class HomeState {
   final Map<String, dynamic> userData;
   final Map<String, dynamic> friendsUserData;
+  final bool? isConnectedToInternet;
   HomeState({
     required this.friendsUserData,
     required this.userData,
+    this.isConnectedToInternet,
   });
 }
 
@@ -18,7 +20,11 @@ class HomeInitialState extends HomeState {
 }
 
 class HomeLoadingState extends HomeState {
-  HomeLoadingState() : super(friendsUserData: {}, userData: {});
+  HomeLoadingState()
+      : super(
+          friendsUserData: {},
+          userData: {},
+        );
 }
 
 // State to represent loaded data
@@ -48,7 +54,10 @@ class HomeDrawerOpenedState extends HomeState {
     required HomeState state,
     required Map<String, dynamic> userData,
     required Map<String, dynamic> friendsUserData,
-  }) : super(userData: state.userData, friendsUserData: state.friendsUserData);
+  }) : super(
+          userData: state.userData,
+          friendsUserData: state.friendsUserData,
+        );
 }
 
 // State to represent drawer closed
@@ -57,7 +66,10 @@ class HomeDrawerClosedState extends HomeState {
     required HomeState state,
     required Map<String, dynamic> userData,
     required Map<String, dynamic> friendsUserData,
-  }) : super(userData: state.userData, friendsUserData: state.friendsUserData);
+  }) : super(
+          userData: state.userData,
+          friendsUserData: state.friendsUserData,
+        );
 }
 
 class HomeRequestDeletedState extends HomeState {
@@ -65,5 +77,21 @@ class HomeRequestDeletedState extends HomeState {
     required HomeState state,
     required Map<String, dynamic> userData,
     required Map<String, dynamic> friendsUserData,
-  }) : super(userData: state.userData, friendsUserData: state.friendsUserData);
+  }) : super(
+          userData: state.userData,
+          friendsUserData: state.friendsUserData,
+        );
+}
+
+class HomeInternetState extends HomeState {
+  HomeInternetState({
+    required HomeState state,
+    required Map<String, dynamic> userData,
+    required Map<String, dynamic> friendsUserData,
+    required bool? isConnectedToInternet,
+  }) : super(
+          userData: state.userData,
+          friendsUserData: state.friendsUserData,
+          isConnectedToInternet: isConnectedToInternet,
+        );
 }

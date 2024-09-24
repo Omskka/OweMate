@@ -29,14 +29,14 @@ class SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = (screenWidth <= 600)
-        ? 0.85
+        ? 0.9
         : (screenWidth <= 800)
-            ? 0.75
+            ? 0.8
             : (screenWidth <= 900)
-                ? 0.65
+                ? 0.7
                 : (screenWidth <= 1080)
-                    ? 0.55
-                    : 0.45;
+                    ? 0.6
+                    : 0.5;
 
     return Container(
       padding: context.paddingNormal,

@@ -131,6 +131,7 @@ class FriendsPageWidget extends StatelessWidget {
                             ),
                             context.sizedWidthBoxNormal,
                             CustomTextField(
+                              key: viewModel.searchFriendKey,
                               hintTextColor:
                                   AppLightColorConstants.contentTeritaryColor,
                               icon: const Icon(
@@ -366,6 +367,7 @@ class FriendsPageWidget extends StatelessWidget {
                     ),
                     context.sizedHeightBoxNormal,
                     CustomContinueButton(
+                      key: viewModel.addFriendKey,
                       buttonText: 'Add Friends',
                       onPressed: () {
                         context.router.push(const AddFriendsViewRoute());

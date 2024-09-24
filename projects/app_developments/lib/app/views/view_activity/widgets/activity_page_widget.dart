@@ -133,9 +133,8 @@ class ActivityPageWidget extends StatelessWidget {
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
             // Dispatch the initial event to refresh the data
-            context
-                .read<ActivityViewModel>()
-                .add(ActivityInitialEvent(activityType: 'Requests'));
+            context.read<ActivityViewModel>().add(ActivityInitialEvent(
+                activityType: 'Requests', context: context));
           },
           child: SingleChildScrollView(
             clipBehavior: Clip.none,
@@ -524,6 +523,7 @@ class ActivityPageWidget extends StatelessWidget {
                     child: Container(
                       padding: context.paddingLow,
                       width: containerWidth,
+                      key: viewModel.activityKey,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0),
@@ -656,6 +656,7 @@ class ActivityPageWidget extends StatelessWidget {
                                                     requestId: activity[
                                                         'requestId'], // Ensure this is the correct ID
                                                     friendUserId: friendUserId,
+                                                    context: context,
                                                   ),
                                                 );
 
@@ -716,6 +717,7 @@ class ActivityPageWidget extends StatelessWidget {
                                                               'requestId'], // Ensure this is the correct ID
                                                           friendUserId:
                                                               friendUserId,
+                                                          context: context,
                                                         ),
                                                       );
                                                   Navigator.of(context)
@@ -758,7 +760,7 @@ class ActivityPageWidget extends StatelessWidget {
                                                           children: [
                                                             TextSpan(
                                                               text:
-                                                                  "Your message:\n", // Bold only for this label
+                                                                  "$friendName's Message:\n", // Bold only for this label
                                                               style: context
                                                                   .textStyleGreyBarlow(
                                                                       context),
@@ -772,7 +774,7 @@ class ActivityPageWidget extends StatelessWidget {
                                                             ),
                                                             TextSpan(
                                                               text:
-                                                                  "$friendName's Message:\n", // Bold only for this label
+                                                                  "Your message:\n", // Bold only for this label
                                                               style: context
                                                                   .textStyleGreyBarlow(
                                                                       context),
@@ -865,7 +867,7 @@ class ActivityPageWidget extends StatelessWidget {
                         : SizedBox(
                             height: context.dynamicHeight(0.1),
                             width: context.dynamicWidth(1),
-                            child:  Center(
+                            child: Center(
                               child: CircularProgressIndicator(
                                 color: ColorThemeUtil.getContentTeritaryColor(
                                     context),

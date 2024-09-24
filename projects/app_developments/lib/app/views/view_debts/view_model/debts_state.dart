@@ -1,7 +1,9 @@
 abstract class DebtsState {
   final List requestNumber;
+  final bool? isConnectedToInternet;
   DebtsState({
     required this.requestNumber,
+    this.isConnectedToInternet,
   });
 }
 
@@ -30,5 +32,16 @@ class DebtsDrawerClosedState extends DebtsState {
   DebtsDrawerClosedState({
     required DebtsState state,
     required List requestNumber,
-  }):super(requestNumber: state.requestNumber);
+  }) : super(requestNumber: state.requestNumber);
+}
+
+class DebtsInternetState extends DebtsState {
+  DebtsInternetState({
+    required bool? isConnectedToInternet,
+    required DebtsState state,
+    required List requestNumber,
+  }) : super(
+          requestNumber: state.requestNumber,
+          isConnectedToInternet: isConnectedToInternet,
+        );
 }

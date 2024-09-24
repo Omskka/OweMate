@@ -13,6 +13,7 @@ class DebtsPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = BlocProvider.of<DebtsViewModel>(context);
     return BlocBuilder<DebtsViewModel, DebtsState>(
       builder: (context, state) {
         // Check if the current theme is dark or light
@@ -140,6 +141,7 @@ class DebtsPageWidget extends StatelessWidget {
                   SizedBox(
                     height: containerHeight,
                     width: containerWidth,
+                    key: viewModel.requestsKey,
                     child: GestureDetector(
                       onTap: () {
                         context.router.push(const RequestViewRoute());
@@ -223,6 +225,7 @@ class DebtsPageWidget extends StatelessWidget {
                   SizedBox(
                     height: containerHeight,
                     width: containerWidth,
+                    key: viewModel.debtsKey,
                     child: GestureDetector(
                       onTap: () {
                         context.router.push(const SettleViewRoute());

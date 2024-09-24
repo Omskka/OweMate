@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_event.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_state.dart';
 import 'package:app_developments/app/views/view_profile_update/view_model/profile_update_view_model.dart';
@@ -81,7 +82,8 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                                 'Set Profile',
                                 style: context.textStyleH1(context).copyWith(
                                       fontSize: 20,
-                                      color: AppLightColorConstants.bgInverse,
+                                      color: ColorThemeUtil.getBgInverseColor(
+                                          context),
                                     ),
                               ),
                             )
