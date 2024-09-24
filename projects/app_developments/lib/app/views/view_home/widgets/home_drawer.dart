@@ -1,9 +1,7 @@
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/theme/color_theme_util.dart';
-import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
-import 'package:app_developments/core/widgets/custom_smaller_continue_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
@@ -101,6 +99,7 @@ class HomeNavbarWidget extends StatelessWidget {
                   ),
                 ),
                 // List items
+                context.sizedHeightBoxLower,
                 Expanded(
                   child: ListView(
                     padding: EdgeInsets.zero,
@@ -189,21 +188,6 @@ class HomeNavbarWidget extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                ),
-                // Signout button
-                Padding(
-                  padding: context.onlyBottomPaddingHigh,
-                  child: Padding(
-                    padding: context.onlyBottomPaddingMedium,
-                    child: CustomSmallerContinueButton(
-                      buttonText: 'Sign Out',
-                      icon: const Icon(Icons.logout),
-                      borderRadius: BorderRadius.all(context.highRadius),
-                      onPressed: () {
-                        AuthenticationRepository().signOut(context: context);
-                      },
-                    ),
                   ),
                 ),
               ],

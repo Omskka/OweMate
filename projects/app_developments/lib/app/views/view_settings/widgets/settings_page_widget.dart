@@ -3,6 +3,7 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
+import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
@@ -123,39 +124,6 @@ class SettingsPageWidget extends StatelessWidget {
                     SizedBox(
                       height: context.dynamicHeight(0.04),
                       child: Text(
-                        'App Overview',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              color: isDarkMode
-                                  ? ColorThemeUtil.getBgInverseColor(context)
-                                  : AppLightColorConstants.primaryColor,
-                              fontSize: 16,
-                            ),
-                      ),
-                    ),
-                    SettingsCard(
-                      // Remove the Center widget wrapping this
-                      title: 'How to...',
-                      description: 'Learn how to use key features of the app',
-                      onPressed: () {
-                        viewModel.add(
-                          SettingsNavigateToNextPageEvent(
-                            context: context,
-                            selectedPage: 2,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              context.sizedHeightBoxLow,
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: context.dynamicHeight(0.04),
-                      child: Text(
                         'Feedback',
                         style: context.textStyleGreyBarlow(context).copyWith(
                               color: isDarkMode
@@ -196,6 +164,45 @@ class SettingsPageWidget extends StatelessWidget {
                             ),
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        AuthenticationRepository().signOut(context: context);
+                      },
+                      child: Container(
+                          padding: context.paddingNormal,
+                          width: context.dynamicWidth(containerWidth),
+                          height: context.dynamicHeight(0.085),
+                          decoration: BoxDecoration(
+                            color: ColorThemeUtil.getFinanceCardColor(context),
+                            borderRadius:
+                                BorderRadius.all(context.normalRadius),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: context.onlyRightPaddingNormal,
+                                child: const Icon(
+                                  Icons.logout,
+                                ),
+                              ),
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'Sign Out',
+                                  style: context
+                                      .textStyleTitleBarlow(context)
+                                      .copyWith(
+                                        color: ColorThemeUtil
+                                            .getContentTeritaryColor(context),
+                                        fontSize: 19,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
+                    context.sizedHeightBoxLow,
                     Container(
                       padding: context.paddingNormal,
                       width: context.dynamicWidth(containerWidth),
