@@ -12,7 +12,8 @@ class SplashViewModel extends Bloc<SplashEvent, SplashState> {
     on<SplashSelectedPageEvent>(_selectedPage);
   }
 
-  FutureOr<void> _initial(SplashInitialEvent event, Emitter<SplashState> emit) async {
+  FutureOr<void> _initial(
+      SplashInitialEvent event, Emitter<SplashState> emit) async {
     final User? currentUser = FirebaseAuth.instance.currentUser;
 
     // Simulate a loading delay
@@ -35,4 +36,3 @@ class SplashViewModel extends Bloc<SplashEvent, SplashState> {
     ));
   }
 }
-

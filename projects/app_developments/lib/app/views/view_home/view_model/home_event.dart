@@ -1,11 +1,16 @@
 // Abstract base class for home events
+import 'package:flutter/material.dart';
+
 abstract class HomeEvent {
   HomeEvent();
 }
 
 // Event to represent the initial state of the home
 class HomeInitialEvent extends HomeEvent {
-  HomeInitialEvent();
+  final BuildContext context;
+  HomeInitialEvent({
+    required this.context,
+  });
 }
 
 class HomefetchRequestDataEvent extends HomeEvent {
@@ -21,9 +26,11 @@ class HomefetchDebtDataEvent extends HomeEvent {
 class HomefetchDeleteRequestEvent extends HomeEvent {
   final String requestId;
   final String friendUserId;
+  final BuildContext context;
   HomefetchDeleteRequestEvent({
     required this.requestId,
     required this.friendUserId,
+    required this.context,
   });
 }
 

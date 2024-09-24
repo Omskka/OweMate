@@ -70,7 +70,7 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
     } else if (event.eventType == 'order') {
       newOrder = !state.isOrderReversed;
 
-      // Save the new order state in shared preferences
+      // Save the new order state in shared preference
       await _saveOrderPreference(newOrder);
     }
 

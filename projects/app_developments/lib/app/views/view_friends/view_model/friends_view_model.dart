@@ -1,7 +1,13 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
+import 'package:app_developments/app/theme/color_theme_util.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_state.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -20,6 +26,13 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
   List requestList = [];
   List<Map<String, String>> allFriends = [];
 
+  // Define global keys for the tutorial
+  final GlobalKey addFriendKey = GlobalKey();
+  final GlobalKey searchFriendKey = GlobalKey();
+
+  StreamSubscription? _internetConnection;
+  final bool isConnectedToInternet = false;
+
   final FetchUserData fetchUserDataService = FetchUserData();
   final formKey = GlobalKey<FormState>();
 
@@ -28,10 +41,72 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     on<FriendsSearchEvent>(_searchFriend);
     on<FriendsRemoveFriendEvent>(_removeFriend);
   }
+
+  // Method to create the tutorial
+  Future<void> createTutorial(BuildContext context) async {
+    final targets = [
+      TargetFocus(
+        identify: 'addFriends',
+        keyTarget: addFriendKey,
+        enableOverlayTab: true,
+        alignSkip: Alignment.bottomCenter,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            padding: EdgeInsets.only(
+                bottom: context.onlyBottomPaddingHigh.bottom * 1.5),
+            builder: (context, controller) => Center(
+              child: Text(
+                'Add friends',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'searchFriends',
+        keyTarget: searchFriendKey,
+        alignSkip: Alignment.bottomCenter,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            padding: EdgeInsets.only(top: context.onlyTopPaddingHigh.top * 1.5),
+            builder: (context, controller) => Center(
+              child: Text(
+                'Search friends',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+
+    final tutorial = TutorialCoachMark(
+      targets: targets,
+    );
+
+    // Delay to ensure everything is built before showing the tutorial
+    Future.delayed(const Duration(milliseconds: 500), () {
+      tutorial.show(context: context);
+    });
+  }
+
   FutureOr<void> _initial(
       FriendsInitialEvent event, Emitter<FriendsState> emit) async {
     try {
       emit(FriendsLoadingState());
+
+      // Check for internet connection before proceeding
+      _checkInternetConnection(event.context);
 
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
@@ -46,6 +121,16 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
       List<Map<String, String>> friends =
           await fetchUserDataService.fetchFriends();
 
+      // Show tutorial only on the first launch
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool hasSeenFriendsTutorial =
+          prefs.getBool('hasSeenFriendsTutorial') ?? false;
+
+      if (!hasSeenFriendsTutorial) {
+        createTutorial(event.context);
+        prefs.setBool('hasSeenFriendsTutorial', true);
+      }
+
       // Emit the state with the fetched friends data
       emit(FriendsDataLoadedState(
         friends: friends,
@@ -55,6 +140,161 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     } catch (e) {
       // Handle the exception
       throw Exception('Failed to fetch data: $e');
+    }
+  }
+
+  void _checkInternetConnection(BuildContext context) {
+    try {
+      _internetConnection = InternetConnection().onStatusChange.listen((event) {
+        switch (event) {
+          case InternetStatus.connected:
+            if (state.isConnectedToInternet == false) {
+              _showInternetConnectedDialog(context);
+            }
+            emit(
+              FriendsInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                friends: state.friends,
+                isConnectedToInternet: true,
+              ),
+            );
+            break;
+          case InternetStatus.disconnected:
+            emit(
+              FriendsInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                friends: state.friends,
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+          default:
+            emit(
+              FriendsInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                friends: state.friends,
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+        }
+      });
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+// Declare a variable to keep track of the dialog
+  BuildContext? _noInternetDialogContext;
+
+  void _showNoInternetDialog(BuildContext context) {
+    try {
+      // Store the current dialog context to dismiss later
+      _noInternetDialogContext = context;
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'No Internet Connection',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi_off,
+                  color: AppLightColorConstants.errorColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'Please check your internet connection and try again.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showInternetConnectedDialog(BuildContext context) {
+    try {
+      // Dismiss the no internet dialog if it's being displayed
+      if (_noInternetDialogContext != null) {
+        Navigator.of(_noInternetDialogContext!)
+            .pop(); // Close the no internet dialog
+        _noInternetDialogContext = null; // Reset the dialog context
+      }
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'You\'re Back Online',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi,
+                  color: AppLightColorConstants.successColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'You are now connected to the internet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Center(
+                  child: Text(
+                    'Continue',
+                    style: TextStyle(
+                        color: ColorThemeUtil.getPrimaryColor(context)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -139,5 +379,10 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     } catch (e) {
       throw Exception('Failed to remove friend: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _internetConnection?.cancel();
   }
 }

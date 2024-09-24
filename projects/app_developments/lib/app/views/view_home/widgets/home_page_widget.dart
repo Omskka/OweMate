@@ -18,6 +18,7 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
         // Fetch friends' data if not already fetched
@@ -95,7 +96,9 @@ class HomePageWidget extends StatelessWidget {
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
             // Dispatch the initial event to refresh the data
-            context.read<HomeViewModel>().add(HomeInitialEvent());
+            context
+                .read<HomeViewModel>()
+                .add(HomeInitialEvent(context: context));
           },
           child: SingleChildScrollView(
             clipBehavior: Clip.none,
@@ -169,6 +172,7 @@ class HomePageWidget extends StatelessWidget {
                         child: Padding(
                           padding: leftPadding,
                           child: Text(
+                            key: viewModel.debtsKey,
                             'Pending Debts',
                             style:
                                 context.textStyleGreyBarlow(context).copyWith(
@@ -295,6 +299,7 @@ class HomePageWidget extends StatelessWidget {
                         child: Padding(
                           padding: leftPadding,
                           child: Text(
+                            key: viewModel.requestsKey,
                             'Pending Requests',
                             style:
                                 context.textStyleGreyBarlow(context).copyWith(
@@ -375,6 +380,7 @@ class HomePageWidget extends StatelessWidget {
                                                               ['owedMoney'][0]
                                                           ['requestId'],
                                                   friendUserId: friendUserId,
+                                                  context: context,
                                                 ),
                                               );
                                           Navigator.of(context)

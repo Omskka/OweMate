@@ -1,3 +1,4 @@
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
@@ -107,7 +108,7 @@ class SettingsFeedbackPageWidget extends StatelessWidget {
                   outlineBorder: true,
                   width: textfieldWidth,
                   removePadding: true,
-                  fillColor: AppLightColorConstants.infoColor,
+                  fillColor: ColorThemeUtil.getFinanceCardColor(context),
                   hintText: 'Your feedback message',
                   validator: (value) => FeedbackValidation().checkValidMessage(
                     value,

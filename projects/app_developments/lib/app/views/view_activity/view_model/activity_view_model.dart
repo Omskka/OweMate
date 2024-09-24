@@ -1,15 +1,27 @@
-// ignore_for_file: constant_pattern_never_matches_value_type
+// ignore_for_file: constant_pattern_never_matches_value_type, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
+import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_event.dart';
 import 'package:app_developments/app/views/view_activity/view_model/activity_state.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
+  // Define global keys for the tutorial
+  final GlobalKey activityKey = GlobalKey();
+
+  StreamSubscription? _internetConnection;
+  final bool isConnectedToInternet = false;
+
   final FetchUserData fetchUserDataService = FetchUserData();
 
   String name = '';
@@ -46,9 +58,49 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
     return double.tryParse(cleanedAmount) ?? 0.0;
   }
 
+  // Method to create the tutorial
+  Future<void> createTutorial(BuildContext context) async {
+    final targets = [
+      TargetFocus(
+        identify: 'activity',
+        keyTarget: activityKey,
+        alignSkip: Alignment.bottomCenter,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            padding:
+                EdgeInsets.only(bottom: context.onlyBottomPaddingHigh.bottom),
+            builder: (context, controller) => Center(
+              child: Text(
+                'View recent activities',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+
+    final tutorial = TutorialCoachMark(
+      targets: targets,
+    );
+
+    // Delay to ensure everything is built before showing the tutorial
+    Future.delayed(const Duration(milliseconds: 500), () {
+      tutorial.show(context: context);
+    });
+  }
+
   FutureOr<void> _initial(
       ActivityInitialEvent event, Emitter<ActivityState> emit) async {
     try {
+      // Check for internet connection before proceeding
+      _checkInternetConnection(event.context);
+
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
@@ -147,6 +199,16 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
       // Initialize controller to requests
       activityTypeController.text = event.activityType;
 
+      // Show tutorial only on the first launch
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool hasSeenActivityTutorial =
+          prefs.getBool('hasSeenActivityTutorial') ?? false;
+
+      if (!hasSeenActivityTutorial) {
+        createTutorial(event.context);
+        prefs.setBool('hasSeenActivityTutorial', true);
+      }
+
       // Emit the loaded state with the totals for both requested and owed money
       emit(
         ActivityDataLoadedState(
@@ -164,6 +226,182 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
     } catch (e) {
       // Throw exception
       throw Exception('$e');
+    }
+  }
+
+  void _checkInternetConnection(BuildContext context) {
+    try {
+      _internetConnection = InternetConnection().onStatusChange.listen((event) {
+        switch (event) {
+          case InternetStatus.connected:
+            if (state.isConnectedToInternet == false) {
+              _showInternetConnectedDialog(context);
+            }
+            emit(
+              ActivityInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                owedMoneyTotals: state.owedMoneyTotals,
+                requestedMoneyTotals: state.requestedMoneyTotals,
+                requestCurrencyIndex: state.requestCurrencyIndex,
+                debtCurrencyIndex: state.debtCurrencyIndex,
+                filteredRequestedMoney: state.filteredRequestedMoney,
+                filteredOwedMoney: state.filteredOwedMoney,
+                combinedFilteredList: state.combinedFilteredList,
+                friendsUserData: state.friendsUserData,
+                isConnectedToInternet: true,
+              ),
+            );
+            break;
+          case InternetStatus.disconnected:
+            emit(
+              ActivityInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                owedMoneyTotals: state.owedMoneyTotals,
+                requestedMoneyTotals: state.requestedMoneyTotals,
+                requestCurrencyIndex: state.requestCurrencyIndex,
+                debtCurrencyIndex: state.debtCurrencyIndex,
+                filteredRequestedMoney: state.filteredRequestedMoney,
+                filteredOwedMoney: state.filteredOwedMoney,
+                combinedFilteredList: state.combinedFilteredList,
+                friendsUserData: state.friendsUserData,
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+          default:
+            emit(
+              ActivityInternetState(
+                state: state,
+                requestNumber: state.requestNumber,
+                owedMoneyTotals: state.owedMoneyTotals,
+                requestedMoneyTotals: state.requestedMoneyTotals,
+                requestCurrencyIndex: state.requestCurrencyIndex,
+                debtCurrencyIndex: state.debtCurrencyIndex,
+                filteredRequestedMoney: state.filteredRequestedMoney,
+                filteredOwedMoney: state.filteredOwedMoney,
+                combinedFilteredList: state.combinedFilteredList,
+                friendsUserData: state.friendsUserData,
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+        }
+      });
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+// Declare a variable to keep track of the dialog
+  BuildContext? _noInternetDialogContext;
+
+  void _showNoInternetDialog(BuildContext context) {
+    try {
+      // Store the current dialog context to dismiss later
+      _noInternetDialogContext = context;
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'No Internet Connection',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi_off,
+                  color: AppLightColorConstants.errorColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'Please check your internet connection and try again.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showInternetConnectedDialog(BuildContext context) {
+    try {
+      // Dismiss the no internet dialog if it's being displayed
+      if (_noInternetDialogContext != null) {
+        Navigator.of(_noInternetDialogContext!)
+            .pop(); // Close the no internet dialog
+        _noInternetDialogContext = null; // Reset the dialog context
+      }
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'You\'re Back Online',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi,
+                  color: AppLightColorConstants.successColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'You are now connected to the internet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Center(
+                  child: Text(
+                    'Continue',
+                    style: TextStyle(
+                        color: ColorThemeUtil.getPrimaryColor(context)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -377,10 +615,17 @@ class ActivityViewModel extends Bloc<ActivityEvent, ActivityState> {
             .update({'owedMoney': currentUserData['owedMoney']});
       }
       add(ActivityInitialEvent(
-          activityType: isInRequestedMoney ? 'Requests' : 'Debts'));
+        activityType: isInRequestedMoney ? 'Requests' : 'Debts',
+        context: event.context,
+      ));
     } catch (e) {
       // Handle any errors
       throw Exception(e);
     }
+  }
+
+  @override
+  void dispose() {
+    _internetConnection?.cancel();
   }
 }

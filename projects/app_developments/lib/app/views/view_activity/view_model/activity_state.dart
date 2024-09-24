@@ -8,6 +8,7 @@ abstract class ActivityState {
   final int? requestCurrencyIndex;
   final int? debtCurrencyIndex;
   final Map<String, dynamic> friendsUserData;
+  final bool? isConnectedToInternet;
   ActivityState({
     required this.requestNumber,
     required this.requestedMoneyTotals,
@@ -18,6 +19,7 @@ abstract class ActivityState {
     required this.friendsUserData,
     this.requestCurrencyIndex,
     this.debtCurrencyIndex,
+    this.isConnectedToInternet,
   });
 }
 
@@ -165,5 +167,32 @@ class ActivityfriendsDataLoadedState extends ActivityState {
           filteredOwedMoney: state.filteredOwedMoney,
           combinedFilteredList: state.combinedFilteredList,
           friendsUserData: friendsUserData,
+        );
+}
+
+class ActivityInternetState extends ActivityState {
+  ActivityInternetState({
+    required ActivityState state,
+    required List requestNumber,
+    required List<double> requestedMoneyTotals,
+    required List<double> owedMoneyTotals,
+    required int? requestCurrencyIndex,
+    required int? debtCurrencyIndex,
+    required List filteredRequestedMoney,
+    required List filteredOwedMoney,
+    required List combinedFilteredList,
+    required Map<String, dynamic> friendsUserData,
+    required bool? isConnectedToInternet,
+  }) : super(
+          requestNumber: state.requestNumber,
+          requestedMoneyTotals: state.requestedMoneyTotals,
+          owedMoneyTotals: state.owedMoneyTotals,
+          requestCurrencyIndex: state.requestCurrencyIndex,
+          debtCurrencyIndex: state.debtCurrencyIndex,
+          filteredRequestedMoney: state.filteredRequestedMoney,
+          filteredOwedMoney: state.filteredOwedMoney,
+          combinedFilteredList: state.combinedFilteredList,
+          friendsUserData: state.friendsUserData,
+          isConnectedToInternet: isConnectedToInternet,
         );
 }
