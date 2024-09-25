@@ -138,7 +138,8 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
       _internetConnection = InternetConnection().onStatusChange.listen((event) {
         switch (event) {
           case InternetStatus.connected:
-            if (state.isConnectedToInternet == false) {
+            if (state.isConnectedToInternet == false ||
+                state.isConnectedToInternet == null) {
               _showInternetConnectedDialog(context);
             }
             emit(
@@ -181,13 +182,19 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
 
   void _showNoInternetDialog(BuildContext context) {
     try {
+      // If the dialog is already open, do nothing
+      if (_noInternetDialogContext != null) return;
+
       // Store the current dialog context to dismiss later
       _noInternetDialogContext = context;
 
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) {
+        builder: (BuildContext dialogContext) {
+          // Use dialogContext for dialog management
+          _noInternetDialogContext =
+              dialogContext; // Update to correct dialog context
           return AlertDialog(
             title: Center(
               child: Text(
@@ -227,15 +234,17 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
     try {
       // Dismiss the no internet dialog if it's being displayed
       if (_noInternetDialogContext != null) {
-        Navigator.of(_noInternetDialogContext!)
-            .pop(); // Close the no internet dialog
+        // Check if the dialog context is still valid (mounted) before dismissing
+        if (Navigator.canPop(_noInternetDialogContext!)) {
+          Navigator.of(_noInternetDialogContext!).pop(); // Close the dialog
+        }
         _noInternetDialogContext = null; // Reset the dialog context
       }
 
       showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (BuildContext context) {
+        builder: (BuildContext dialogContext) {
           return AlertDialog(
             title: Center(
               child: Text(
@@ -266,7 +275,8 @@ class DebtsViewModel extends Bloc<DebtsEvent, DebtsState> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(dialogContext)
+                      .pop(); // Use correct dialog context for closing
                 },
                 child: Center(
                   child: Text(

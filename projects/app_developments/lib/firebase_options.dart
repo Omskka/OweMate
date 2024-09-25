@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '649997249682',
     projectId: 'owemate-41f03',
     storageBucket: 'owemate-41f03.appspot.com',
+    androidClientId: '649997249682-jt6l3h4kmblrp3qv9muhr9bd2lbu15ok.apps.googleusercontent.com',
+    iosClientId: '649997249682-sbuk5f02abss4ds2ved68m806ojhg4d3.apps.googleusercontent.com',
     iosBundleId: 'com.example.appDevelopments',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '649997249682',
     projectId: 'owemate-41f03',
     storageBucket: 'owemate-41f03.appspot.com',
+    androidClientId: '649997249682-jt6l3h4kmblrp3qv9muhr9bd2lbu15ok.apps.googleusercontent.com',
+    iosClientId: '649997249682-sbuk5f02abss4ds2ved68m806ojhg4d3.apps.googleusercontent.com',
     iosBundleId: 'com.example.appDevelopments',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'owemate-41f03.appspot.com',
     measurementId: 'G-BNR2TDWXL7',
   );
+
 }

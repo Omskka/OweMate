@@ -203,23 +203,72 @@ class SettingsPageWidget extends StatelessWidget {
                           )),
                     ),
                     context.sizedHeightBoxLow,
-                    Container(
-                      padding: context.paddingNormal,
-                      width: context.dynamicWidth(containerWidth),
-                      height: context.dynamicHeight(0.085),
-                      decoration: BoxDecoration(
-                        color: ColorThemeUtil.getFinanceCardColor(context),
-                        borderRadius: BorderRadius.all(context.normalRadius),
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Delete Account',
-                          style: context.textStyleTitleBarlow(context).copyWith(
-                                color: ColorThemeUtil.getContentTeritaryColor(
-                                    context),
-                                fontSize: 19,
+                    GestureDetector(
+                      onTap: () {
+                        // Show a confirmation dialog
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm Deletion'),
+                              content: const Text(
+                                'Are you sure you want to delete your account? This action is irreversible.',
                               ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    // Dismiss the dialog if user cancels
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: ColorThemeUtil.getPrimaryColor(
+                                            context)),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // If confirmed, proceed with account deletion
+                                    context.read<SettingsViewModel>().add(
+                                          SettingsDeleteAccountEvent(
+                                              context: context),
+                                        );
+                                    // Close the dialog
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      color: AppLightColorConstants.errorColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: context.paddingNormal,
+                        width: context.dynamicWidth(containerWidth),
+                        height: context.dynamicHeight(0.085),
+                        decoration: BoxDecoration(
+                          color: ColorThemeUtil.getFinanceCardColor(context),
+                          borderRadius: BorderRadius.all(context.normalRadius),
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'Delete Account',
+                            style: context
+                                .textStyleTitleBarlow(context)
+                                .copyWith(
+                                  color: ColorThemeUtil.getContentTeritaryColor(
+                                      context),
+                                  fontSize: 19,
+                                ),
+                          ),
                         ),
                       ),
                     )

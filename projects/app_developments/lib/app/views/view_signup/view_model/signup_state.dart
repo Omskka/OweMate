@@ -1,6 +1,8 @@
 abstract class SignupState {
-  SignupState();
+  final bool? isConnectedToInternet;
+  SignupState({this.isConnectedToInternet});
 }
+
 //Initial state
 class SignupInitialState extends SignupState {
   SignupInitialState();
@@ -9,4 +11,13 @@ class SignupInitialState extends SignupState {
 // state that indicates success
 class SignupSuccessState extends SignupState {
   SignupSuccessState();
+}
+
+// state for chcking connection
+class SignupInternetState extends SignupState {
+  SignupInternetState({
+    required bool? isConnectedToInternet,
+  }) : super(
+          isConnectedToInternet: isConnectedToInternet,
+        );
 }

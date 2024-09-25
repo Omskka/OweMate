@@ -1,3 +1,4 @@
+import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_state.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_view_model.dart';
 import 'package:app_developments/app/views/view_signup/widgets/signup_page_widget.dart';
@@ -12,7 +13,7 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupViewModel(),
+      create: (context) => SignupViewModel()..add(SignupInitialEvent(context: context)),
       child: BlocBuilder<SignupViewModel, SignupState>(
         builder: (context, state) {
           // Access the ViewModel
