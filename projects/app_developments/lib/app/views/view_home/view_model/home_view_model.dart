@@ -106,7 +106,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
 
       // Check for internet connection before proceeding
       _checkInternetConnection(event.context);
-      
+
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName'];
@@ -142,7 +142,8 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       _internetConnection = InternetConnection().onStatusChange.listen((event) {
         switch (event) {
           case InternetStatus.connected:
-            if (state.isConnectedToInternet == false) {
+            if (state.isConnectedToInternet == false ||
+                state.isConnectedToInternet == null) {
               _showInternetConnectedDialog(context);
             }
             emit(
@@ -188,6 +189,8 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
 
   void _showNoInternetDialog(BuildContext context) {
     try {
+      // If the dialog is already open, do nothing
+      if (_noInternetDialogContext != null) return;
       // Store the current dialog context to dismiss later
       _noInternetDialogContext = context;
 
@@ -232,12 +235,9 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
 
   void _showInternetConnectedDialog(BuildContext context) {
     try {
-      // Dismiss the no internet dialog if it's being displayed
-      if (_noInternetDialogContext != null) {
-        Navigator.of(_noInternetDialogContext!)
-            .pop(); // Close the no internet dialog
-        _noInternetDialogContext = null; // Reset the dialog context
-      }
+      Navigator.of(_noInternetDialogContext!)
+          .pop(); // Close the no internet dialog
+      _noInternetDialogContext = null; // Reset the dialog context
 
       showDialog(
         context: context,

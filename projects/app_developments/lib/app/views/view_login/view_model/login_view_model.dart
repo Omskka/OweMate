@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
 import 'package:app_developments/app/routes/app_router.dart';
@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
@@ -23,20 +24,182 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   // Define global key
   final formKey = GlobalKey<FormState>();
 
+  StreamSubscription? _internetConnection;
+  final bool isConnectedToInternet = false;
+
   LoginViewModel() : super(LoginInitialState()) {
     on<LoginInitialEvent>(_initial);
     on<LoginSignInEvent>(_loginSignInEvent);
+    on<LoginGoogleSignInEvent>(_loginGoogleSignInEvent);
   }
 
   // Initial method to check if user is already logged in
   FutureOr<void> _initial(
       LoginInitialEvent event, Emitter<LoginState> emit) async {
+    // Check for internet connection before proceeding
+    _checkInternetConnection(event.context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
     if (isLoggedIn ?? false) {
       // User is already logged in, navigate to HomeView
       event.context.router.push(const HomeViewRoute());
+    }
+  }
+
+  void _checkInternetConnection(BuildContext context) {
+    try {
+      _internetConnection = InternetConnection().onStatusChange.listen((event) {
+        switch (event) {
+          case InternetStatus.connected:
+            if (state.isConnectedToInternet == false ||
+                state.isConnectedToInternet == null) {
+              _showInternetConnectedDialog(context);
+            }
+            emit(
+              LoginInternetState(
+                isConnectedToInternet: true,
+              ),
+            );
+            break;
+          case InternetStatus.disconnected:
+            emit(
+              LoginInternetState(
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+          default:
+            emit(
+              LoginInternetState(
+                isConnectedToInternet: false,
+              ),
+            );
+            _showNoInternetDialog(context);
+            break;
+        }
+      });
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+// Declare a variable to keep track of the dialog
+  BuildContext? _noInternetDialogContext;
+
+  void _showNoInternetDialog(BuildContext context) {
+    try {
+      // If the dialog is already open, do nothing
+      if (_noInternetDialogContext != null) return;
+      // Store the current dialog context to dismiss later
+      _noInternetDialogContext = context;
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'No Internet Connection',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi_off,
+                  color: AppLightColorConstants.errorColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'Please check your internet connection and try again.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showInternetConnectedDialog(BuildContext context) {
+    try {
+      // Dismiss the no internet dialog if it's being displayed
+      Navigator.of(_noInternetDialogContext!)
+          .pop(); // Close the no internet dialog
+      _noInternetDialogContext = null; // Reset the dialog context
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(
+                'You\'re Back Online',
+                style:
+                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+              ),
+            ),
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
+              children: [
+                const Icon(
+                  Icons.wifi,
+                  color: AppLightColorConstants.successColor,
+                  size: 35,
+                ),
+                const SizedBox(height: 16), // Space between icon and text
+                Text(
+                  'You are now connected to the internet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: ColorThemeUtil.getBgInverseColor(context),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Center(
+                  child: Text(
+                    'Continue',
+                    style: TextStyle(
+                        color: ColorThemeUtil.getPrimaryColor(context)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  FutureOr<void> _loginGoogleSignInEvent(
+      LoginGoogleSignInEvent event, Emitter<LoginState> emit) {
+    try {
+      AuthenticationRepository().signInWithGoogle(event.context);
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -48,9 +211,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       showDialog(
         context: event.context,
         builder: (context) {
-          return  Center(child: CircularProgressIndicator(
-            color: ColorThemeUtil.getContentTeritaryColor(
-                                    context),
+          return Center(
+              child: CircularProgressIndicator(
+            color: ColorThemeUtil.getContentTeritaryColor(context),
           ));
         },
       );
@@ -91,5 +254,10 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       ).flutterToast();
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    _internetConnection?.cancel();
   }
 }

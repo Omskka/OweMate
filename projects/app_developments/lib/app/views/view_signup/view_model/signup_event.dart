@@ -6,7 +6,10 @@ abstract class SignupEvent{
 
 // Initial event
 class SignupInitialEvent extends SignupEvent{
-  SignupInitialEvent();
+  final BuildContext context;
+  SignupInitialEvent({
+    required this.context,
+  });
 }
 
 // SignupUserEvent creating new users

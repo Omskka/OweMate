@@ -1,15 +1,18 @@
 // ignore: non_constant_identifier_names
-abstract class LoginState{
-  LoginState();
+abstract class LoginState {
+  final bool? isConnectedToInternet;
+  LoginState({
+    this.isConnectedToInternet,
+  });
 }
 
 // Initial state
-class LoginInitialState extends LoginState{
+class LoginInitialState extends LoginState {
   LoginInitialState();
 }
 
 // Success state
-class LoginSuccessState extends LoginState{
+class LoginSuccessState extends LoginState {
   LoginSuccessState();
 }
 
@@ -18,5 +21,15 @@ class LoginFailureState extends LoginState {
   final String error;
 
   // Constructor for the failure state, requires an error message
-  LoginFailureState({required this.error});
+  LoginFailureState({
+    required this.error,
+  });
+}
+
+class LoginInternetState extends LoginState {
+  LoginInternetState({
+    required bool? isConnectedToInternet,
+  }) : super(
+          isConnectedToInternet: isConnectedToInternet,
+        );
 }

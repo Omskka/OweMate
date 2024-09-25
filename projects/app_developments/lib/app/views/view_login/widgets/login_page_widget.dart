@@ -244,7 +244,11 @@ class LoginPageWidget extends StatelessWidget {
                   context.sizedHeightBoxNormal,
                   Center(
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.read<LoginViewModel>().add(
+                              LoginGoogleSignInEvent(context: context),
+                            );
+                      },
                       child: Container(
                         height: screenHeight * 0.075,
                         width: containerWidth,

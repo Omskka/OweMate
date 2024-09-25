@@ -12,7 +12,20 @@
           "package_name": "com.OweMate.tr"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "649997249682-jt6l3h4kmblrp3qv9muhr9bd2lbu15ok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.OweMate.tr",
+            "certificate_hash": "75e19fcc72f1691130d5a49fc6ba3a4347bb10b6"
+          }
+        },
+        {
+          "client_id": "649997249682-jvkq16r331kc3e0lskvbg2ipdd06thnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDaBO3VqPRUraOIuLieGNAcYMpOQ82uzUw"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649997249682-jvkq16r331kc3e0lskvbg2ipdd06thnb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649997249682-sbuk5f02abss4ds2ved68m806ojhg4d3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appDevelopments"
+              }
+            }
+          ]
         }
       }
     }

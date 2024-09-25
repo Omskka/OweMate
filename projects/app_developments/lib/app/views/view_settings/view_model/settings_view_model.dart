@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:app_developments/app/app.dart';
+import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
@@ -23,6 +24,7 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsSwitchEvent>(_changeSwitch);
     on<SettingsNavigateToNextPageEvent>(_navigateToNextPage);
     on<SettingsSubmitFeedbackEvent>(_submitFeedback);
+    on<SettingsDeleteAccountEvent>(_deleteAccount);
 
     _loadPreferences(); // Load preferences when initialized
   }
@@ -104,5 +106,25 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
 
     // Reset controller
     feedBackController.clear();
+  }
+
+  FutureOr<void> _deleteAccount(
+      SettingsDeleteAccountEvent event, Emitter<SettingsState> emit) async {
+    final authRepo =
+        AuthenticationRepository(); // Create an instance of AuthenticationRepository
+
+    try {
+      // Clear any stored preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+
+      // Attempt to delete the account
+      await authRepo.deleteAccount(context: event.context);
+    } on Exception catch (e) {
+      // Handle exceptions, e.g., show an error message
+      ScaffoldMessenger.of(event.context).showSnackBar(
+        SnackBar(content: Text('Error deleting account: ${e.toString()}')),
+      );
+    }
   }
 }
