@@ -140,13 +140,21 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                             // if
                             if (viewModel.selectedImage != null)
                               Positioned(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Image.file(
-                                    viewModel.selectedImage!,
-                                    width: context.dynamicWidth(0.37),
-                                    height: context.dynamicWidth(0.37),
-                                    fit: BoxFit.cover,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    BlocProvider.of<ProfileUpdateViewModel>(
+                                            context)
+                                        .add(ProfileUpdateSelectImageEvent(
+                                            context: context));
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.file(
+                                      viewModel.selectedImage!,
+                                      width: context.dynamicWidth(0.37),
+                                      height: context.dynamicWidth(0.37),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
