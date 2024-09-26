@@ -16,6 +16,7 @@ import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
   // Selected image
@@ -85,47 +86,58 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
     String? userid = AuthenticationRepository().getCurrentUserId();
 
     try {
-      // Pick the image
-      final returnedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      // Request storage/gallery permission
+      PermissionStatus permissionStatus = await Permission.photos.request();
 
-      if (returnedImage != null) {
-        selectedImage = File(returnedImage.path);
-        emit(ProfileSelectImageState(
-            selectedImage!)); // Emit the state with the selected image
-      } else {
-        return;
-      }
+      if (permissionStatus.isGranted) {
+        // Pick the image
+        final returnedImage =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
 
-      if (selectedImage != null) {
-        // Upload the image to Firebase Storage
-        final path = 'users/$userid/profile_image.jpg';
-        final ref = FirebaseStorage.instance.ref().child(path);
-        UploadTask uploadTask = ref.putFile(selectedImage!);
+        if (returnedImage != null) {
+          File selectedImage = File(returnedImage.path);
+          emit(ProfileSelectImageState(
+              selectedImage)); // Emit selected image state
+        } else {
+          return;
+        }
 
-        // Wait for the upload to complete
-        TaskSnapshot snapshot = await uploadTask;
+        if (selectedImage != null) {
+          // Upload the image to Firebase Storage
+          final path = 'users/$userid/profile_image.jpg';
+          final ref = FirebaseStorage.instance.ref().child(path);
+          UploadTask uploadTask = ref.putFile(selectedImage!);
 
-        // Get the download URL of the uploaded image
-        String downloadURL = await snapshot.ref.getDownloadURL();
+          // Wait for the upload to complete
+          TaskSnapshot snapshot = await uploadTask;
 
-        // Save the download URL to Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userid)
-            .update({
-          'profile_image_url': downloadURL,
-        });
+          // Get the download URL of the uploaded image
+          String downloadURL = await snapshot.ref.getDownloadURL();
 
-        // Emit a new state to signal that the image has been updated
-        emit(ProfileLoadDataState(
-          state: state,
-          firstName: firstName,
-          schoolName: schoolName,
-          email: email,
-          gender: gender,
-          profileImageUrl: profileImageUrl,
-        ));
+          // Save the download URL to Firestore
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userid)
+              .update({
+            'profile_image_url': downloadURL,
+          });
+
+          // Emit a new state to signal that the image has been updated
+          emit(ProfileLoadDataState(
+            state: state,
+            firstName: firstName,
+            schoolName: schoolName,
+            email: email,
+            gender: gender,
+            profileImageUrl: downloadURL,
+          ));
+        }
+      } else if (permissionStatus.isDenied) {
+        // Handle permission denial
+        print('Permission denied');
+      } else if (permissionStatus.isPermanentlyDenied) {
+        // Open app settings for the user to grant permission manually
+        openAppSettings();
       }
     } catch (e) {
       print(e.toString());

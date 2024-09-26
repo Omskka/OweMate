@@ -3,10 +3,12 @@ abstract class HomeState {
   final Map<String, dynamic> userData;
   final Map<String, dynamic> friendsUserData;
   final bool? isConnectedToInternet;
+  final bool? isOrderReversed;
   HomeState({
     required this.friendsUserData,
     required this.userData,
     this.isConnectedToInternet,
+    this.isOrderReversed,
   });
 }
 
@@ -33,7 +35,12 @@ class HomeDataLoadedState extends HomeState {
     required Map<String, dynamic> userData,
     required Map<String, dynamic> friendsUserData,
     required HomeState state,
-  }) : super(userData: userData, friendsUserData: {});
+    required bool? isOrderReversed,
+  }) : super(
+          userData: userData,
+          friendsUserData: {},
+          isOrderReversed: isOrderReversed,
+        );
 }
 
 // State to represent loaded data

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileUpdateViewModel
     extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
@@ -50,7 +51,7 @@ class ProfileUpdateViewModel
     }
   }
 
-  // Add user detail to firebase
+// Add user detail to firebase
   FutureOr<void> _addUserDetails(
       ProfileUpdateAddUserEvent event, Emitter<ProfileUpdateState> emit) async {
     try {
@@ -64,6 +65,27 @@ class ProfileUpdateViewModel
           ));
         },
       );
+
+      // Request permission for image access
+      PermissionStatus permissionStatus;
+
+      // Check if permission is granted for image/gallery access
+      if (Platform.isIOS) {
+        permissionStatus = await Permission.photos.request();
+      } else {
+        permissionStatus = await Permission.storage.request();
+      }
+
+      // If permission is denied, show a toast and return
+      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+        Navigator.of(event.context).pop(); // Close loading circle
+        CustomFlutterToast(
+                backgroundColor: AppLightColorConstants.errorColor,
+                context: event.context,
+                msg: 'Permission denied to access images')
+            .flutterToast();
+        return;
+      }
 
       // Get current user ID
       String? userid = AuthenticationRepository().getCurrentUserId();

@@ -4,6 +4,8 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
+import 'package:app_developments/core/auth/authentication_repository.dart';
+import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/money_debt_card.dart';
@@ -18,6 +20,9 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Declare the lists outside the conditional blocks
+    List filteredRequestedMoney = [];
+    List filteredOwedMoney = [];
     final viewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
@@ -50,20 +55,33 @@ class HomePageWidget extends StatelessWidget {
         }
 
         // Filter requestedMoney and owedMoney by status
-        final filteredRequestedMoney =
-            (state.userData['requestedMoney'] as List?)
+        if (state is HomeDataLoadedState) {
+          if (state.isOrderReversed == false) {
+            filteredRequestedMoney = (state.userData['requestedMoney'] as List?)
                     ?.where((item) => item['status'] == 'pending')
                     .toList()
                     .reversed
                     .toList() ??
                 [];
 
-        final filteredOwedMoney = (state.userData['owedMoney'] as List?)
-                ?.where((item) => item['status'] == 'pending')
-                .toList()
-                .reversed
-                .toList() ??
-            [];
+            filteredOwedMoney = (state.userData['owedMoney'] as List?)
+                    ?.where((item) => item['status'] == 'pending')
+                    .toList()
+                    .reversed
+                    .toList() ??
+                [];
+          } else {
+            filteredRequestedMoney = (state.userData['requestedMoney'] as List?)
+                    ?.where((item) => item['status'] == 'pending')
+                    .toList() ??
+                [];
+
+            filteredOwedMoney = (state.userData['owedMoney'] as List?)
+                    ?.where((item) => item['status'] == 'pending')
+                    .toList() ??
+                [];
+          }
+        }
 
         // Get screen height and width using MediaQuery
         final screenHeight = MediaQuery.of(context).size.height;
@@ -375,10 +393,7 @@ class HomePageWidget extends StatelessWidget {
                                           context.read<HomeViewModel>().add(
                                                 HomefetchDeleteRequestEvent(
                                                   requestId:
-                                                      state.friendsUserData[
-                                                                  friendUserId]
-                                                              ['owedMoney'][0]
-                                                          ['requestId'],
+                                                      request['requestId'],
                                                   friendUserId: friendUserId,
                                                   context: context,
                                                 ),
@@ -387,7 +402,6 @@ class HomePageWidget extends StatelessWidget {
                                               .pop(); // Dismiss the dialog
                                         },
                                       );
-
                                       // set up the AlertDialog
                                       AlertDialog alert = AlertDialog(
                                         title: Text(

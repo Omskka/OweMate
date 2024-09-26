@@ -116,7 +116,6 @@ class AuthenticationRepository {
     try {
       // Optionally, clear SharedPreferences or any other local storage data
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear(); // Clears all stored data
 
       // Sign out from Firebase Authentication
       await _firebaseAuth.signOut();

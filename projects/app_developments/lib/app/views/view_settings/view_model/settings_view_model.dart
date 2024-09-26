@@ -1,8 +1,8 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, use_build_context_synchronously
-
 import 'dart:async';
 import 'package:app_developments/app/app.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
+import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
@@ -15,6 +15,8 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
 
   // Define global key
   final formKey = GlobalKey<FormState>();
+
+  final PreferencesService preferencesService = PreferencesService();
 
   static const _themePreferenceKey = 'isDarkTheme';
   static const _orderPreferenceKey = 'isOrderReversed'; // Added for order
@@ -44,18 +46,6 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  // Save the theme preference to SharedPreferences
-  Future<void> _saveThemePreference(bool isDarkTheme) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_themePreferenceKey, isDarkTheme);
-  }
-
-  // Save the order preference to SharedPreferences
-  Future<void> _saveOrderPreference(bool isOrderReversed) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_orderPreferenceKey, isOrderReversed); // Save order
-  }
-
   FutureOr<void> _initial(
       SettingsInitialEvent event, Emitter<SettingsState> emit) {}
 
@@ -68,12 +58,12 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
       newThemeValue = !state.isDarkTheme;
 
       // Save the new theme state in shared preferences
-      await _saveThemePreference(newThemeValue);
+      await PreferencesService().saveThemePreference(newThemeValue);
     } else if (event.eventType == 'order') {
       newOrder = !state.isOrderReversed;
 
       // Save the new order state in shared preference
-      await _saveOrderPreference(newOrder);
+      await PreferencesService().saveOrderPreference(newOrder);
     }
 
     // Emit the new state with updated values

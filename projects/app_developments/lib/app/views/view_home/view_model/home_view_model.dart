@@ -1,9 +1,10 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: invalid_use_of_visible_for_testing_member, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
+import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
   final bool isConnectedToInternet = false;
 
   final FetchUserData fetchUserDataService = FetchUserData();
+  final PreferencesService preferencesService = PreferencesService();
 
   HomeViewModel() : super(HomeInitialState()) {
     on<HomeInitialEvent>(_initial);
@@ -103,7 +105,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     try {
       emit(HomeLoadingState());
-
+      final isOrderReversed = await preferencesService.loadOrderPreference();
       // Check for internet connection before proceeding
       _checkInternetConnection(event.context);
 
@@ -130,6 +132,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       emit(HomeDataLoadedState(
         userData: userData,
         state: state,
+        isOrderReversed: isOrderReversed,
         friendsUserData: {},
       ));
     } catch (e) {
@@ -344,40 +347,53 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _deleteRequest(
       HomefetchDeleteRequestEvent event, Emitter<HomeState> emit) async {
     try {
-      // Assume `currentUserId` is the ID of the currently logged-in user
+      // Get the current user's ID
       String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
       // Fetch current user's data
       var currentUserData =
           await fetchUserDataService.fetchUserData(userId: currentUserId);
 
-      // Fetch friend's user data
-      var friendUserData =
-          await fetchUserDataService.fetchUserData(userId: event.friendUserId);
+      // Check if friend's user data exists
+      var friendUserDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(event.friendUserId)
+          .get();
 
       // Remove the request from the current user's `requestedMoney` list
       currentUserData['requestedMoney']
           .removeWhere((item) => item['requestId'] == event.requestId);
 
-      // Remove the request from the friend's `owedMoney` list
-      friendUserData['owedMoney']
-          .removeWhere((item) => item['requestId'] == event.requestId);
-
-      // Update both the current user and friend's data in Firestore
+      // Update the current user's data in Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(currentUserId)
           .update({'requestedMoney': currentUserData['requestedMoney']});
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(event.friendUserId)
-          .update({'owedMoney': friendUserData['owedMoney']});
+      // Proceed to remove the request from friend's `owedMoney` list only if the friend's document exists
+      if (friendUserDoc.exists) {
+        var friendUserData = friendUserDoc.data();
 
-      //  add HomeInitialEvent to refresh requests on page
+        // Ensure `owedMoney` exists in friend's data before trying to remove
+        if (friendUserData != null && friendUserData['owedMoney'] != null) {
+          friendUserData['owedMoney']
+              .removeWhere((item) => item['requestId'] == event.requestId);
+
+          // Update the friend's data in Firestore
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(event.friendUserId)
+              .update({'owedMoney': friendUserData['owedMoney']});
+        }
+      } else {
+        print('Friend user does not exist, skipping deletion from owedMoney.');
+      }
+
+      // Add HomeInitialEvent to refresh requests on the page
       add(HomeInitialEvent(context: event.context));
     } catch (e) {
       // Handle any errors
+      print('Error in _deleteRequest: ${e.toString()}');
       throw Exception(e);
     }
   }
