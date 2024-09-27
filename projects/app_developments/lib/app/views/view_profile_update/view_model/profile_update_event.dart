@@ -12,7 +12,10 @@ class ProfileUpdateInitialEvent extends ProfileUpdateEvent {
 
 // Event for selecting an image during profile update
 class ProfileUpdateSelectImageEvent extends ProfileUpdateEvent {
-  ProfileUpdateSelectImageEvent({required BuildContext context});
+  final BuildContext context;
+  ProfileUpdateSelectImageEvent({
+    required this.context,
+  });
 }
 
 // Event for adding user information during profile update
@@ -32,4 +35,3 @@ class ProfileUpdateSelectedPageEvent extends ProfileUpdateEvent {
     required this.selectedPage,
   });
 }
-

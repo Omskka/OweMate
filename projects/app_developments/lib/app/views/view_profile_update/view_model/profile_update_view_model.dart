@@ -66,15 +66,9 @@ class ProfileUpdateViewModel
         },
       );
 
-      // Request permission for image access
-      PermissionStatus permissionStatus;
-
       // Check if permission is granted for image/gallery access
-      if (Platform.isIOS) {
-        permissionStatus = await Permission.photos.request();
-      } else {
-        permissionStatus = await Permission.storage.request();
-      }
+      // Request storage/gallery permission
+      PermissionStatus permissionStatus = await Permission.photos.request();
 
       // If permission is denied, show a toast and return
       if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
