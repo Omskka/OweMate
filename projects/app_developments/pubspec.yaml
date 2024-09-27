@@ -20,6 +20,7 @@ dependencies:
   intl: ^0.19.0
   uuid: ^4.5.0
   fl_chart: ^0.69.0
+  badword_guard: ^1.0.0
 
   # bloc
   flutter_bloc: ^8.1.3
@@ -45,6 +46,7 @@ dependencies:
   internet_connection_checker_plus: ^2.5.2
   google_sign_in: ^6.2.1
   permission_handler: ^11.3.1
+  path_provider: ^2.1.4
 
 flutter_icons:
   android: true

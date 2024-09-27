@@ -43,52 +43,47 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
 
   void _checkInternetConnection(BuildContext context) {
     try {
-      _internetConnection = InternetConnection().onStatusChange.listen((event) {
-        switch (event) {
-          case InternetStatus.connected:
-            if (state.isConnectedToInternet == false ||
-                state.isConnectedToInternet == null) {
-              _showInternetConnectedDialog(context);
-            }
-            emit(
-              SignupInternetState(
-                isConnectedToInternet: true,
-              ),
-            );
-            break;
-          case InternetStatus.disconnected:
-            emit(
-              SignupInternetState(
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-          default:
-            emit(
-              SignupInternetState(
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-        }
-      });
+      _internetConnection = InternetConnection().onStatusChange.listen(
+        (event) {
+          switch (event) {
+            case InternetStatus.connected:
+              if (state.isConnectedToInternet == false ||
+                  state.isConnectedToInternet == null) {
+                _showInternetConnectedDialog(context);
+              }
+              emit(
+                SignupInternetState(
+                  isConnectedToInternet: true,
+                ),
+              );
+              break;
+            case InternetStatus.disconnected:
+              emit(
+                SignupInternetState(
+                  isConnectedToInternet: false,
+                ),
+              );
+              _showNoInternetDialog(context);
+              break;
+          }
+        },
+      );
     } catch (e) {
       throw Exception();
     }
   }
 
-// Declare a variable to keep track of the dialog
-  BuildContext? _noInternetDialogContext;
+// Declare a variable to keep track of the dialog state
+  bool _isNoInternetDialogVisible = false;
 
+// Updated method to show the "No Internet" dialog
   void _showNoInternetDialog(BuildContext context) {
     try {
-      // If the dialog is already open, do nothing
-      if (_noInternetDialogContext != null) return;
+      // If the dialog is already visible, do nothing
+      if (_isNoInternetDialogVisible) return;
 
-      // Store the current dialog context to dismiss later
-      _noInternetDialogContext = context;
+      // Mark the dialog as visible
+      _isNoInternetDialogVisible = true;
 
       showDialog(
         context: context,
@@ -103,15 +98,14 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
               ),
             ),
             content: Column(
-              mainAxisSize:
-                  MainAxisSize.min, // Prevents the dialog from being too tall
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(
                   Icons.wifi_off,
                   color: AppLightColorConstants.errorColor,
                   size: 35,
                 ),
-                const SizedBox(height: 16), // Space between icon and text
+                const SizedBox(height: 16),
                 Text(
                   'Please check your internet connection and try again.',
                   textAlign: TextAlign.center,
@@ -123,18 +117,24 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
             ),
           );
         },
-      );
+      ).then((_) {
+        // When the dialog is dismissed, mark it as not visible
+        _isNoInternetDialogVisible = false;
+      });
     } catch (e) {
       print(e);
     }
   }
 
+// Updated method to show the internet connected dialog
   void _showInternetConnectedDialog(BuildContext context) {
     try {
-      // Dismiss the no internet dialog if it's being displayed
-      Navigator.of(_noInternetDialogContext!)
-          .pop(); // Close the no internet dialog
-      _noInternetDialogContext = null; // Reset the dialog context
+      // If there is no dialog currently displayed, do nothing
+      if (!_isNoInternetDialogVisible) return;
+
+      // Dismiss the "No Internet" dialog if it is visible
+      Navigator.of(context).pop();
+      _isNoInternetDialogVisible = false;
 
       showDialog(
         context: context,
@@ -149,15 +149,14 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
               ),
             ),
             content: Column(
-              mainAxisSize:
-                  MainAxisSize.min, // Prevents the dialog from being too tall
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(
                   Icons.wifi,
                   color: AppLightColorConstants.successColor,
                   size: 35,
                 ),
-                const SizedBox(height: 16), // Space between icon and text
+                const SizedBox(height: 16),
                 Text(
                   'You are now connected to the internet.',
                   textAlign: TextAlign.center,

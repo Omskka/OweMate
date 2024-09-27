@@ -172,17 +172,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
             );
             _showNoInternetDialog(context);
             break;
-          default:
-            emit(
-              FriendsInternetState(
-                state: state,
-                requestNumber: state.requestNumber,
-                friends: state.friends,
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
         }
       });
     } catch (e) {
@@ -190,15 +179,17 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     }
   }
 
-// Declare a variable to keep track of the dialog
-  BuildContext? _noInternetDialogContext;
+// Declare a variable to keep track of the dialog state
+  bool _isNoInternetDialogVisible = false;
 
+// Updated method to show the "No Internet" dialog
   void _showNoInternetDialog(BuildContext context) {
     try {
-      // If the dialog is already open, do nothing
-      if (_noInternetDialogContext != null) return;
-      // Store the current dialog context to dismiss later
-      _noInternetDialogContext = context;
+      // If the dialog is already visible, do nothing
+      if (_isNoInternetDialogVisible) return;
+
+      // Mark the dialog as visible
+      _isNoInternetDialogVisible = true;
 
       showDialog(
         context: context,
@@ -213,15 +204,14 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
               ),
             ),
             content: Column(
-              mainAxisSize:
-                  MainAxisSize.min, // Prevents the dialog from being too tall
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(
                   Icons.wifi_off,
                   color: AppLightColorConstants.errorColor,
                   size: 35,
                 ),
-                const SizedBox(height: 16), // Space between icon and text
+                const SizedBox(height: 16),
                 Text(
                   'Please check your internet connection and try again.',
                   textAlign: TextAlign.center,
@@ -233,18 +223,24 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
             ),
           );
         },
-      );
+      ).then((_) {
+        // When the dialog is dismissed, mark it as not visible
+        _isNoInternetDialogVisible = false;
+      });
     } catch (e) {
       print(e);
     }
   }
 
+// Updated method to show the internet connected dialog
   void _showInternetConnectedDialog(BuildContext context) {
     try {
-      // Dismiss the no internet dialog if it's being displayed
-      Navigator.of(_noInternetDialogContext!)
-          .pop(); // Close the no internet dialog
-      _noInternetDialogContext = null; // Reset the dialog context
+      // If there is no dialog currently displayed, do nothing
+      if (!_isNoInternetDialogVisible) return;
+
+      // Dismiss the "No Internet" dialog if it is visible
+      Navigator.of(context).pop();
+      _isNoInternetDialogVisible = false;
 
       showDialog(
         context: context,
@@ -259,15 +255,14 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
               ),
             ),
             content: Column(
-              mainAxisSize:
-                  MainAxisSize.min, // Prevents the dialog from being too tall
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(
                   Icons.wifi,
                   color: AppLightColorConstants.successColor,
                   size: 35,
                 ),
-                const SizedBox(height: 16), // Space between icon and text
+                const SizedBox(height: 16),
                 Text(
                   'You are now connected to the internet.',
                   textAlign: TextAlign.center,
