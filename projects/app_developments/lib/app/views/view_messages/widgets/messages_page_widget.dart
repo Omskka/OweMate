@@ -21,6 +21,8 @@ class MessagesPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MessagesViewModel, MessagesState>(
       builder: (context, state) {
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
         final viewModel = BlocProvider.of<MessagesViewModel>(context);
 
         final screenHeight = MediaQuery.of(context).size.height;
@@ -227,10 +229,14 @@ class MessagesPageWidget extends StatelessWidget {
                                                       .onlyRightPaddingNormal,
                                                   child: Icon(
                                                     Icons.mail,
-                                                    color: ColorThemeUtil
-                                                        .getPrimaryColor(
-                                                      context,
-                                                    ),
+                                                    color: isDarkMode
+                                                        ? ColorThemeUtil
+                                                            .getContentTeritaryColor(
+                                                            context,
+                                                          )
+                                                        : ColorThemeUtil
+                                                            .getPrimaryColor(
+                                                                context),
                                                     size: context
                                                         .dynamicHeight(0.035),
                                                   ),
@@ -248,9 +254,9 @@ class MessagesPageWidget extends StatelessWidget {
                                           thickness:
                                               1.0, // Adjust thickness as needed
                                           indent: context.dynamicWidth(
-                                              0.1), // Indent from left
+                                              0.04), // Indent from left
                                           endIndent: context.dynamicWidth(
-                                              0.1), // Indent from right
+                                              0.04), // Indent from right
                                         ),
                                     ],
                                   );

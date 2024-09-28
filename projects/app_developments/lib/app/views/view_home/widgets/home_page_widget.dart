@@ -4,8 +4,6 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
-import 'package:app_developments/core/auth/authentication_repository.dart';
-import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/money_debt_card.dart';
@@ -183,22 +181,55 @@ class HomePageWidget extends StatelessWidget {
                   width: context.dynamicWidth(1),
                   child: Padding(
                     padding: context.onlyLeftPaddingMedium,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Padding(
-                          padding: leftPadding,
-                          child: Text(
-                            key: viewModel.debtsKey,
-                            'Pending Debts',
-                            style:
-                                context.textStyleGreyBarlow(context).copyWith(
-                                      fontSize: 18,
-                                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Padding(
+                                padding: leftPadding,
+                                child: Text(
+                                  key: viewModel.debtsKey,
+                                  'Pending Debts',
+                                  style: context
+                                      .textStyleGreyBarlow(context)
+                                      .copyWith(
+                                        fontSize: 18,
+                                      ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: context.onlyRightPaddingNormal,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: SizedBox(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'See All',
+                                    style: context
+                                        .textStyleGrey(context)
+                                        .copyWith(
+                                          color: ColorThemeUtil
+                                              .getContentTeritaryColor(context),
+                                        ),
+                                  ),
+                                  context.sizedWidthBoxLow,
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 15,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -310,22 +341,55 @@ class HomePageWidget extends StatelessWidget {
                   width: context.dynamicWidth(1),
                   child: Padding(
                     padding: context.onlyLeftPaddingMedium,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Padding(
-                          padding: leftPadding,
-                          child: Text(
-                            key: viewModel.requestsKey,
-                            'Pending Requests',
-                            style:
-                                context.textStyleGreyBarlow(context).copyWith(
-                                      fontSize: 18,
-                                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Padding(
+                                padding: leftPadding,
+                                child: Text(
+                                  key: viewModel.requestsKey,
+                                  'Pending Requests',
+                                  style: context
+                                      .textStyleGreyBarlow(context)
+                                      .copyWith(
+                                        fontSize: 18,
+                                      ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: context.onlyRightPaddingNormal,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: SizedBox(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'See All',
+                                    style: context
+                                        .textStyleGrey(context)
+                                        .copyWith(
+                                          color: ColorThemeUtil
+                                              .getContentTeritaryColor(context),
+                                        ),
+                                  ),
+                                  context.sizedWidthBoxLow,
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 15,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),

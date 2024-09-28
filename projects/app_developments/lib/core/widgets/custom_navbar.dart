@@ -3,6 +3,7 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_debts/view_model/debts_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
+import 'package:app_developments/core/constants/dark_theme_color_constants.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/custom_indicator.dart';
@@ -27,6 +28,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
       create: (context) => HomeViewModel(),
       child: BlocBuilder<HomeViewModel, HomeState>(
         builder: (context, state) {
+          final isDarkMode = Theme.of(context).brightness == Brightness.dark;
           return AutoTabsScaffold(
             backgroundColor: ColorThemeUtil.getBgDarkColor(context),
             extendBody: false,
@@ -61,18 +63,22 @@ class _CustomNavbarState extends State<CustomNavbar> {
                             _navigationDestination(
                               activeIcon: Assets.images.svg.home,
                               icon: Assets.images.svg.home,
+                              isDarkMode: isDarkMode,
                             ),
                             _navigationDestination(
                               activeIcon: Assets.images.svg.wallet,
                               icon: Assets.images.svg.wallet,
+                              isDarkMode: isDarkMode,
                             ),
                             _navigationDestination(
                               activeIcon: Assets.images.svg.chart,
                               icon: Assets.images.svg.chart,
+                              isDarkMode: isDarkMode,
                             ),
                             _navigationDestination(
                               activeIcon: Assets.images.svg.friends,
                               icon: Assets.images.svg.friends,
+                              isDarkMode: isDarkMode,
                             ),
                             // Add more NavigationDestinations here
                           ],
@@ -90,22 +96,36 @@ class _CustomNavbarState extends State<CustomNavbar> {
   NavigationDestination _navigationDestination({
     required String activeIcon,
     required String icon,
+    required bool isDarkMode,
   }) {
     return NavigationDestination(
-      icon: _svgPictureIcon(icon),
-      selectedIcon: _svgPictureIcon(activeIcon, AppLightColorConstants.bgLight),
+      icon: _svgPictureIcon(icon, isDarkMode),
+      selectedIcon: _svgPictureIcon(activeIcon, isDarkMode, true),
       label: '',
     );
   }
 
-  SvgPicture _svgPictureIcon(String icon, [Color? color]) {
+  SvgPicture _svgPictureIcon(String icon, bool isDarkMode,
+      [bool isSelected = false]) {
     return SvgPicture.asset(
       icon,
       height: 25,
       width: 25,
-      colorFilter: color != null
-          ? ColorFilter.mode(color, BlendMode.srcIn)
-          : null, // No color filter if color is null
+      colorFilter: ColorFilter.mode(
+        _getIconColor(isDarkMode, isSelected),
+        BlendMode.srcIn,
+      ),
     );
+  }
+
+  // Helper function to get the correct icon color based on theme and selection
+  Color _getIconColor(bool isDarkMode, bool isSelected) {
+    if (isDarkMode) {
+      return isSelected
+          ? Colors.white
+          : AppDarkColorConstants.contentTeritaryColor;
+    } else {
+      return isSelected ? Colors.white : AppLightColorConstants.primaryColor;
+    }
   }
 }
