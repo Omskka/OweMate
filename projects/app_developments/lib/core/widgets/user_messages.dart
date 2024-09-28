@@ -19,6 +19,8 @@ class UserMessages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     // Get screen height and width using MediaQuery
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -80,7 +82,11 @@ class UserMessages extends StatelessWidget {
                 padding: context.onlyLeftPaddingNormal,
                 child: Icon(
                   Icons.mail,
-                  color: ColorThemeUtil.getPrimaryColor(context),
+                  color: isDarkMode
+                      ? ColorThemeUtil.getContentTeritaryColor(
+                          context,
+                        )
+                      : ColorThemeUtil.getPrimaryColor(context),
                   size: context.dynamicHeight(0.035),
                 ),
               ),
