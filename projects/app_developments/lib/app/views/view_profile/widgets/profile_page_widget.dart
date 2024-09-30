@@ -86,6 +86,7 @@ class ProfilePageWidget extends StatelessWidget {
           tagSquarePosition = 0.445;
           containerWidth = context.dynamicWidth(0.03);
         }
+        print('-*- State $state');
         if (state is ProfileLoadDataState) {
           return SingleChildScrollView(
             clipBehavior: Clip.none,
