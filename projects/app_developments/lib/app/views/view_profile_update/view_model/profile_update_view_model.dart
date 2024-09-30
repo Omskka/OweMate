@@ -10,6 +10,7 @@ import 'package:app_developments/core/constants/ligth_theme_color_constants.dart
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ class ProfileUpdateViewModel
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   // Selected image
   File? selectedImage;
+  bool gotPermissions = false;
 
   ProfileUpdateViewModel() : super(ProfileUpdateInitialState()) {
     on<ProfileUpdateInitialEvent>(_initial);
@@ -42,6 +44,40 @@ class ProfileUpdateViewModel
   // Select image from gallery
   FutureOr<void> _selectImage(ProfileUpdateSelectImageEvent event,
       Emitter<ProfileUpdateState> emit) async {
+    // Initialize DeviceInfoPlugin and get Android device info
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    var sdkInt = androidInfo.version.sdkInt; // SDK, example: 31
+
+    if (Platform.isAndroid) {
+      var storage = await Permission.storage.status;
+
+      if (storage != PermissionStatus.granted) {
+        await Permission.storage.request();
+      }
+
+      if (sdkInt >= 30) {
+        var storage_external = await Permission.manageExternalStorage.status;
+
+        if (storage_external != PermissionStatus.granted) {
+          await Permission.photos.request();
+        }
+
+        storage_external = await Permission.photos.status;
+
+        if (storage_external == PermissionStatus.granted) {
+          gotPermissions = true;
+        }
+      } else {
+        // (SDK < 30)
+        storage = await Permission.storage.status;
+
+        if (storage == PermissionStatus.granted) {
+          gotPermissions = true;
+        }
+      }
+    }
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage != null) {
@@ -65,13 +101,8 @@ class ProfileUpdateViewModel
           ));
         },
       );
-
-      // Check if permission is granted for image/gallery access
-      // Request storage/gallery permission
-      PermissionStatus permissionStatus = await Permission.photos.request();
-
       // If permission is denied, show a toast and return
-      if (permissionStatus.isDenied || permissionStatus.isPermanentlyDenied) {
+      if (!gotPermissions) {
         Navigator.of(event.context).pop(); // Close loading circle
         CustomFlutterToast(
                 backgroundColor: AppLightColorConstants.errorColor,

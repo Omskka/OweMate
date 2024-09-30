@@ -2,12 +2,12 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:app_developments/app/l10n/app_localizations.dart';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';
@@ -22,6 +22,7 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
   // Selected image
   File? selectedImage;
   final FetchUserData fetchUserDataService = FetchUserData();
+  bool gotPermissions = false;
 
   ProfileViewModel() : super(ProfileInitialState()) {
     on<ProfileInitialEvent>(_initial);
@@ -82,15 +83,30 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
   // Change profile image
   FutureOr<void> _changeProfileImage(
       ProfileChangeImageEvent event, Emitter<ProfileState> emit) async {
-    // Get current user id
     String? userid = AuthenticationRepository().getCurrentUserId();
+    bool gotPermissions = false;
 
     try {
-      // Request storage/gallery permission
-      PermissionStatus permissionStatus = await Permission.photos.request();
+      // Request necessary permissions for gallery access
+      PermissionStatus permissionStatus;
+      if (Platform.isAndroid) {
+        permissionStatus =
+            await Permission.photos.request(); // Android 30+ permission
+      } else {
+        permissionStatus = await Permission.storage.request(); // For SDK < 30
+      }
 
+      // If permission granted
       if (permissionStatus.isGranted) {
-        // Pick the image
+        gotPermissions = true;
+      } else if (permissionStatus.isPermanentlyDenied) {
+        // Handle permanently denied permission by opening app settings
+        openAppSettings();
+        return;
+      }
+
+      if (gotPermissions) {
+        // Pick the image from the gallery
         final returnedImage =
             await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -98,31 +114,23 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
           File selectedImage = File(returnedImage.path);
           emit(ProfileSelectImageState(
               selectedImage)); // Emit selected image state
-        } else {
-          return;
-        }
 
-        if (selectedImage != null) {
           // Upload the image to Firebase Storage
           final path = 'users/$userid/profile_image.jpg';
           final ref = FirebaseStorage.instance.ref().child(path);
-          UploadTask uploadTask = ref.putFile(selectedImage!);
+          UploadTask uploadTask = ref.putFile(selectedImage);
 
           // Wait for the upload to complete
           TaskSnapshot snapshot = await uploadTask;
-
-          // Get the download URL of the uploaded image
           String downloadURL = await snapshot.ref.getDownloadURL();
 
           // Save the download URL to Firestore
           await FirebaseFirestore.instance
               .collection('users')
               .doc(userid)
-              .update({
-            'profile_image_url': downloadURL,
-          });
+              .update({'profile_image_url': downloadURL});
 
-          // Emit a new state to signal that the image has been updated
+          // Emit the updated state
           emit(ProfileLoadDataState(
             state: state,
             firstName: firstName,
@@ -131,16 +139,14 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
             gender: gender,
             profileImageUrl: downloadURL,
           ));
+        } else {
+          print('Image selection was canceled');
+          return;
         }
-      } else if (permissionStatus.isDenied) {
-        // Handle permission denial
-        print('Permission denied');
-      } else if (permissionStatus.isPermanentlyDenied) {
-        // Open app settings for the user to grant permission manually
-        openAppSettings();
       }
     } catch (e) {
-      print(e.toString());
+      print('Error: ${e.toString()}');
+      throw Exception(e.toString());
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:app_developments/app/routes/app_router.dart';
+import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_event.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_state.dart';
 import 'package:app_developments/app/views/view_request/view_model/request_view_model.dart';
@@ -166,7 +167,9 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                           'Select a Currency',
                           style: context.textStyleGreyBarlow(context).copyWith(
                                 fontSize: 15,
-                                color: AppLightColorConstants.primaryColor,
+                                color:
+                                    ColorThemeUtil.getMoneyRequesttAmountColor(
+                                        context),
                               ),
                         ),
                         context.sizedHeightBoxLower,
@@ -286,7 +289,9 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                           'Enter Amount',
                           style: context.textStyleGreyBarlow(context).copyWith(
                                 fontSize: 15,
-                                color: AppLightColorConstants.primaryColor,
+                                color:
+                                    ColorThemeUtil.getMoneyRequesttAmountColor(
+                                        context),
                               ),
                         ),
                         CustomTextField(
@@ -311,8 +316,8 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                                     .textStyleGreyBarlow(context)
                                     .copyWith(
                                       fontSize: 15,
-                                      color:
-                                          AppLightColorConstants.primaryColor,
+                                      color: ColorThemeUtil
+                                          .getMoneyRequesttAmountColor(context),
                                     ),
                               ),
                             ],
