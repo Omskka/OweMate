@@ -67,8 +67,6 @@ class AddFriendsPageWidget extends StatelessWidget {
                     ),
                     context.sizedWidthBoxNormal,
                     CustomTextField(
-                      hintTextColor:
-                          AppLightColorConstants.contentTeritaryColor,
                       fillColor: ColorThemeUtil.getFinanceCardColor(context),
                       icon: const Icon(
                         Icons.search,
@@ -103,13 +101,15 @@ class AddFriendsPageWidget extends StatelessWidget {
                             ),
                             Text(
                               'No results found',
-                              style:
-                                  context.textStyleGreyBarlow(context).copyWith(
-                                        fontSize: 18,
-                                        color: AppLightColorConstants
-                                            .contentTeritaryColor,
-                                        fontWeight: FontWeight.w100,
-                                      ),
+                              style: context
+                                  .textStyleGreyBarlow(context)
+                                  .copyWith(
+                                    fontSize: 18,
+                                    color:
+                                        ColorThemeUtil.getContentPrimaryColor(
+                                            context),
+                                    fontWeight: FontWeight.w100,
+                                  ),
                             ),
                           ],
                         ),
