@@ -194,7 +194,14 @@ class SettlePageWidget extends StatelessWidget {
                                         onTap: () {
                                           // set up the buttons
                                           Widget continueButton = TextButton(
-                                            child: const Text("Continue"),
+                                            child: Text(
+                                              "Continue",
+                                              style: TextStyle(
+                                                color: ColorThemeUtil
+                                                    .getContentPrimaryColor(
+                                                        context),
+                                              ),
+                                            ),
                                             onPressed: () {
                                               Navigator.of(context)
                                                   .pop(); // Dismiss the dialog
