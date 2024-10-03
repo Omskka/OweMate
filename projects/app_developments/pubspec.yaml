@@ -21,6 +21,7 @@ dependencies:
   uuid: ^4.5.0
   fl_chart: ^0.69.0
   badword_guard: ^1.0.0
+  win32: ^5.2.1 
 
   # bloc
   flutter_bloc: ^8.1.3

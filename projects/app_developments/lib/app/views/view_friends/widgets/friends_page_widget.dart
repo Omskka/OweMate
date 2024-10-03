@@ -134,8 +134,6 @@ class FriendsPageWidget extends StatelessWidget {
                               context.sizedWidthBoxNormal,
                               CustomTextField(
                                 key: viewModel.searchFriendKey,
-                                hintTextColor:
-                                    AppLightColorConstants.contentTeritaryColor,
                                 icon: const Icon(
                                   Icons.search,
                                   color: AppLightColorConstants

@@ -42,7 +42,9 @@ class IncomingRequestsCard extends StatelessWidget {
                   padding: context.onlyLeftPaddingMedium,
                   child: CircleAvatar(
                     radius: context.dynamicHeight(0.03),
-                    backgroundImage: NetworkImage(profileImageUrl),
+                    backgroundImage: isValidImageUrl(profileImageUrl)
+                        ? NetworkImage(profileImageUrl)
+                        : null, // Only load if valid
                   ),
                 ),
                 SizedBox(width: context.lowValue),
@@ -120,4 +122,9 @@ class IncomingRequestsCard extends StatelessWidget {
       ),
     );
   }
+}
+
+bool isValidImageUrl(String url) {
+  return url.isNotEmpty &&
+      (url.startsWith('http://') || url.startsWith('https://'));
 }
