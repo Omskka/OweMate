@@ -107,416 +107,426 @@ class HomePageWidget extends StatelessWidget {
           cardLeftPadding = context.onlyLeftPaddingHigh;
         }
 
-        return RefreshIndicator(
-          color: AppLightColorConstants.primaryColor,
-          onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 1));
-            // Dispatch the initial event to refresh the data
-            context
-                .read<HomeViewModel>()
-                .add(HomeInitialEvent(context: context));
-          },
-          child: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                context.sizedHeightBoxLow,
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          left: context.dynamicWidth(0.2),
-                          right: context.dynamicWidth(0.06),
-                        ),
-                        child: const Divider(
-                          color: AppLightColorConstants.contentDisabled,
-                          height: 36,
-                          thickness: 1.5,
+        return PopScope(
+          canPop: false,
+          child: RefreshIndicator(
+            color: AppLightColorConstants.primaryColor,
+            onRefresh: () async {
+              await Future.delayed(const Duration(seconds: 1));
+              // Dispatch the initial event to refresh the data
+              context
+                  .read<HomeViewModel>()
+                  .add(HomeInitialEvent(context: context));
+            },
+            child: SingleChildScrollView(
+              clipBehavior: Clip.none,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  context.sizedHeightBoxLow,
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: context.dynamicWidth(0.2),
+                            right: context.dynamicWidth(0.06),
+                          ),
+                          child: const Divider(
+                            color: AppLightColorConstants.contentDisabled,
+                            height: 36,
+                            thickness: 1.5,
+                          ),
                         ),
                       ),
-                    ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          'Home',
+                          style: context.textStyleGrey(context).copyWith(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color:
+                                    ColorThemeUtil.getBgInverseColor(context),
+                              ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: context.dynamicWidth(0.06),
+                            right: context.dynamicWidth(0.2),
+                          ),
+                          child: const Divider(
+                            color: AppLightColorConstants.contentDisabled,
+                            height: 36,
+                            thickness: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: context.dynamicHeight(0.08),
+                    width: context.dynamicWidth(1),
+                    child: Center(
                       child: Text(
-                        'Home',
-                        style: context.textStyleGrey(context).copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: ColorThemeUtil.getBgInverseColor(context),
-                            ),
+                        'Manage your debts and requests easily.\nTap on the cards to view messages.',
+                        textAlign: TextAlign.center,
+                        style: context
+                            .textStyleGrey(context)
+                            .copyWith(fontSize: 17),
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          left: context.dynamicWidth(0.06),
-                          right: context.dynamicWidth(0.2),
-                        ),
-                        child: const Divider(
-                          color: AppLightColorConstants.contentDisabled,
-                          height: 36,
-                          thickness: 1.5,
-                        ),
+                  ),
+                  // Money You Owe Section
+                  SizedBox(
+                    height: context.dynamicHeight(0.05),
+                    width: context.dynamicWidth(1),
+                    child: Padding(
+                      padding: context.onlyLeftPaddingMedium,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: leftPadding,
+                                  child: Text(
+                                    key: viewModel.debtsKey,
+                                    'Pending Debts',
+                                    style: context
+                                        .textStyleGreyBarlow(context)
+                                        .copyWith(
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: context.onlyRightPaddingNormal,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: SizedBox(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'See All',
+                                      style: context
+                                          .textStyleGrey(context)
+                                          .copyWith(
+                                            color: ColorThemeUtil
+                                                .getContentTeritaryColor(
+                                                    context),
+                                          ),
+                                    ),
+                                    context.sizedWidthBoxLow,
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 15,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: context.dynamicHeight(0.08),
-                  width: context.dynamicWidth(1),
-                  child: Center(
-                    child: Text(
-                      'Manage your debts and requests easily.\nTap on the cards to view messages.',
-                      textAlign: TextAlign.center,
-                      style:
-                          context.textStyleGrey(context).copyWith(fontSize: 17),
-                    ),
                   ),
-                ),
-                // Money You Owe Section
-                SizedBox(
-                  height: context.dynamicHeight(0.05),
-                  width: context.dynamicWidth(1),
-                  child: Padding(
-                    padding: context.onlyLeftPaddingMedium,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Padding(
-                                padding: leftPadding,
-                                child: Text(
-                                  key: viewModel.debtsKey,
-                                  'Pending Debts',
-                                  style: context
-                                      .textStyleGreyBarlow(context)
-                                      .copyWith(
-                                        fontSize: 18,
-                                      ),
-                                ),
-                              ),
+                  SizedBox(
+                    height: context.dynamicHeight(0.25),
+                    width: context.dynamicWidth(1),
+                    child: state is HomeLoadingState
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: ColorThemeUtil.getContentTeritaryColor(
+                                  context),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: context.onlyRightPaddingNormal,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: SizedBox(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'See All',
-                                    style: context
-                                        .textStyleGrey(context)
-                                        .copyWith(
-                                          color: ColorThemeUtil
-                                              .getContentTeritaryColor(context),
-                                        ),
-                                  ),
-                                  context.sizedWidthBoxLow,
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 15,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: context.dynamicHeight(0.25),
-                  width: context.dynamicWidth(1),
-                  child: state is HomeLoadingState
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color:
-                                ColorThemeUtil.getContentTeritaryColor(context),
-                          ),
-                        )
-                      : filteredOwedMoney.isNotEmpty
-                          ? Padding(
-                              padding:
-                                  EdgeInsets.only(left: cardLeftPadding.left),
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: filteredOwedMoney.length,
-                                itemBuilder: (context, index) {
-                                  final debt = filteredOwedMoney[index];
+                          )
+                        : filteredOwedMoney.isNotEmpty
+                            ? Padding(
+                                padding:
+                                    EdgeInsets.only(left: cardLeftPadding.left),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: filteredOwedMoney.length,
+                                  itemBuilder: (context, index) {
+                                    final debt = filteredOwedMoney[index];
 
-                                  final amount =
-                                      debt['amount']?.toString() ?? '0';
-                                  final date = debt['date'] ?? '';
-                                  final friendUserId =
-                                      debt['friendUserId'] ?? '';
+                                    final amount =
+                                        debt['amount']?.toString() ?? '0';
+                                    final date = debt['date'] ?? '';
+                                    final friendUserId =
+                                        debt['friendUserId'] ?? '';
 
-                                  // Fetch friend's data from state
-                                  final friendData =
-                                      state.friendsUserData[friendUserId] ?? {};
-                                  final friendName =
-                                      friendData['firstName'] ?? 'Unknown';
-                                  final profileImageUrl =
-                                      friendData['profileImageUrl'] ?? '';
+                                    // Fetch friend's data from state
+                                    final friendData =
+                                        state.friendsUserData[friendUserId] ??
+                                            {};
+                                    final friendName =
+                                        friendData['firstName'] ?? 'Unknown';
+                                    final profileImageUrl =
+                                        friendData['profileImageUrl'] ?? '';
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      // set up the buttons
-                                      Widget continueButton = TextButton(
-                                        child: Text(
-                                          "Continue",
-                                          style: TextStyle(
-                                            color: ColorThemeUtil
-                                                .getContentTeritaryColor(
-                                              context,
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // set up the buttons
+                                        Widget continueButton = TextButton(
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(
+                                              color: ColorThemeUtil
+                                                  .getContentTeritaryColor(
+                                                context,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
 
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text(
-                                          "$friendName's Request Message",
-                                          style: context
-                                              .textStyleGreyBarlow(context),
-                                        ),
-                                        content: Text(
-                                          "${debt['message']}",
-                                        ),
-                                        actions: [
-                                          continueButton,
-                                        ],
-                                      );
+                                        // set up the AlertDialog
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text(
+                                            "$friendName's Request Message",
+                                            style: context
+                                                .textStyleGreyBarlow(context),
+                                          ),
+                                          content: Text(
+                                            "${debt['message']}",
+                                          ),
+                                          actions: [
+                                            continueButton,
+                                          ],
+                                        );
 
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    },
-                                    child: MoneyDebtCard(
-                                      profileImageUrl: profileImageUrl,
-                                      amount: amount,
-                                      name: friendName,
-                                      date: date,
-                                    ),
-                                  );
-                                },
-                              ),
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.images.svg.settled,
-                                  width: 100,
-                                ),
-                                Text(
-                                  'You don\'t owe anyone any money.\nYou\'re all clear!',
-                                  style: context.textStyleGrey(context),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                ),
-                // Money Owed to You Section
-                SizedBox(
-                  height: context.dynamicHeight(0.05),
-                  width: context.dynamicWidth(1),
-                  child: Padding(
-                    padding: context.onlyLeftPaddingMedium,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Padding(
-                                padding: leftPadding,
-                                child: Text(
-                                  key: viewModel.requestsKey,
-                                  'Pending Requests',
-                                  style: context
-                                      .textStyleGreyBarlow(context)
-                                      .copyWith(
-                                        fontSize: 18,
+                                        // show the dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
+                                        );
+                                      },
+                                      child: MoneyDebtCard(
+                                        profileImageUrl: profileImageUrl,
+                                        amount: amount,
+                                        name: friendName,
+                                        date: date,
                                       ),
+                                    );
+                                  },
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: context.onlyRightPaddingNormal,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: SizedBox(
-                              child: Row(
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    'See All',
-                                    style: context
-                                        .textStyleGrey(context)
-                                        .copyWith(
-                                          color: ColorThemeUtil
-                                              .getContentTeritaryColor(context),
-                                        ),
+                                  SvgPicture.asset(
+                                    Assets.images.svg.settled,
+                                    width: 100,
                                   ),
-                                  context.sizedWidthBoxLow,
-                                  const Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 15,
-                                  )
+                                  Text(
+                                    'You don\'t owe anyone any money.\nYou\'re all clear!',
+                                    style: context.textStyleGrey(context),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ],
                               ),
+                  ),
+                  // Money Owed to You Section
+                  SizedBox(
+                    height: context.dynamicHeight(0.05),
+                    width: context.dynamicWidth(1),
+                    child: Padding(
+                      padding: context.onlyLeftPaddingMedium,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Padding(
+                                  padding: leftPadding,
+                                  child: Text(
+                                    key: viewModel.requestsKey,
+                                    'Pending Requests',
+                                    style: context
+                                        .textStyleGreyBarlow(context)
+                                        .copyWith(
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: context.dynamicHeight(0.25),
-                  width: context.dynamicWidth(1),
-                  child: state is HomeLoadingState
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color:
-                                ColorThemeUtil.getContentTeritaryColor(context),
-                          ),
-                        )
-                      : filteredRequestedMoney.isNotEmpty
-                          ? Padding(
-                              padding:
-                                  EdgeInsets.only(left: cardLeftPadding.left),
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: filteredRequestedMoney.length,
-                                itemBuilder: (context, index) {
-                                  final request = filteredRequestedMoney[index];
-                                  final amount =
-                                      request['amount']?.toString() ?? '0';
-                                  final date = request['date'] ?? '';
-                                  final friendUserId =
-                                      request['friendUserId'] ?? '';
-
-                                  // Fetch friend's data from state
-                                  final friendData =
-                                      state.friendsUserData[friendUserId] ?? {};
-                                  final friendName =
-                                      friendData['firstName'] ?? 'Unknown';
-                                  final profileImageUrl =
-                                      friendData['profileImageUrl'] ?? '';
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      // set up the buttons
-                                      Widget continueButton = TextButton(
-                                        child: Text(
-                                          "Continue",
-                                          style: TextStyle(
+                          Padding(
+                            padding: context.onlyRightPaddingNormal,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: SizedBox(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'See All',
+                                      style: context
+                                          .textStyleGrey(context)
+                                          .copyWith(
                                             color: ColorThemeUtil
                                                 .getContentTeritaryColor(
-                                              context,
+                                                    context),
+                                          ),
+                                    ),
+                                    context.sizedWidthBoxLow,
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 15,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: context.dynamicHeight(0.25),
+                    width: context.dynamicWidth(1),
+                    child: state is HomeLoadingState
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: ColorThemeUtil.getContentTeritaryColor(
+                                  context),
+                            ),
+                          )
+                        : filteredRequestedMoney.isNotEmpty
+                            ? Padding(
+                                padding:
+                                    EdgeInsets.only(left: cardLeftPadding.left),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: filteredRequestedMoney.length,
+                                  itemBuilder: (context, index) {
+                                    final request =
+                                        filteredRequestedMoney[index];
+                                    final amount =
+                                        request['amount']?.toString() ?? '0';
+                                    final date = request['date'] ?? '';
+                                    final friendUserId =
+                                        request['friendUserId'] ?? '';
+
+                                    // Fetch friend's data from state
+                                    final friendData =
+                                        state.friendsUserData[friendUserId] ??
+                                            {};
+                                    final friendName =
+                                        friendData['firstName'] ?? 'Unknown';
+                                    final profileImageUrl =
+                                        friendData['profileImageUrl'] ?? '';
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // set up the buttons
+                                        Widget continueButton = TextButton(
+                                          child: Text(
+                                            "Continue",
+                                            style: TextStyle(
+                                              color: ColorThemeUtil
+                                                  .getContentTeritaryColor(
+                                                context,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
-                                      Widget deleteButton = TextButton(
-                                        child: const Text(
-                                          "Delete Request",
-                                          style: TextStyle(
-                                            color: AppLightColorConstants
-                                                .errorColor,
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
+                                        Widget deleteButton = TextButton(
+                                          child: const Text(
+                                            "Delete Request",
+                                            style: TextStyle(
+                                              color: AppLightColorConstants
+                                                  .errorColor,
+                                            ),
                                           ),
-                                        ),
-                                        onPressed: () {
-                                          // Action for the Delete button
-                                          context.read<HomeViewModel>().add(
-                                                HomefetchDeleteRequestEvent(
-                                                  requestId:
-                                                      request['requestId'],
-                                                  friendUserId: friendUserId,
-                                                  context: context,
-                                                ),
-                                              );
-                                          Navigator.of(context)
-                                              .pop(); // Dismiss the dialog
-                                        },
-                                      );
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text(
-                                          "Your Request Message",
-                                          style: context
-                                              .textStyleGreyBarlow(context),
-                                        ),
-                                        content: Text(
-                                          "${request['message']}",
-                                        ),
-                                        actions: [
-                                          deleteButton,
-                                          continueButton,
-                                        ],
-                                      );
+                                          onPressed: () {
+                                            // Action for the Delete button
+                                            context.read<HomeViewModel>().add(
+                                                  HomefetchDeleteRequestEvent(
+                                                    requestId:
+                                                        request['requestId'],
+                                                    friendUserId: friendUserId,
+                                                    context: context,
+                                                  ),
+                                                );
+                                            Navigator.of(context)
+                                                .pop(); // Dismiss the dialog
+                                          },
+                                        );
+                                        // set up the AlertDialog
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text(
+                                            "Your Request Message",
+                                            style: context
+                                                .textStyleGreyBarlow(context),
+                                          ),
+                                          content: Text(
+                                            "${request['message']}",
+                                          ),
+                                          actions: [
+                                            deleteButton,
+                                            continueButton,
+                                          ],
+                                        );
 
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    },
-                                    child: MoneyRequestCard(
-                                      profileImageUrl: profileImageUrl,
-                                      amount: amount,
-                                      name: friendName,
-                                      date: date,
-                                    ),
-                                  );
-                                },
+                                        // show the dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
+                                        );
+                                      },
+                                      child: MoneyRequestCard(
+                                        profileImageUrl: profileImageUrl,
+                                        amount: amount,
+                                        name: friendName,
+                                        date: date,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.images.svg.settled,
+                                    width: 100,
+                                  ),
+                                  Text(
+                                    'Nobody owes you any money.\nYou\'re all set!',
+                                    style: context.textStyleGrey(context),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.images.svg.settled,
-                                  width: 100,
-                                ),
-                                Text(
-                                  'Nobody owes you any money.\nYou\'re all set!',
-                                  style: context.textStyleGrey(context),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

@@ -87,7 +87,9 @@ class RecentActivityCard extends StatelessWidget {
                   padding: context.onlyLeftPaddingLow,
                   child: CircleAvatar(
                     radius: context.dynamicHeight(0.03),
-                    backgroundImage: NetworkImage(profileImageUrl),
+                    backgroundImage: isValidImageUrl(profileImageUrl)
+                        ? NetworkImage(profileImageUrl)
+                        : null, // Only load if valid
                     backgroundColor: Colors.grey[
                         300], // Placeholder color if image is not available
                   ),
@@ -291,4 +293,9 @@ class RecentActivityCard extends StatelessWidget {
       ),
     );
   }
+}
+
+bool isValidImageUrl(String url) {
+  return url.isNotEmpty &&
+      (url.startsWith('http://') || url.startsWith('https://'));
 }

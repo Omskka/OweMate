@@ -7,7 +7,6 @@ import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';

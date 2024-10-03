@@ -72,170 +72,173 @@ class SignupPageWidget extends StatelessWidget {
 
     return SizedBox(
       height: screenHeight,
-      child: SingleChildScrollView(
-        child: Form(
-          key: viewModel.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              context.sizedHeightBoxNormal,
-              SizedBox(
-                height: screenHeight * 0.1,
-                width: screenWidth,
-                child: Padding(
-                  padding: leftPadding,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Sign ',
-                              style: context.textStyleH2(context).copyWith(
-                                    color: ColorThemeUtil.getPrimaryColor(
-                                        context), // Get primary color based on theme
-                                  ),
-                            ),
-                            TextSpan(
-                              text: 'Up',
-                              style: context.textStyleH2(context),
-                            ),
-                          ],
+      child: PopScope(
+        canPop: false,
+        child: SingleChildScrollView(
+          child: Form(
+            key: viewModel.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                context.sizedHeightBoxNormal,
+                SizedBox(
+                  height: screenHeight * 0.1,
+                  width: screenWidth,
+                  child: Padding(
+                    padding: leftPadding,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Sign ',
+                                style: context.textStyleH2(context).copyWith(
+                                      color: ColorThemeUtil.getPrimaryColor(
+                                          context), // Get primary color based on theme
+                                    ),
+                              ),
+                              TextSpan(
+                                text: 'Up',
+                                style: context.textStyleH2(context),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              context.sizedHeightBoxNormal,
-              Center(
-                child: SizedBox(
-                  height: containerHeight,
-                  width:
-                      textfieldWidth, // Use specific textfield width to center
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // Align contents inside the column to start
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Email text
-                      Text(
-                        'Email',
-                        style: context.textStyleGrey(context),
-                      ),
-                      // Custom text field with hint text
-                      CustomTextField(
-                        width: textfieldWidth,
-                        textInputAction: TextInputAction.next,
-                        hintText: 'JohnDoe@gmail.com',
-                        validator: (value) =>
-                            SignUpValidation().checkMailErrors(
-                          value,
-                          context,
-                          viewModel.emailController,
+                context.sizedHeightBoxNormal,
+                Center(
+                  child: SizedBox(
+                    height: containerHeight,
+                    width:
+                        textfieldWidth, // Use specific textfield width to center
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Align contents inside the column to start
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Email text
+                        Text(
+                          'Email',
+                          style: context.textStyleGrey(context),
                         ),
-                        showVisibilityToggle: false,
-                        isValid: (value) =>
-                            SignUpValidation().checkMailErrors(
-                              value,
-                              context,
-                              viewModel.emailController,
-                            ) ==
-                            null,
-                        keyboardType: TextInputType.emailAddress,
-                        controller: viewModel.emailController,
-                      ),
-                      context.sizedHeightBoxMedium,
-                      // Password text
-                      Text(
-                        'Password',
-                        style: context.textStyleGrey(context),
-                      ),
-                      // Custom text field with visibility toggle
-                      CustomTextField(
-                        width: textfieldWidth,
-                        hintText: '',
-                        textInputAction: TextInputAction.next,
-                        validator: (value) =>
-                            SignUpValidation().checkPasswordErrors(
-                          value,
-                          context,
-                          viewModel.passwordController,
+                        // Custom text field with hint text
+                        CustomTextField(
+                          width: textfieldWidth,
+                          textInputAction: TextInputAction.next,
+                          hintText: 'JohnDoe@gmail.com',
+                          validator: (value) =>
+                              SignUpValidation().checkMailErrors(
+                            value,
+                            context,
+                            viewModel.emailController,
+                          ),
+                          showVisibilityToggle: false,
+                          isValid: (value) =>
+                              SignUpValidation().checkMailErrors(
+                                value,
+                                context,
+                                viewModel.emailController,
+                              ) ==
+                              null,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: viewModel.emailController,
                         ),
-                        showVisibilityToggle: true,
-                        controller: viewModel.passwordController,
-                      ),
-                      context.sizedHeightBoxMedium,
-                      // Confirm password text
-                      Text(
-                        'Confirm Password',
-                        style: context.textStyleGrey(context),
-                      ),
-                      // Custom text field with visibility toggle
-                      CustomTextField(
-                        width: textfieldWidth,
-                        hintText: '',
-                        textInputAction: TextInputAction.done,
-                        validator: (value) =>
-                            SignUpValidation().checkConfirmPasswordErrors(
-                          value,
-                          context,
-                          viewModel.passwordController,
-                          viewModel.confirmPasswordController,
+                        context.sizedHeightBoxMedium,
+                        // Password text
+                        Text(
+                          'Password',
+                          style: context.textStyleGrey(context),
                         ),
-                        showVisibilityToggle: true,
-                        controller: viewModel.confirmPasswordController,
-                      ),
-                    ],
+                        // Custom text field with visibility toggle
+                        CustomTextField(
+                          width: textfieldWidth,
+                          hintText: '',
+                          textInputAction: TextInputAction.next,
+                          validator: (value) =>
+                              SignUpValidation().checkPasswordErrors(
+                            value,
+                            context,
+                            viewModel.passwordController,
+                          ),
+                          showVisibilityToggle: true,
+                          controller: viewModel.passwordController,
+                        ),
+                        context.sizedHeightBoxMedium,
+                        // Confirm password text
+                        Text(
+                          'Confirm Password',
+                          style: context.textStyleGrey(context),
+                        ),
+                        // Custom text field with visibility toggle
+                        CustomTextField(
+                          width: textfieldWidth,
+                          hintText: '',
+                          textInputAction: TextInputAction.done,
+                          validator: (value) =>
+                              SignUpValidation().checkConfirmPasswordErrors(
+                            value,
+                            context,
+                            viewModel.passwordController,
+                            viewModel.confirmPasswordController,
+                          ),
+                          showVisibilityToggle: true,
+                          controller: viewModel.confirmPasswordController,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              context.sizedHeightBoxNormal,
-              // Sign up button
-              Center(
-                child: CustomContinueButton(
-                  buttonText: 'Sign Up',
-                  onPressed: () {
-                    if (viewModel.formKey.currentState!.validate()) {
-                      // If the form is valid sign up new user
-                      context.read<SignupViewModel>().add(
-                            SignupUserEvent(context: context),
-                          );
-                    }
-                  },
-                ),
-              ),
-              context.sizedHeightBoxHigh,
-              context.sizedHeightBoxMedium,
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Already have an account? ',
-                    style: DefaultTextStyle.of(context).style.copyWith(
-                          color:
-                              ColorThemeUtil.getContentTeritaryColor(context),
-                        ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Login',
-                        style: context.textStyleGreyBarlow(context).copyWith(
-                              color: ColorThemeUtil.getPrimaryColor(context),
-                              fontSize: 16,
-                            ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Route to LoginViewRoute on tap
-                            context.router.push(const LoginViewRoute());
-                          },
-                      ),
-                    ],
+                context.sizedHeightBoxNormal,
+                // Sign up button
+                Center(
+                  child: CustomContinueButton(
+                    buttonText: 'Sign Up',
+                    onPressed: () {
+                      if (viewModel.formKey.currentState!.validate()) {
+                        // If the form is valid sign up new user
+                        context.read<SignupViewModel>().add(
+                              SignupUserEvent(context: context),
+                            );
+                      }
+                    },
                   ),
                 ),
-              ),
-            ],
+                context.sizedHeightBoxHigh,
+                context.sizedHeightBoxMedium,
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Already have an account? ',
+                      style: DefaultTextStyle.of(context).style.copyWith(
+                            color:
+                                ColorThemeUtil.getContentTeritaryColor(context),
+                          ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Login',
+                          style: context.textStyleGreyBarlow(context).copyWith(
+                                color: ColorThemeUtil.getPrimaryColor(context),
+                                fontSize: 16,
+                              ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Route to LoginViewRoute on tap
+                              context.router.push(const LoginViewRoute());
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
