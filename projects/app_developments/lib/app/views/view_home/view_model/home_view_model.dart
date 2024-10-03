@@ -142,61 +142,52 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
 
   void _checkInternetConnection(BuildContext context) {
     try {
-      _internetConnection = InternetConnection().onStatusChange.listen((event) {
-        switch (event) {
-          case InternetStatus.connected:
-            if (state.isConnectedToInternet == false ||
-                state.isConnectedToInternet == null) {
-              _showInternetConnectedDialog(context);
-            }
-            emit(
-              HomeInternetState(
-                state: state,
-                userData: state.userData,
-                friendsUserData: state.friendsUserData,
-                isConnectedToInternet: true,
-              ),
-            );
-            break;
-          case InternetStatus.disconnected:
-            emit(
-              HomeInternetState(
-                state: state,
-                userData: state.userData,
-                friendsUserData: state.friendsUserData,
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-          default:
-            emit(
-              HomeInternetState(
-                state: state,
-                userData: state.userData,
-                friendsUserData: state.friendsUserData,
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-        }
-      });
+      _internetConnection = InternetConnection().onStatusChange.listen(
+        (event) {
+          switch (event) {
+            case InternetStatus.connected:
+              emit(
+                HomeInternetState(
+                  state: state,
+                  userData: state.userData,
+                  friendsUserData: state.friendsUserData,
+                  isConnectedToInternet: true,
+                ),
+              );
+              break;
+            case InternetStatus.disconnected:
+              emit(
+                HomeInternetState(
+                  state: state,
+                  userData: state.userData,
+                  friendsUserData: state.friendsUserData,
+                  isConnectedToInternet: false,
+                ),
+              );
+              _showNoInternetDialog(context); // Show the dialog if disconnected
+              break;
+            default:
+              emit(
+                HomeInternetState(
+                  state: state,
+                  userData: state.userData,
+                  friendsUserData: state.friendsUserData,
+                  isConnectedToInternet: false,
+                ),
+              );
+              _showNoInternetDialog(context);
+              break;
+          }
+        },
+      );
     } catch (e) {
       throw Exception();
     }
   }
 
-// Declare a variable to keep track of the dialog
-  BuildContext? _noInternetDialogContext;
-
+//  No internet pop-up
   void _showNoInternetDialog(BuildContext context) {
     try {
-      // If the dialog is already open, do nothing
-      if (_noInternetDialogContext != null) return;
-      // Store the current dialog context to dismiss later
-      _noInternetDialogContext = context;
-
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -205,8 +196,9 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
             title: Center(
               child: Text(
                 'No Internet Connection',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+                style: TextStyle(
+                  color: ColorThemeUtil.getBgInverseColor(context),
+                ),
               ),
             ),
             content: Column(
@@ -228,61 +220,50 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
                 ),
               ],
             ),
-          );
-        },
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _showInternetConnectedDialog(BuildContext context) {
-    try {
-      Navigator.of(_noInternetDialogContext!)
-          .pop(); // Close the no internet dialog
-      _noInternetDialogContext = null; // Reset the dialog context
-
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Center(
-              child: Text(
-                'You\'re Back Online',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
-              ),
-            ),
-            content: Column(
-              mainAxisSize:
-                  MainAxisSize.min, // Prevents the dialog from being too tall
-              children: [
-                const Icon(
-                  Icons.wifi,
-                  color: AppLightColorConstants.successColor,
-                  size: 35,
-                ),
-                const SizedBox(height: 16), // Space between icon and text
-                Text(
-                  'You are now connected to the internet.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorThemeUtil.getBgInverseColor(context),
-                  ),
-                ),
-              ],
-            ),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Show the loading indicator for 1 second
+                  showDialog(
+                    context: context,
+                    barrierDismissible:
+                        false, // Prevents closing the dialog by tapping outside
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+
+                  // Delay for 1 second, then pop the loading dialog and check the connection
+                  Future.delayed(
+                    const Duration(seconds: 1),
+                    () {
+                      /* // Dismiss the loading dialog
+                      Navigator.of(context).pop(); */
+
+                      if (state.isConnectedToInternet == true) {
+                        Navigator.of(context).pop();
+                        add(
+                          HomeInitialEvent(context: context),
+                        );
+                      }
+
+                      // Try to recheck the connection and re-add the HomeInitialEvent
+                      // _checkInternetConnection(context);
+
+                      // Dismiss the original dialog
+                      Navigator.of(context).pop();
+                    },
+                  );
                 },
                 child: Center(
                   child: Text(
-                    'Continue',
+                    'Try Again',
                     style: TextStyle(
-                        color: ColorThemeUtil.getPrimaryColor(context)),
+                      color:
+                          ColorThemeUtil.getMoneyRequesttAmountColor(context),
+                    ),
                   ),
                 ),
               ),

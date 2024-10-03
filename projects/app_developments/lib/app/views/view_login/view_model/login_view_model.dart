@@ -9,6 +9,7 @@ import 'package:app_developments/core/auth/exceptions/log_in_with_email_and_pass
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -38,6 +39,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       LoginInitialEvent event, Emitter<LoginState> emit) async {
     // Check for internet connection before proceeding
     _checkInternetConnection(event.context);
+
+    // Check uncompleted account registers
+    _deleteUncompletedAccounts();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
@@ -49,46 +53,43 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
 
   void _checkInternetConnection(BuildContext context) {
     try {
-      _internetConnection = InternetConnection().onStatusChange.listen((event) {
-        switch (event) {
-          case InternetStatus.connected:
-            if (state.isConnectedToInternet == false ||
-                state.isConnectedToInternet == null) {
-              _showInternetConnectedDialog(context);
-            }
-            emit(
-              LoginInternetState(
-                isConnectedToInternet: true,
-              ),
-            );
-            break;
-          case InternetStatus.disconnected:
-            emit(
-              LoginInternetState(
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-        }
-      });
+      _internetConnection = InternetConnection().onStatusChange.listen(
+        (event) {
+          switch (event) {
+            case InternetStatus.connected:
+              emit(
+                LoginInternetState(
+                  isConnectedToInternet: true,
+                ),
+              );
+              break;
+            case InternetStatus.disconnected:
+              emit(
+                LoginInternetState(
+                  isConnectedToInternet: false,
+                ),
+              );
+              _showNoInternetDialog(context); // Show the dialog if disconnected
+              break;
+            default:
+              emit(
+                LoginInternetState(
+                  isConnectedToInternet: false,
+                ),
+              );
+              _showNoInternetDialog(context);
+              break;
+          }
+        },
+      );
     } catch (e) {
       throw Exception();
     }
   }
 
-// Declare a variable to keep track of the dialog state
-  bool _isNoInternetDialogVisible = false;
-
-// Updated method to show the "No Internet" dialog
+//  No internet pop-up
   void _showNoInternetDialog(BuildContext context) {
     try {
-      // If the dialog is already visible, do nothing
-      if (_isNoInternetDialogVisible) return;
-
-      // Mark the dialog as visible
-      _isNoInternetDialogVisible = true;
-
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -97,72 +98,23 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
             title: Center(
               child: Text(
                 'No Internet Connection',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
+                style: TextStyle(
+                  color: ColorThemeUtil.getBgInverseColor(context),
+                ),
               ),
             ),
             content: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize:
+                  MainAxisSize.min, // Prevents the dialog from being too tall
               children: [
                 const Icon(
                   Icons.wifi_off,
                   color: AppLightColorConstants.errorColor,
                   size: 35,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 16), // Space between icon and text
                 Text(
                   'Please check your internet connection and try again.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorThemeUtil.getBgInverseColor(context),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ).then((_) {
-        // When the dialog is dismissed, mark it as not visible
-        _isNoInternetDialogVisible = false;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-// Updated method to show the internet connected dialog
-  void _showInternetConnectedDialog(BuildContext context) {
-    try {
-      // If there is no dialog currently displayed, do nothing
-      if (!_isNoInternetDialogVisible) return;
-
-      // Dismiss the "No Internet" dialog if it is visible
-      Navigator.of(context).pop();
-      _isNoInternetDialogVisible = false;
-
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Center(
-              child: Text(
-                'You\'re Back Online',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
-              ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.wifi,
-                  color: AppLightColorConstants.successColor,
-                  size: 35,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'You are now connected to the internet.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorThemeUtil.getBgInverseColor(context),
@@ -173,13 +125,38 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Show the loading indicator for 1 second
+                  showDialog(
+                    context: context,
+                    barrierDismissible:
+                        false, // Prevents closing the dialog by tapping outside
+                    builder: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
+
+                  // Delay for 1 second, then pop the loading dialog and check the connection
+                  Future.delayed(
+                    const Duration(seconds: 1),
+                    () {
+                      if (state.isConnectedToInternet == true) {
+                        Navigator.of(context).pop();
+                      }
+
+                      // Dismiss the original dialog
+                      Navigator.of(context).pop();
+                    },
+                  );
                 },
                 child: Center(
                   child: Text(
-                    'Continue',
+                    'Try Again',
                     style: TextStyle(
-                        color: ColorThemeUtil.getPrimaryColor(context)),
+                      color:
+                          ColorThemeUtil.getMoneyRequesttAmountColor(context),
+                    ),
                   ),
                 ),
               ),
@@ -198,6 +175,31 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       AuthenticationRepository().signInWithGoogle(event.context);
     } catch (e) {
       print(e);
+    }
+  }
+
+  // Function to delete uncompleted accounts
+  Future<void> _deleteUncompletedAccounts() async {
+    final auth = FirebaseAuth.instance;
+    final firestore = FirebaseFirestore.instance;
+
+    try {
+      final currentUser = auth.currentUser;
+
+      // Check if the user is authenticated
+      if (currentUser != null) {
+        // Check if user information exists in Firestore
+        DocumentSnapshot userDoc =
+            await firestore.collection('users').doc(currentUser.uid).get();
+
+        // If user info does not exist, delete the account
+        if (!userDoc.exists) {
+          await currentUser.delete(); // Deletes the user account
+          print('Deleted uncompleted account for email: ${currentUser.email}');
+        }
+      }
+    } catch (e) {
+      print('Error deleting account: $e');
     }
   }
 

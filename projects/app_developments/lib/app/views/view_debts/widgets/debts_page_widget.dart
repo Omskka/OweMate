@@ -54,221 +54,228 @@ class DebtsPageWidget extends StatelessWidget {
               containerWidth = context.dynamicWidth(0.25);
             }
 
-            return SingleChildScrollView(
-              clipBehavior: Clip.none,
-              child: Column(
-                children: [
-                  context.sizedHeightBoxLow,
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: context.dynamicWidth(0.2),
-                            right: context.dynamicWidth(0.06),
-                          ),
-                          child: const Divider(
-                            color: AppLightColorConstants.contentDisabled,
-                            height: 36,
-                            thickness: 1.5,
-                          ),
-                        ),
-                      ),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          'Finances',
-                          style: context.textStyleGrey(context).copyWith(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color:
-                                    ColorThemeUtil.getBgInverseColor(context),
-                              ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: context.dynamicWidth(0.06),
-                            right: context.dynamicWidth(0.2),
-                          ),
-                          child: const Divider(
-                            color: AppLightColorConstants.contentDisabled,
-                            height: 36,
-                            thickness: 1.5,
+            return PopScope(
+              canPop: false,
+              child: SingleChildScrollView(
+                clipBehavior: Clip.none,
+                child: Column(
+                  children: [
+                    context.sizedHeightBoxLow,
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: context.dynamicWidth(0.2),
+                              right: context.dynamicWidth(0.06),
+                            ),
+                            child: const Divider(
+                              color: AppLightColorConstants.contentDisabled,
+                              height: 36,
+                              thickness: 1.5,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  context.sizedHeightBoxNormal,
-                  context.sizedHeightBoxLower,
-                  SizedBox(
-                    height: context.dynamicHeight(0.16),
-                    width: context.dynamicWidth(1),
-                    child: Column(
-                      children: [
-                        // Title
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            'Money Request',
+                            'Finances',
                             style: context.textStyleGrey(context).copyWith(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
-                                  color: isDarkMode
-                                      ? ColorThemeUtil.getBgInverseColor(
-                                          context)
-                                      : AppLightColorConstants.primaryColor,
+                                  color:
+                                      ColorThemeUtil.getBgInverseColor(context),
                                 ),
                           ),
                         ),
-                        context.sizedHeightBoxLower,
-                        // Description
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'Quickly send payment requests to friends or family,\nensuring everyone is on the same page.',
-                            style: context.textStyleGrey(context).copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            textAlign: TextAlign.center,
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: context.dynamicWidth(0.06),
+                              right: context.dynamicWidth(0.2),
+                            ),
+                            child: const Divider(
+                              color: AppLightColorConstants.contentDisabled,
+                              height: 36,
+                              thickness: 1.5,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: containerHeight,
-                    width: containerWidth,
-                    key: viewModel.requestsKey,
-                    child: GestureDetector(
-                      onTap: () {
-                        context.router.push(const RequestViewRoute());
-                      },
-                      child: Container(
-                        height: containerHeight,
-                        width: containerWidth,
-                        decoration: BoxDecoration(
-                          color: ColorThemeUtil.getFinanceCardColor(context),
-                          borderRadius: BorderRadius.all(context.normalRadius),
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.2), // Shadow color
-                              spreadRadius: 1, // Spread radius
-                              blurRadius: 3, // Blur radius
-                              offset: const Offset(
-                                0,
-                                0.5,
-                              ), // Offset in x and y direction
+                    context.sizedHeightBoxNormal,
+                    context.sizedHeightBoxLower,
+                    SizedBox(
+                      height: context.dynamicHeight(0.16),
+                      width: context.dynamicWidth(1),
+                      child: Column(
+                        children: [
+                          // Title
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Money Request',
+                              style: context.textStyleGrey(context).copyWith(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDarkMode
+                                        ? ColorThemeUtil.getBgInverseColor(
+                                            context)
+                                        : AppLightColorConstants.primaryColor,
+                                  ),
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize:
-                                MainAxisSize.min, // Shrink Row to fit content
-                            mainAxisAlignment: MainAxisAlignment
-                                .center, // Center content within Row
-                            children: [
-                              context.sizedHeightBoxLow,
-                              Text(
-                                'Request Money',
-                                style: context.textStyleGrey(context).copyWith(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                          ),
+                          context.sizedHeightBoxLower,
+                          // Description
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Quickly send payment requests to friends or family,\nensuring everyone is on the same page.',
+                              style: context.textStyleGrey(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: containerHeight,
+                      width: containerWidth,
+                      key: viewModel.requestsKey,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.router.push(const RequestViewRoute());
+                        },
+                        child: Container(
+                          height: containerHeight,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            color: ColorThemeUtil.getFinanceCardColor(context),
+                            borderRadius:
+                                BorderRadius.all(context.normalRadius),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black
+                                    .withOpacity(0.2), // Shadow color
+                                spreadRadius: 1, // Spread radius
+                                blurRadius: 3, // Blur radius
+                                offset: const Offset(
+                                  0,
+                                  0.5,
+                                ), // Offset in x and y direction
                               ),
                             ],
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisSize:
+                                  MainAxisSize.min, // Shrink Row to fit content
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Center content within Row
+                              children: [
+                                context.sizedHeightBoxLow,
+                                Text(
+                                  'Request Money',
+                                  style:
+                                      context.textStyleGrey(context).copyWith(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  context.sizedHeightBoxMedium,
-                  SizedBox(
-                    height: context.dynamicHeight(0.16),
-                    width: context.dynamicWidth(1),
-                    child: Column(
-                      children: [
-                        // Title
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'Settle Debts',
-                            style: context.textStyleGrey(context).copyWith(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: isDarkMode
-                                      ? ColorThemeUtil.getBgInverseColor(
-                                          context)
-                                      : AppLightColorConstants.primaryColor,
-                                ),
-                          ),
-                        ),
-                        context.sizedHeightBoxLower,
-                        // Description
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'Easily mark debts as paid and keep your financial\nrecords up to date with just a tap.',
-                            style: context.textStyleGrey(context).copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: containerHeight,
-                    width: containerWidth,
-                    key: viewModel.debtsKey,
-                    child: GestureDetector(
-                      onTap: () {
-                        context.router.push(const SettleViewRoute());
-                      },
-                      child: Container(
-                        height: containerHeight,
-                        width: containerWidth,
-                        decoration: BoxDecoration(
-                          color: ColorThemeUtil.getFinanceCardColor(context),
-                          borderRadius: BorderRadius.all(context.normalRadius),
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.2), // Shadow color
-                              spreadRadius: 1, // Spread radius
-                              blurRadius: 3, // Blur radius
-                              offset: const Offset(
-                                  0, 0.5), // Offset in x and y direction
+                    context.sizedHeightBoxMedium,
+                    SizedBox(
+                      height: context.dynamicHeight(0.16),
+                      width: context.dynamicWidth(1),
+                      child: Column(
+                        children: [
+                          // Title
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Settle Debts',
+                              style: context.textStyleGrey(context).copyWith(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDarkMode
+                                        ? ColorThemeUtil.getBgInverseColor(
+                                            context)
+                                        : AppLightColorConstants.primaryColor,
+                                  ),
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize:
-                                MainAxisSize.min, // Shrink Row to fit content
-                            mainAxisAlignment: MainAxisAlignment
-                                .center, // Center content within Row
-                            children: [
-                              context.sizedHeightBoxLower,
-                              Text(
-                                'Settle Debts',
-                                style: context.textStyleGrey(context).copyWith(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                          ),
+                          context.sizedHeightBoxLower,
+                          // Description
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Easily mark debts as paid and keep your financial\nrecords up to date with just a tap.',
+                              style: context.textStyleGrey(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: containerHeight,
+                      width: containerWidth,
+                      key: viewModel.debtsKey,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.router.push(const SettleViewRoute());
+                        },
+                        child: Container(
+                          height: containerHeight,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            color: ColorThemeUtil.getFinanceCardColor(context),
+                            borderRadius:
+                                BorderRadius.all(context.normalRadius),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black
+                                    .withOpacity(0.2), // Shadow color
+                                spreadRadius: 1, // Spread radius
+                                blurRadius: 3, // Blur radius
+                                offset: const Offset(
+                                    0, 0.5), // Offset in x and y direction
                               ),
                             ],
                           ),
+                          child: Center(
+                            child: Row(
+                              mainAxisSize:
+                                  MainAxisSize.min, // Shrink Row to fit content
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Center content within Row
+                              children: [
+                                context.sizedHeightBoxLower,
+                                Text(
+                                  'Settle Debts',
+                                  style:
+                                      context.textStyleGrey(context).copyWith(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             );
           },

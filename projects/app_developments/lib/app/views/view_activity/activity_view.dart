@@ -134,9 +134,9 @@ class ActivityView extends StatelessWidget {
                                           width: 1,
                                         ),
                                       ),
-                                      /*  child: Center(
+                                      child: Center(
                                         child: Text(
-                                          '${state.userData['requestList'].length}',
+                                          '${state.requestNumber.length}',
                                           style: context
                                               .textStyleGrey(context)
                                               .copyWith(
@@ -145,7 +145,7 @@ class ActivityView extends StatelessWidget {
                                                     .bgDark,
                                               ),
                                         ),
-                                      ), */
+                                      ),
                                     ),
                                   ),
                                 ],

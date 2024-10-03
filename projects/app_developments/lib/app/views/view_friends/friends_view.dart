@@ -107,9 +107,11 @@ class FriendsView extends StatelessWidget {
                               height: 30,
                               child: Stack(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.notifications,
-                                    color: Colors.black,
+                                    color:
+                                        ColorThemeUtil.getContentPrimaryColor(
+                                            context),
                                     size: 30,
                                   ),
                                   Container(

@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
-import 'package:app_developments/app/theme/color_theme_util.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:app_developments/app/views/view_friends/view_model/friends_event.dart';
@@ -105,9 +102,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     try {
       emit(FriendsLoadingState());
 
-      // Check for internet connection before proceeding
-      _checkInternetConnection(event.context);
-
       // Fetch user data
       final userData = await fetchUserDataService.fetchUserData();
       name = userData['firstName']!;
@@ -140,157 +134,6 @@ class FriendsViewModel extends Bloc<FriendsEvent, FriendsState> {
     } catch (e) {
       // Handle the exception
       throw Exception('Failed to fetch data: $e');
-    }
-  }
-
-  void _checkInternetConnection(BuildContext context) {
-    try {
-      _internetConnection = InternetConnection().onStatusChange.listen((event) {
-        switch (event) {
-          case InternetStatus.connected:
-            if (state.isConnectedToInternet == false ||
-                state.isConnectedToInternet == null) {
-              _showInternetConnectedDialog(context);
-            }
-            emit(
-              FriendsInternetState(
-                state: state,
-                requestNumber: state.requestNumber,
-                friends: state.friends,
-                isConnectedToInternet: true,
-              ),
-            );
-            break;
-          case InternetStatus.disconnected:
-            emit(
-              FriendsInternetState(
-                state: state,
-                requestNumber: state.requestNumber,
-                friends: state.friends,
-                isConnectedToInternet: false,
-              ),
-            );
-            _showNoInternetDialog(context);
-            break;
-        }
-      });
-    } catch (e) {
-      throw Exception();
-    }
-  }
-
-// Declare a variable to keep track of the dialog state
-  bool _isNoInternetDialogVisible = false;
-
-// Updated method to show the "No Internet" dialog
-  void _showNoInternetDialog(BuildContext context) {
-    try {
-      // If the dialog is already visible, do nothing
-      if (_isNoInternetDialogVisible) return;
-
-      // Mark the dialog as visible
-      _isNoInternetDialogVisible = true;
-
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Center(
-              child: Text(
-                'No Internet Connection',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
-              ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.wifi_off,
-                  color: AppLightColorConstants.errorColor,
-                  size: 35,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Please check your internet connection and try again.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorThemeUtil.getBgInverseColor(context),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ).then((_) {
-        // When the dialog is dismissed, mark it as not visible
-        _isNoInternetDialogVisible = false;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-// Updated method to show the internet connected dialog
-  void _showInternetConnectedDialog(BuildContext context) {
-    try {
-      // If there is no dialog currently displayed, do nothing
-      if (!_isNoInternetDialogVisible) return;
-
-      // Dismiss the "No Internet" dialog if it is visible
-      Navigator.of(context).pop();
-      _isNoInternetDialogVisible = false;
-
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Center(
-              child: Text(
-                'You\'re Back Online',
-                style:
-                    TextStyle(color: ColorThemeUtil.getBgInverseColor(context)),
-              ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.wifi,
-                  color: AppLightColorConstants.successColor,
-                  size: 35,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'You are now connected to the internet.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ColorThemeUtil.getBgInverseColor(context),
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Center(
-                  child: Text(
-                    'Continue',
-                    style: TextStyle(
-                        color: ColorThemeUtil.getPrimaryColor(context)),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      print(e);
     }
   }
 
