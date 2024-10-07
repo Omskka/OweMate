@@ -4,6 +4,7 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_view_model.dart';
+import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/money_debt_card.dart';
@@ -24,6 +25,7 @@ class HomePageWidget extends StatelessWidget {
     final viewModel = BlocProvider.of<HomeViewModel>(context);
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
+        FirebaseApi().initNotifications();
         // Fetch friends' data if not already fetched
         if (state is HomeDataLoadedState) {
           final requestedMoney =

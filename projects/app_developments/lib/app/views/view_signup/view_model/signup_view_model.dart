@@ -41,7 +41,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
     // Check for internet connection before proceeding
     _checkInternetConnection(event.context);
     // Check uncompleted account registers
-    _deleteUncompletedAccounts();
+   // _deleteUncompletedAccounts();
   }
 
   void _checkInternetConnection(BuildContext context) {
@@ -134,8 +134,7 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
                   Future.delayed(
                     const Duration(seconds: 1),
                     () {
-                      /* // Dismiss the loading dialog
-                      Navigator.of(context).pop(); */
+
 
                       if (state.isConnectedToInternet == true) {
                         Navigator.of(context).pop();
@@ -143,9 +142,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
                           SignupInitialEvent(context: context),
                         );
                       }
-
-                      // Try to recheck the connection and re-add the HomeInitialEvent
-                      // _checkInternetConnection(context);
 
                       // Dismiss the original dialog
                       Navigator.of(context).pop();
@@ -168,31 +164,6 @@ class SignupViewModel extends Bloc<SignupEvent, SignupState> {
       );
     } catch (e) {
       print(e);
-    }
-  }
-
-  // Function to delete uncompleted accounts
-  Future<void> _deleteUncompletedAccounts() async {
-    final auth = FirebaseAuth.instance;
-    final firestore = FirebaseFirestore.instance;
-
-    try {
-      final currentUser = auth.currentUser;
-
-      // Check if the user is authenticated
-      if (currentUser != null) {
-        // Check if user information exists in Firestore
-        DocumentSnapshot userDoc =
-            await firestore.collection('users').doc(currentUser.uid).get();
-
-        // If user info does not exist, delete the account
-        if (!userDoc.exists) {
-          await currentUser.delete(); // Deletes the user account
-          print('Deleted uncompleted account for email: ${currentUser.email}');
-        }
-      }
-    } catch (e) {
-      print('Error deleting account: $e');
     }
   }
 

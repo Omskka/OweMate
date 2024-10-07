@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:app_developments/app/theme/color_theme_util.dart';
+import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -147,6 +148,34 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
 
       // Define Firestore instance
       final firestore = FirebaseFirestore.instance;
+
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(friendUserId)
+          .get();
+
+      DocumentSnapshot currentUserDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+
+      String? currentUserName = currentUserDoc.get('name');
+
+      // Check if the user document exists
+      if (userDoc.exists) {
+        // Get the token field from the user document
+        String? token = userDoc.get('token');
+
+        if (token != null && token.isNotEmpty) {
+          // Send the push message
+          await FirebaseApi().sendPushMessage(token,
+              '$currentUserName sent you a money request.', 'New Request');
+        } else {
+          print('No FCM token found for the recipient.');
+        }
+      } else {
+        print('User does not exist in Firestore.');
+      }
 
       // Update current user's requestMoney array
       await firestore.collection('users').doc(currentUserId).update({

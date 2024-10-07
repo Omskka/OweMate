@@ -7,6 +7,7 @@ import 'package:flavor/flavor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main(List<String> args) async {
   // Initialize Firebase
@@ -43,6 +44,9 @@ Future<void> main(List<String> args) async {
     name: "Production",
     color: Colors.blue,
   );
+
+  await dotenv.load(fileName: "api.env");
+
   launchApp(
     BlocProvider(
       create: (context) => SettingsViewModel(),

@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
 
   final screenSize = WidgetsBinding.instance.window.physicalSize /
       WidgetsBinding.instance.window.devicePixelRatio;
@@ -38,6 +38,8 @@ Future<void> main(List<String> args) async {
     name: "Dev",
     color: Colors.green,
   );
+
+  await dotenv.load(fileName: "api.env");
 
   runApp(
     BlocProvider(
