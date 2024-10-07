@@ -43,11 +43,14 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     // Check uncompleted account registers
     _deleteUncompletedAccounts();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isLoggedIn = prefs.getBool('isLoggedIn');
+    // Don't login in app initial start
+    if (prefs.getBool('hasSeenHomeTutorial') == true) {
+      bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
-    if (isLoggedIn ?? false) {
-      // User is already logged in, navigate to HomeView
-      event.context.router.push(const HomeViewRoute());
+      if (isLoggedIn ?? false) {
+        // User is already logged in, navigate to HomeView
+        event.context.router.push(const HomeViewRoute());
+      }
     }
   }
 
@@ -170,8 +173,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   }
 
   FutureOr<void> _loginGoogleSignInEvent(
-      LoginGoogleSignInEvent event, Emitter<LoginState> emit) {
+      LoginGoogleSignInEvent event, Emitter<LoginState> emit) async {
     try {
+      // Get current user ID
       AuthenticationRepository().signInWithGoogle(event.context);
     } catch (e) {
       print(e);
@@ -204,25 +208,40 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   }
 
   // Function to sign in user
-  FutureOr<String?> _loginSignInEvent(
+  FutureOr<void> _loginSignInEvent(
       LoginSignInEvent event, Emitter<LoginState> emit) async {
     try {
+      // Get current user ID
       // Show loading circle
       showDialog(
         context: event.context,
         builder: (context) {
           return Center(
-              child: CircularProgressIndicator(
-            color: ColorThemeUtil.getContentTeritaryColor(context),
-          ));
+            child: CircularProgressIndicator(
+              color: ColorThemeUtil.getContentTeritaryColor(context),
+            ),
+          );
         },
       );
 
       // Attempt to sign in with the provided email and password
-      await AuthenticationRepository().signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-          context: event.context);
+      String? status = await AuthenticationRepository()
+          .signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim(),
+              context: event.context);
+
+      if (status == null) {
+        // Show a snackbar or handle the already active status
+        Navigator.of(event.context).pop();
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          const SnackBar(
+            content: Center(child: Text('The account is already open.')),
+          ),
+        );
+        AuthenticationRepository().signOut(context: event.context);
+        return;
+      }
 
       // If SignIn method completes without throwing an exception,
       // it indicates successful SignIn.
@@ -233,11 +252,12 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
 
       // Emit a success state and display FlutterToast
       emit(LoginSuccessState());
-      CustomFlutterToast(
-              backgroundColor: AppLightColorConstants.successColor,
-              context: event.context,
-              msg: 'Login Successful')
-          .flutterToast();
+      ScaffoldMessenger.of(event.context).showSnackBar(
+        const SnackBar(
+          content: Center(child: Text('Login Successful')),
+          duration: Duration(seconds: 2), // Adjust duration as needed
+        ),
+      );
 
       // Navigate to the next screen
       event.context.router.push(const HomeViewRoute());

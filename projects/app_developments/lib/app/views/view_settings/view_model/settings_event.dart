@@ -53,3 +53,13 @@ class SettingsDeleteAccountEvent extends SettingsEvent {
     required this.context,
   });
 }
+
+// Event for signing out
+class SettingsSignOutEvent extends SettingsEvent {
+  final BuildContext context;
+
+  // Constructor to initialize the context
+  SettingsSignOutEvent({
+    required this.context,
+  });
+}

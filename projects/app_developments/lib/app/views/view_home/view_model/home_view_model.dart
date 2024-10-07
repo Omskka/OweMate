@@ -104,6 +104,9 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _initial(
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     try {
+      // Get the current user's ID
+      String? currentUserId = AuthenticationRepository().getCurrentUserId();
+
       emit(HomeLoadingState());
       final isOrderReversed = await preferencesService.loadOrderPreference();
       // Check for internet connection before proceeding
@@ -127,6 +130,27 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       if (!hasSeenHomeTutorial) {
         createTutorial(event.context);
         prefs.setBool('hasSeenHomeTutorial', true);
+      }
+      // Fetch user's status from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+
+      // Check if the user document exists and if the status is not active
+      if (userDoc.exists) {
+        String status =
+            userDoc['status'] ?? 'inactive'; // default to 'inactive'
+
+        if (status != 'active') {
+          // Update the status to 'active'
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUserId)
+              .update({
+            'status': 'active',
+          });
+        }
       }
 
       emit(HomeDataLoadedState(

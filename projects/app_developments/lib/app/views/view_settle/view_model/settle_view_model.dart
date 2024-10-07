@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
+import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
@@ -157,6 +158,33 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
       // Reference to the friend's document
       DocumentReference friendUserDoc =
           FirebaseFirestore.instance.collection('users').doc(friendUserId);
+      // Define Firestore instance
+
+      final firestore = FirebaseFirestore.instance;
+
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(friendUserId)
+          .get();
+
+      String? currentUserName = currentUserSnapshot.get('name');
+
+      // Check if the user document exists
+      if (userDoc.exists) {
+        // Get the token field from the user document
+        String? token = userDoc.get('token');
+
+        if (token != null && token.isNotEmpty) {
+          // Send the push message
+          await FirebaseApi().sendPushMessage(token,
+              '$currentUserName declined your request.', 'Request declined');
+          print('Push notification sent to user with token: $token');
+        } else {
+          print('No FCM token found for the recipient.');
+        }
+      } else {
+        print('User does not exist in Firestore.');
+      }
 
       // Fetch the friend's document
       DocumentSnapshot friendUserSnapshot = await friendUserDoc.get();
@@ -289,6 +317,33 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
           updated = true;
           break;
         }
+      }
+      // Define Firestore instance
+
+      final firestore = FirebaseFirestore.instance;
+
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(friendUserId)
+          .get();
+
+      String? currentUserName = currentUserSnapshot.get('name');
+
+      // Check if the user document exists
+      if (userDoc.exists) {
+        // Get the token field from the user document
+        String? token = userDoc.get('token');
+
+        if (token != null && token.isNotEmpty) {
+          // Send the push message
+          await FirebaseApi().sendPushMessage(
+              token, '$currentUserName paid your request.', 'Request Paid');
+          print('Push notification sent to user with token: $token');
+        } else {
+          print('No FCM token found for the recipient.');
+        }
+      } else {
+        print('User does not exist in Firestore.');
       }
 
       if (!updated) {

@@ -27,6 +27,7 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsNavigateToNextPageEvent>(_navigateToNextPage);
     on<SettingsSubmitFeedbackEvent>(_submitFeedback);
     on<SettingsDeleteAccountEvent>(_deleteAccount);
+    on<SettingsSignOutEvent>(_signOut);
 
     _loadPreferences(); // Load preferences when initialized
   }
@@ -116,5 +117,22 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
         SnackBar(content: Text('Error deleting account: ${e.toString()}')),
       );
     }
+  }
+
+  FutureOr<void> _signOut(
+      SettingsSignOutEvent event, Emitter<SettingsState> emit) async {
+    // Get the current user's ID
+    String? currentUserId = AuthenticationRepository().getCurrentUserId();
+
+    if (currentUserId != null) {
+      // Update user's status to "inactive" in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId) // Update the document of the current user
+          .update({
+        'status': 'inactive',
+      });
+    }
+    AuthenticationRepository().signOut(context: event.context);
   }
 }

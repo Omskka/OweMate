@@ -49,6 +49,22 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
+      // Get the current user ID
+      String? currentUserId = AuthenticationRepository().getCurrentUserId();
+
+      // Fetch the user's status from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+
+      if (userDoc.exists) {
+        String status =
+            userDoc['status'] ?? 'inactive'; // Default to 'inactive'
+        if (status == 'active') {
+          return null;
+        }
+      }
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       throw LogInWithEmailAndPasswordFailure.fromCode(e.code, context);

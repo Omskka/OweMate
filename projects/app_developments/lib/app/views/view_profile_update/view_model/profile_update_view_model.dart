@@ -41,53 +41,7 @@ class ProfileUpdateViewModel
   FutureOr<void> _initial(
       ProfileUpdateInitialEvent event, Emitter<ProfileUpdateState> emit) {}
 
-  // Select image from gallery
-  FutureOr<void> _selectImage(ProfileUpdateSelectImageEvent event,
-      Emitter<ProfileUpdateState> emit) async {
-    // Initialize DeviceInfoPlugin and get Android device info
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-
-    var sdkInt = androidInfo.version.sdkInt; // SDK, example: 31
-
-    if (Platform.isAndroid) {
-      var storage = await Permission.storage.status;
-
-      if (storage != PermissionStatus.granted) {
-        await Permission.storage.request();
-      }
-
-      if (sdkInt >= 30) {
-        var storage_external = await Permission.manageExternalStorage.status;
-
-        if (storage_external != PermissionStatus.granted) {
-          await Permission.photos.request();
-        }
-
-        storage_external = await Permission.photos.status;
-
-        if (storage_external == PermissionStatus.granted) {
-          gotPermissions = true;
-        }
-      } else {
-        // (SDK < 30)
-        storage = await Permission.storage.status;
-
-        if (storage == PermissionStatus.granted) {
-          gotPermissions = true;
-        }
-      }
-    }
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnedImage != null) {
-      selectedImage = File(returnedImage.path);
-      emit(ProfileUpdateImageSelectedState(
-          selectedImage!)); // Emit state if needed
-    }
-  }
-
-// Add user detail to firebase
+// Add user detail to Firebase
   FutureOr<void> _addUserDetails(
       ProfileUpdateAddUserEvent event, Emitter<ProfileUpdateState> emit) async {
     try {
@@ -101,6 +55,10 @@ class ProfileUpdateViewModel
           ));
         },
       );
+
+      // Ask for permissions
+      bool gotPermissions = await askPermissions();
+
       // If permission is denied, show a toast and return
       if (!gotPermissions) {
         Navigator.of(event.context).pop(); // Close loading circle
@@ -172,6 +130,62 @@ class ProfileUpdateViewModel
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+// Select image from gallery
+  FutureOr<void> _selectImage(ProfileUpdateSelectImageEvent event,
+      Emitter<ProfileUpdateState> emit) async {
+    // Ask for permissions
+    bool gotPermissions = await askPermissions();
+
+    if (gotPermissions) {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage != null) {
+        selectedImage = File(returnedImage.path);
+        emit(ProfileUpdateImageSelectedState(selectedImage!));
+      } else {}
+    } else {
+      print("Permissions were not granted.");
+    }
+  }
+
+// Permission request handler function
+  Future<bool> askPermissions() async {
+    // Initialize DeviceInfoPlugin and get Android device info
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    var sdkInt = androidInfo.version.sdkInt; // SDK, example: 31
+
+    bool gotPermissions = false;
+
+    if (Platform.isAndroid) {
+      if (sdkInt <= 32) {
+        // Android 12 (API 32) or lower
+        var storagePermission = await Permission.storage.status;
+        if (storagePermission != PermissionStatus.granted) {
+          await Permission.storage.request();
+        }
+        storagePermission = await Permission.storage.status;
+        if (storagePermission == PermissionStatus.granted) {
+          gotPermissions = true;
+        }
+      } else {
+        // Android 13 (API 33) or higher
+        var photosPermission = await Permission.photos.status;
+        if (photosPermission != PermissionStatus.granted) {
+          await Permission.photos.request();
+        }
+        photosPermission = await Permission.photos.status;
+        if (photosPermission == PermissionStatus.granted) {
+          gotPermissions = true;
+          print("Photos permission granted.");
+        }
+      }
+    }
+
+    return gotPermissions;
   }
 
   FutureOr<void> _selectPage(

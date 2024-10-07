@@ -166,7 +166,10 @@ class SettingsPageWidget extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        AuthenticationRepository().signOut(context: context);
+                        // Get the current user's UID
+                        context.read<SettingsViewModel>().add(
+                              SettingsSignOutEvent(context: context),
+                            );
                       },
                       child: Container(
                           padding: context.paddingNormal,
