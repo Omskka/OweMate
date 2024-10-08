@@ -244,11 +244,23 @@ class ProfileUpdatePageWidget extends StatelessWidget {
                             );
                             return; // Exit early if name check fails
                           }
-
-                          // If everything is valid, add the event
-                          context.read<ProfileUpdateViewModel>().add(
-                                ProfileUpdateAddUserEvent(context: context),
-                              );
+                          // Check if gender is empty
+                          if (viewModel.genderController.text.trim().isEmpty) {
+                            // Show error snackbar
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Center(
+                                    child: Text('Please select your gender')),
+                                backgroundColor:
+                                    AppLightColorConstants.errorColor,
+                              ),
+                            );
+                          } else {
+                            // If everything is valid, add the event
+                            context.read<ProfileUpdateViewModel>().add(
+                                  ProfileUpdateAddUserEvent(context: context),
+                                );
+                          }
                         }
                       },
                     ),

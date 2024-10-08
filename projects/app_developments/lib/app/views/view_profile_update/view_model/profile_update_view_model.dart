@@ -84,6 +84,8 @@ class ProfileUpdateViewModel
           'requestList': [], // Initialize with an empty list
           'owedMoney': [], // Initialize with an empty list
           'requestedMoney': [], // Initialize with an empty list
+          'status': '',
+          'token': '',
         },
       );
 

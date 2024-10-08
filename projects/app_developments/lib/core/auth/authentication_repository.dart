@@ -74,7 +74,7 @@ class AuthenticationRepository {
   }
 
   /// Signs in with the provided [GoogleAccount].
-  Future<void> signInWithGoogle(BuildContext context) async {
+  Future<String?> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -86,7 +86,7 @@ class AuthenticationRepository {
 
       // If the user cancels the sign-in process
       if (gUser == null) {
-        return;
+        return 'cancelled';
       }
 
       // Obtain auth details from the request
@@ -102,6 +102,23 @@ class AuthenticationRepository {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      // Get the current user ID
+      String? currentUserId = AuthenticationRepository().getCurrentUserId();
+
+      // Fetch the user's status from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+
+      if (userDoc.exists) {
+        String status =
+            userDoc['status'] ?? 'inactive'; // Default to 'inactive'
+        if (status == 'active') {
+          return null;
+        }
+      }
+
       // Check if the user is new (i.e., first-time sign-in)
       if (userCredential.additionalUserInfo?.isNewUser ?? false) {
         // Navigate to the update profile page for new users
@@ -110,6 +127,7 @@ class AuthenticationRepository {
         // Navigate to the home page for existing users
         context.router.replace(const HomeViewRoute());
       }
+      return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       // Handle Firebase-related exceptions (e.g., sign-in errors)
       ScaffoldMessenger.of(context).showSnackBar(
