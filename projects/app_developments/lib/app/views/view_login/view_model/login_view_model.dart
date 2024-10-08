@@ -175,8 +175,19 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _loginGoogleSignInEvent(
       LoginGoogleSignInEvent event, Emitter<LoginState> emit) async {
     try {
-      // Get current user ID
-      AuthenticationRepository().signInWithGoogle(event.context);
+      String? status =
+          await AuthenticationRepository().signInWithGoogle(event.context);
+
+      if (status == null) {
+        // Show a snackbar or handle the already active status
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          const SnackBar(
+            content: Center(child: Text('The account is already open.')),
+          ),
+        );
+        AuthenticationRepository().signOut(context: event.context);
+        return;
+      }
     } catch (e) {
       print(e);
     }
