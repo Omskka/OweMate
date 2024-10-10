@@ -10,7 +10,9 @@ import 'package:googleapis_auth/auth_io.dart' as auth;
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
-  // Initialise notifications
+  bool isRequestingPermission = false; // Track if a request is in progress
+
+// Initialise notifications
   Future<void> initNotifications() async {
     // Check if the user is logged in
     String? userId = AuthenticationRepository().getCurrentUserId();
@@ -18,20 +20,47 @@ class FirebaseApi {
       return; // Exit the function if the user is not logged in
     }
 
-    // Request permission from user
-    NotificationSettings settings =
-        await _firebaseMessaging.requestPermission();
+    // If a permission request is already running, return early
+    if (isRequestingPermission) {
+      return;
+    }
 
-    // Fetch the token
-    final fCMToken = await FirebaseMessaging.instance.getToken();
+    // Set the flag to true to indicate a request is in progress
+    isRequestingPermission = true;
 
-    // Save token
-    if (fCMToken != null) {
-      await FirebaseFirestore.instance.collection("users").doc(userId).update(
-        {
-          'token': fCMToken,
-        },
-      );
+    try {
+      // Request permission from the user
+      NotificationSettings settings =
+          await _firebaseMessaging.requestPermission();
+
+      // Check the permission status
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('User granted permission');
+
+        // Fetch the token
+        final fCMToken = await FirebaseMessaging.instance.getToken();
+
+        // Save the token to Firestore if it's not null
+        if (fCMToken != null) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(userId)
+              .update({
+            'token': fCMToken,
+          });
+        }
+      } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+        print('User denied permission');
+        // Handle denied permission (e.g., show a message)
+      } else {
+        print('Permission status is not determined or restricted');
+        // Handle other cases (e.g., not determined)
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      // Set the flag back to false after the request is complete
+      isRequestingPermission = false;
     }
   }
 

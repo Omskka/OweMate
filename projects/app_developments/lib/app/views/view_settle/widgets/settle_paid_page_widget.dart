@@ -29,6 +29,7 @@ class SettlePaidPageWidget extends StatelessWidget {
         // Define responsive variables
         EdgeInsets leftPadding;
         double textfieldWidth;
+        double containerwidth;
 
         // Height
         if (screenHeight <= 600) {
@@ -48,21 +49,26 @@ class SettlePaidPageWidget extends StatelessWidget {
         if (screenWidth <= 600) {
           leftPadding = context.onlyLeftPaddingMedium;
           textfieldWidth = context.dynamicWidth(0.75);
+          containerwidth = 0.75;
         } else if (screenWidth <= 800) {
           leftPadding = context.onlyLeftPaddingMedium * 2;
           textfieldWidth = context.dynamicWidth(0.7);
+          containerwidth = 0.65;
         } else if (screenWidth <= 900) {
           leftPadding = EdgeInsets.symmetric(
               horizontal: (screenWidth - context.dynamicWidth(0.5)) / 2);
           textfieldWidth = context.dynamicWidth(0.7);
+          containerwidth = 0.55;
         } else if (screenWidth <= 1080) {
           leftPadding = EdgeInsets.symmetric(
               horizontal: (screenWidth - context.dynamicWidth(0.45)) / 2);
           textfieldWidth = context.dynamicWidth(0.6);
+          containerwidth = 0.45;
         } else {
           leftPadding = EdgeInsets.symmetric(
               horizontal: (screenWidth - context.dynamicWidth(0.45)) / 2);
           textfieldWidth = context.dynamicWidth(0.6);
+          containerwidth = 0.35;
         }
         // Get viewmodel
         final viewModel = BlocProvider.of<SettleViewModel>(context);
@@ -112,7 +118,7 @@ class SettlePaidPageWidget extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(context.lowValue),
                     height: context.dynamicHeight(0.11),
-                    width: context.dynamicWidth(0.75),
+                    width: context.dynamicWidth(containerwidth),
                     decoration: BoxDecoration(
                       color: ColorThemeUtil.getFinanceCardColor(context),
                       borderRadius: BorderRadius.all(context.normalRadius),
