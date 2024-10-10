@@ -28,10 +28,17 @@ class HomeNavbarWidget extends StatelessWidget {
         double sizedboxHeight;
         SizedBox heightBox;
         SizedBox initialHeightBox;
+        print('-*- height. $maxHeight');
 
         // Height
         if (maxHeight <= 600) {
           sizedboxHeight = context.dynamicHeight(0.35);
+          heightBox = context.sizedHeightBoxLow;
+          initialHeightBox = const SizedBox(
+            height: 0,
+          );
+        } else if (maxHeight <= 700) {
+          sizedboxHeight = context.dynamicHeight(0.29);
           heightBox = context.sizedHeightBoxLow;
           initialHeightBox = const SizedBox(
             height: 0,

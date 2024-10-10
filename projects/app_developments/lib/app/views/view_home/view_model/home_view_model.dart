@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
+import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:flutter/material.dart';
@@ -104,6 +105,8 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _initial(
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     try {
+      // Initialise notification permission
+      FirebaseApi().initNotifications();
       // Get the current user's ID
       String? currentUserId = AuthenticationRepository().getCurrentUserId();
 

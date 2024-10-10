@@ -1,8 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_signup/view_model/signup_event.dart';
