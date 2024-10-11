@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/auth/firebase_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:app_developments/core/auth/authentication_repository.dart';
@@ -59,7 +60,6 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
 
   FutureOr<void> __navigateToNextPage(
       RequestNavigateToNextPageEvent event, Emitter<RequestState> emit) {
-    // print('selcted user: $sele')
     emit(
       RequestPageIncrementState(
         selectedPage: event.selectedPage,
@@ -168,13 +168,17 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
 
         if (token != null && token.isNotEmpty) {
           // Send the push message
-          await FirebaseApi().sendPushMessage(token,
+          await FirebaseApi().sendPushMessage(friendUserId!, token,
               '$currentUserName sent you a money request.', 'New Request');
         } else {
-          print('No FCM token found for the recipient.');
+          if (!kReleaseMode) {
+            print('No FCM token found for the recipient.');
+          }
         }
       } else {
-        print('User does not exist in Firestore.');
+        if (!kReleaseMode) {
+          print('User does not exist in Firestore.');
+        }
       }
 
       // Update current user's requestMoney array
@@ -215,7 +219,9 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
       Navigator.of(event.context).pop();
     } catch (e) {
       // Handle errors
-      print('Error sending request: $e');
+      if (!kReleaseMode) {
+        print('Error sending request: $e');
+      }
       Navigator.of(event.context).pop();
     }
   }

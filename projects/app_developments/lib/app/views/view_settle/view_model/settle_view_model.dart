@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_event.dart';
 import 'package:app_developments/app/views/view_settle/view_model/settle_state.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -176,14 +177,17 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
 
         if (token != null && token.isNotEmpty) {
           // Send the push message
-          await FirebaseApi().sendPushMessage(token,
+          await FirebaseApi().sendPushMessage(friendUserId, token,
               '$currentUserName declined your request.', 'Request declined');
-          print('Push notification sent to user with token: $token');
         } else {
-          print('No FCM token found for the recipient.');
+          if (!kReleaseMode) {
+            print('No FCM token found for the recipient.');
+          }
         }
       } else {
-        print('User does not exist in Firestore.');
+        if (!kReleaseMode) {
+          print('User does not exist in Firestore.');
+        }
       }
 
       // Fetch the friend's document
@@ -336,14 +340,17 @@ class SettleViewModel extends Bloc<SettleEvent, SettleState> {
 
         if (token != null && token.isNotEmpty) {
           // Send the push message
-          await FirebaseApi().sendPushMessage(
-              token, '$currentUserName paid your request.', 'Request Paid');
-          print('Push notification sent to user with token: $token');
+          await FirebaseApi().sendPushMessage(friendUserId, token,
+              '$currentUserName paid your request.', 'Request Paid');
         } else {
-          print('No FCM token found for the recipient.');
+          if (!kReleaseMode) {
+            print('No FCM token found for the recipient.');
+          }
         }
       } else {
-        print('User does not exist in Firestore.');
+        if (!kReleaseMode) {
+          print('User does not exist in Firestore.');
+        }
       }
 
       if (!updated) {

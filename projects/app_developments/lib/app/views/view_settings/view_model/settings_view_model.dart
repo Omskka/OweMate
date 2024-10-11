@@ -129,9 +129,12 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(currentUserId) // Update the document of the current user
-          .update({
-        'status': 'inactive',
-      });
+          .update(
+        {
+          'status': 'inactive',
+          'token': 'null',
+        },
+      );
     }
     AuthenticationRepository().signOut(context: event.context);
   }

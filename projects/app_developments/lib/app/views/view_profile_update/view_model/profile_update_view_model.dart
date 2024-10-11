@@ -11,6 +11,7 @@ import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,7 +149,9 @@ class ProfileUpdateViewModel
         emit(ProfileUpdateImageSelectedState(selectedImage!));
       } else {}
     } else {
-      print("Permissions were not granted.");
+      if (!kReleaseMode) {
+        print("Permissions were not granted.");
+      }
     }
   }
 
@@ -182,7 +185,9 @@ class ProfileUpdateViewModel
         photosPermission = await Permission.photos.status;
         if (photosPermission == PermissionStatus.granted) {
           gotPermissions = true;
-          print("Photos permission granted.");
+          if (!kReleaseMode) {
+            print("Photos permission granted.");
+          }
         }
       }
     }
