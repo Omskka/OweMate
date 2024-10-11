@@ -7,11 +7,13 @@ import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_state.dart';
 import 'package:app_developments/core/auth/fetch_user_data.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,23 +85,19 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
   FutureOr<void> _changeProfileImage(
       ProfileChangeImageEvent event, Emitter<ProfileState> emit) async {
     String? userid = AuthenticationRepository().getCurrentUserId();
-    bool gotPermissions = false;
 
     try {
-      // Request necessary permissions for gallery access
-      PermissionStatus permissionStatus;
-      if (Platform.isAndroid) {
-        permissionStatus =
-            await Permission.photos.request(); // Android 30+ permission
-      } else {
-        permissionStatus = await Permission.storage.request(); // For SDK < 30
-      }
+      // Ask for permissions
+      bool gotPermissions = await askPermissions();
 
-      // If permission granted
-      if (permissionStatus.isGranted) {
-        gotPermissions = true;
-      } else if (permissionStatus.isPermanentlyDenied) {
-        // Handle permanently denied permission by opening app settings
+      // If permission is denied, show a toast and return
+      if (!gotPermissions) {
+        Navigator.of(event.context).pop(); // Close loading circle
+        CustomFlutterToast(
+                backgroundColor: AppLightColorConstants.errorColor,
+                context: event.context,
+                msg: 'Permission denied to access images')
+            .flutterToast();
         openAppSettings();
         return;
       }
@@ -217,5 +215,45 @@ class ProfileViewModel extends Bloc<ProfileEvent, ProfileState> {
       ProfileSelectedPageEvent event, Emitter<ProfileState> emit) {
     emit(ProfileSelectedPageState(
         selectedPage: event.selectedPage, state: state));
+  }
+
+  // Permission request handler function
+  Future<bool> askPermissions() async {
+    // Initialize DeviceInfoPlugin and get Android device info
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    var sdkInt = androidInfo.version.sdkInt; // SDK, example: 31
+
+    bool gotPermissions = false;
+
+    if (Platform.isAndroid) {
+      if (sdkInt <= 32) {
+        // Android 12 (API 32) or lower
+        var storagePermission = await Permission.storage.status;
+        if (storagePermission != PermissionStatus.granted) {
+          await Permission.storage.request();
+        }
+        storagePermission = await Permission.storage.status;
+        if (storagePermission == PermissionStatus.granted) {
+          gotPermissions = true;
+        }
+      } else {
+        // Android 13 (API 33) or higher
+        var photosPermission = await Permission.photos.status;
+        if (photosPermission != PermissionStatus.granted) {
+          await Permission.photos.request();
+        }
+        photosPermission = await Permission.photos.status;
+        if (photosPermission == PermissionStatus.granted) {
+          gotPermissions = true;
+          if (!kReleaseMode) {
+            print("Photos permission granted.");
+          }
+        }
+      }
+    }
+
+    return gotPermissions;
   }
 }
