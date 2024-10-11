@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
@@ -35,8 +36,6 @@ class FirebaseApi {
 
       // Check the permission status
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        print('User granted permission');
-
         // Fetch the token
         final fCMToken = await FirebaseMessaging.instance.getToken();
 
@@ -50,10 +49,11 @@ class FirebaseApi {
           });
         }
       } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
-        print('User denied permission');
         // Handle denied permission (e.g., show a message)
       } else {
-        print('Permission status is not determined or restricted');
+        if (!kReleaseMode) {
+          print('Permission status is not determined or restricted');
+        }
         // Handle other cases (e.g., not determined)
       }
     } catch (e) {
@@ -107,36 +107,79 @@ class FirebaseApi {
     return credentials.accessToken.data;
   }
 
-  // Send push notification using FCM
-  Future<void> sendPushMessage(String token, String body, String title) async {
+  Future<void> sendPushMessage(
+      String userId, String token, String body, String title) async {
     try {
-      final String serverKey = await getAccessToken();
-      String endPointFirebaseCloudMessaging =
-          'https://fcm.googleapis.com/v1/projects/owemate-41f03/messages:send';
+      // Step 1: Check the user's status in Firestore
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
 
-      final Map<String, dynamic> message = {
-        'message': {
-          'token': token,
-          'notification': {
-            'title': title,
-            'body': body,
-          },
+      if (userDoc.exists) {
+        // Assuming the status field is stored as 'status' in the user document
+        final userStatus = userDoc.get('status');
+
+        if (userStatus == 'active') {
+          final String serverKey = await getAccessToken();
+          String endPointFirebaseCloudMessaging =
+              'https://fcm.googleapis.com/v1/projects/owemate-41f03/messages:send';
+
+          final Map<String, dynamic> message = {
+            'message': {
+              'token': token,
+              'notification': {
+                'title': title,
+                'body': body,
+              },
+            }
+          };
+
+          final http.Response response = await http.post(
+            Uri.parse(endPointFirebaseCloudMessaging),
+            headers: <String, String>{
+              'content-Type': 'application/json',
+              'Authorization': 'Bearer $serverKey',
+            },
+            body: jsonEncode(message),
+          );
+
+          if (response.statusCode == 200) {
+            if (!kReleaseMode) {
+              print('Notification Sent Successfully');
+            }
+          } else {
+            if (!kReleaseMode) {
+              print('Notification Failed: ${response.body}');
+            }
+
+            // Handle specific error codes like UNREGISTERED
+            final responseBody = jsonDecode(response.body);
+            if (responseBody['error']?['details'] != null &&
+                responseBody['error']['details']
+                    .any((detail) => detail['errorCode'] == 'UNREGISTERED')) {
+              // Token is invalid, remove it from Firestore
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userId)
+                  .update({
+                'fcmToken': FieldValue.delete(),
+              });
+              if (!kReleaseMode) {
+                print('Token was invalid and removed from Firestore.');
+              }
+            }
+          }
+        } else {
+          // If the user status is not active, don't send the notification
+          if (!kReleaseMode) {
+            print('User is not active, no notification sent.');
+          }
         }
-      };
-
-      final http.Response response = await http.post(
-        Uri.parse(endPointFirebaseCloudMessaging),
-        headers: <String, String>{
-          'content-Type': 'application/json',
-          'Authorization': 'Bearer $serverKey',
-        },
-        body: jsonEncode(message),
-      );
-
-      if (response.statusCode == 200) {
-        print('Notification Sent Succesfully');
       } else {
-        print('Notification Failed');
+        if (!kReleaseMode) {
+          print('User document does not exist.');
+        }
       }
     } catch (e) {
       throw Exception(e);

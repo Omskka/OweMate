@@ -28,7 +28,6 @@ class HomeNavbarWidget extends StatelessWidget {
         double sizedboxHeight;
         SizedBox heightBox;
         SizedBox initialHeightBox;
-        print('-*- height. $maxHeight');
 
         // Height
         if (maxHeight <= 600) {

@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +45,8 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     _deleteUncompletedAccounts();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Don't login in app initial start
-    if (prefs.getBool('hasSeenHomeTutorial') == true) {
+    if (prefs.getBool('hasSeenHomeTutorial') == false) {
+      AuthenticationRepository().signOut(context: event.context);
       bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
       if (isLoggedIn ?? false) {
@@ -168,7 +170,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         },
       );
     } catch (e) {
-      print(e);
+      if (!kReleaseMode) {
+        print(e);
+      }
     }
   }
 
@@ -189,7 +193,9 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         return;
       }
     } catch (e) {
-      print(e);
+      if (!kReleaseMode) {
+        print(e);
+      }
     }
   }
 
@@ -210,11 +216,16 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
         // If user info does not exist, delete the account
         if (!userDoc.exists) {
           await currentUser.delete(); // Deletes the user account
-          print('Deleted uncompleted account for email: ${currentUser.email}');
+          if (!kReleaseMode) {
+            print(
+                'Deleted uncompleted account for email: ${currentUser.email}');
+          }
         }
       }
     } catch (e) {
-      print('Error deleting account: $e');
+      if (!kReleaseMode) {
+        print('Error deleting account: $e');
+      }
     }
   }
 

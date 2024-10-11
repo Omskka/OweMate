@@ -7,6 +7,7 @@ import 'package:app_developments/core/auth/fetch_user_data.dart';
 import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -299,7 +300,9 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
         },
       );
     } catch (e) {
-      print(e);
+      if (!kReleaseMode) {
+        print(e);
+      }
     }
   }
 
@@ -394,14 +397,19 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
               .update({'owedMoney': friendUserData['owedMoney']});
         }
       } else {
-        print('Friend user does not exist, skipping deletion from owedMoney.');
+        if (!kReleaseMode) {
+          print(
+              'Friend user does not exist, skipping deletion from owedMoney.');
+        }
       }
 
       // Add HomeInitialEvent to refresh requests on the page
       add(HomeInitialEvent(context: event.context));
     } catch (e) {
       // Handle any errors
-      print('Error in _deleteRequest: ${e.toString()}');
+      if (!kReleaseMode) {
+        print('Error in _deleteRequest: ${e.toString()}');
+      }
       throw Exception(e);
     }
   }
