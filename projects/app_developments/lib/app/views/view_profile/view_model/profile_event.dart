@@ -17,7 +17,10 @@ class ProfileFetchUserDataEvent extends ProfileEvent {
 
 // Event to handle profile image change
 class ProfileChangeImageEvent extends ProfileEvent {
-  ProfileChangeImageEvent();
+  final BuildContext context;
+  ProfileChangeImageEvent({
+    required this.context,
+  });
 }
 
 // Event to change the user's password

@@ -125,7 +125,7 @@ class ProfilePageWidget extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             BlocProvider.of<ProfileViewModel>(context)
-                                .add(ProfileChangeImageEvent());
+                                .add(ProfileChangeImageEvent(context: context));
                           },
                           child: CircleAvatar(
                             radius: context.dynamicHeight(0.09),
@@ -143,7 +143,7 @@ class ProfilePageWidget extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             BlocProvider.of<ProfileViewModel>(context)
-                                .add(ProfileChangeImageEvent());
+                                .add(ProfileChangeImageEvent(context: context));
                           },
                           child: Container(
                             height: containerHeight,
