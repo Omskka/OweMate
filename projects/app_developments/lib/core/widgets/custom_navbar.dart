@@ -51,37 +51,45 @@ class _CustomNavbarState extends State<CustomNavbar> {
                           top: context.normalRadius,
                           bottom: context.normalRadius,
                         ),
-                        child: NavigationBar(
-                          backgroundColor:
-                              ColorThemeUtil.getMoneyCardColor(context),
-                          selectedIndex: tabsRouter.activeIndex,
-                          indicatorShape: CustomRoundedTopBorderShape(),
-                          onDestinationSelected: (index) {
-                            tabsRouter.setActiveIndex(index);
-                          },
-                          destinations: [
-                            _navigationDestination(
-                              activeIcon: Assets.images.svg.home,
-                              icon: Assets.images.svg.home,
-                              isDarkMode: isDarkMode,
-                            ),
-                            _navigationDestination(
-                              activeIcon: Assets.images.svg.wallet,
-                              icon: Assets.images.svg.wallet,
-                              isDarkMode: isDarkMode,
-                            ),
-                            _navigationDestination(
-                              activeIcon: Assets.images.svg.chart,
-                              icon: Assets.images.svg.chart,
-                              isDarkMode: isDarkMode,
-                            ),
-                            _navigationDestination(
-                              activeIcon: Assets.images.svg.friends,
-                              icon: Assets.images.svg.friends,
-                              isDarkMode: isDarkMode,
-                            ),
-                            // Add more NavigationDestinations here
-                          ],
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            splashColor:
+                                Colors.transparent, // Remove splash effect
+                            highlightColor:
+                                Colors.transparent, // Remove highlight effect
+                          ),
+                          child: NavigationBar(
+                            backgroundColor:
+                                ColorThemeUtil.getMoneyCardColor(context),
+                            selectedIndex: tabsRouter.activeIndex,
+                            indicatorShape: CustomRoundedTopBorderShape(),
+                            onDestinationSelected: (index) {
+                              tabsRouter.setActiveIndex(index);
+                            },
+                            destinations: [
+                              _navigationDestination(
+                                activeIcon: Assets.images.svg.home,
+                                icon: Assets.images.svg.home,
+                                isDarkMode: isDarkMode,
+                              ),
+                              _navigationDestination(
+                                activeIcon: Assets.images.svg.wallet,
+                                icon: Assets.images.svg.wallet,
+                                isDarkMode: isDarkMode,
+                              ),
+                              _navigationDestination(
+                                activeIcon: Assets.images.svg.chart,
+                                icon: Assets.images.svg.chart,
+                                isDarkMode: isDarkMode,
+                              ),
+                              _navigationDestination(
+                                activeIcon: Assets.images.svg.friends,
+                                icon: Assets.images.svg.friends,
+                                isDarkMode: isDarkMode,
+                              ),
+                              // Add more NavigationDestinations here
+                            ],
+                          ),
                         ),
                       ),
                     )

@@ -145,7 +145,11 @@ class $AssetsImagesSvgGen {
 class Assets {
   Assets._();
 
+  static const String api = 'api.env';
   static const $AssetsImagesGen images = $AssetsImagesGen();
+
+  /// List of all assets
+  static List<String> get values => [api];
 }
 
 class AssetGenImage {

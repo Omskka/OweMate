@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:app_developments/app/routes/app_router.dart';
 import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_event.dart';
 import 'package:app_developments/app/views/view_home/view_model/home_state.dart';
@@ -9,6 +10,7 @@ import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/money_debt_card.dart';
 import 'package:app_developments/core/widgets/money_request_card.dart';
 import 'package:app_developments/gen/assets.gen.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -210,7 +212,10 @@ class HomePageWidget extends StatelessWidget {
                           Padding(
                             padding: context.onlyRightPaddingNormal,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.router
+                                    .push(PendingViewRoute(selectedPage: 1));
+                              },
                               child: SizedBox(
                                 child: Row(
                                   children: [
@@ -372,7 +377,10 @@ class HomePageWidget extends StatelessWidget {
                           Padding(
                             padding: context.onlyRightPaddingNormal,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.router
+                                    .push(PendingViewRoute(selectedPage: 2));
+                              },
                               child: SizedBox(
                                 child: Row(
                                   children: [

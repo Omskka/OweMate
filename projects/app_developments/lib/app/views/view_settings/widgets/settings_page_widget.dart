@@ -3,7 +3,6 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_state.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_view_model.dart';
-import 'package:app_developments/core/auth/authentication_repository.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
@@ -25,14 +24,14 @@ class SettingsPageWidget extends StatelessWidget {
         final viewModel = BlocProvider.of<SettingsViewModel>(context);
         final screenWidth = MediaQuery.of(context).size.width;
         double containerWidth = (screenWidth <= 600)
-            ? 0.85
+            ? 0.9
             : (screenWidth <= 800)
-                ? 0.75
+                ? 0.8
                 : (screenWidth <= 900)
-                    ? 0.65
+                    ? 0.7
                     : (screenWidth <= 1080)
-                        ? 0.55
-                        : 0.45;
+                        ? 0.6
+                        : 0.5;
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment:
@@ -220,18 +219,6 @@ class SettingsPageWidget extends StatelessWidget {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
-                                    // Dismiss the dialog if user cancels
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                        color: ColorThemeUtil.getPrimaryColor(
-                                            context)),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
                                     // If confirmed, proceed with account deletion
                                     context.read<SettingsViewModel>().add(
                                           SettingsDeleteAccountEvent(
@@ -245,6 +232,18 @@ class SettingsPageWidget extends StatelessWidget {
                                     style: TextStyle(
                                       color: AppLightColorConstants.errorColor,
                                     ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // Dismiss the dialog if user cancels
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: ColorThemeUtil.getPrimaryColor(
+                                            context)),
                                   ),
                                 ),
                               ],

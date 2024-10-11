@@ -75,6 +75,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OnboardingView(),
       );
     },
+    PendingViewRoute.name: (routeData) {
+      final args = routeData.argsAs<PendingViewRouteArgs>(
+          orElse: () => const PendingViewRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PendingView(
+          key: args.key,
+          selectedPage: args.selectedPage,
+        ),
+      );
+    },
     ProfileUpdateViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -264,6 +275,44 @@ class OnboardingViewRoute extends PageRouteInfo<void> {
   static const String name = 'OnboardingViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PendingView]
+class PendingViewRoute extends PageRouteInfo<PendingViewRouteArgs> {
+  PendingViewRoute({
+    Key? key,
+    int? selectedPage,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PendingViewRoute.name,
+          args: PendingViewRouteArgs(
+            key: key,
+            selectedPage: selectedPage,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PendingViewRoute';
+
+  static const PageInfo<PendingViewRouteArgs> page =
+      PageInfo<PendingViewRouteArgs>(name);
+}
+
+class PendingViewRouteArgs {
+  const PendingViewRouteArgs({
+    this.key,
+    this.selectedPage,
+  });
+
+  final Key? key;
+
+  final int? selectedPage;
+
+  @override
+  String toString() {
+    return 'PendingViewRouteArgs{key: $key, selectedPage: $selectedPage}';
+  }
 }
 
 /// generated route for
