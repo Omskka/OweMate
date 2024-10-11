@@ -78,10 +78,36 @@ class SettingsFeedbackPageWidget extends StatelessWidget {
                   height: context.dynamicHeight(0.13),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Help us improve by sharing your thoughts and suggestions.\nYour feedback is anonymous and greatly appreciated!',
+                    child: Text.rich(
+                      TextSpan(
+                        text:
+                            'Help us improve by sharing your thoughts and suggestions.\nYour feedback is ',
+                        style: context.textStyleGreyBarlow(context),
+                        children: [
+                          TextSpan(
+                            text: 'anonymous', // Underline "anonymous"
+                            style:
+                                context.textStyleGreyBarlow(context).copyWith(
+                                      decoration: TextDecoration.underline,
+                                      decorationThickness:
+                                          1, // Adjust the thickness
+                                      decorationStyle: TextDecorationStyle
+                                          .solid, // Solid underline
+                                      height:
+                                          1.2, // Adjust line height to add space
+                                      decorationColor:
+                                          ColorThemeUtil.getContentPrimaryColor(
+                                              context),
+                                    ),
+                          ),
+                          TextSpan(
+                            text:
+                                ' and greatly appreciated!', // Continue the sentence
+                            style: context.textStyleGreyBarlow(context),
+                          ),
+                        ],
+                      ),
                       textAlign: TextAlign.center,
-                      style: context.textStyleGreyBarlow(context),
                     ),
                   ),
                 ),

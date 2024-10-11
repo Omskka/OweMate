@@ -602,9 +602,10 @@ class ActivityPageWidget extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
+                                          context.sizedHeightBoxLower,
                                           SvgPicture.asset(
                                             Assets.images.svg.noActivity,
-                                            height: context.dynamicHeight(0.22),
+                                            height: context.dynamicHeight(0.2),
                                           ),
                                           FittedBox(
                                             fit: BoxFit.scaleDown,

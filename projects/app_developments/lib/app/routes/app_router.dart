@@ -7,6 +7,7 @@ import 'package:app_developments/app/views/view_login/login_view.dart';
 import 'package:app_developments/app/views/view_messages/messages_view.dart';
 import 'package:app_developments/app/views/view_notifications/notifications_view.dart';
 import 'package:app_developments/app/views/view_onboarding/onboarding_view.dart';
+import 'package:app_developments/app/views/view_pending/pending_view.dart';
 import 'package:app_developments/app/views/view_profile/profile_view.dart';
 import 'package:app_developments/app/views/view_profile_update/profile_update_view.dart';
 import 'package:app_developments/app/views/view_request/request_view.dart';
@@ -70,5 +71,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: MessagesViewRoute.page),
     AutoRoute(page: StatisticsViewRoute.page),
     AutoRoute(page: SettingsViewRoute.page),
+    AutoRoute(page: PendingViewRoute.page),
   ];
 }

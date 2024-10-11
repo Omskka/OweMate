@@ -109,10 +109,10 @@ class NotificationsPageWidget extends StatelessWidget {
                         child: Center(
                             child: Column(
                           children: [
-                            context.sizedHeightBoxLow,
+                            context.sizedHeightBoxNormal,
                             SvgPicture.asset(
                               Assets.images.svg.mailbox,
-                              height: context.dynamicHeight(0.28),
+                              height: context.dynamicHeight(0.25),
                             ),
                             FittedBox(
                               fit: BoxFit.scaleDown,
