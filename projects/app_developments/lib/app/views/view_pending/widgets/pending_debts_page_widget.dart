@@ -77,7 +77,7 @@ class PendingDebtsPageWidget extends StatelessWidget {
           cardLeftPadding = context.onlyLeftPaddingMedium;
         }
         return PopScope(
-          canPop: false,
+          canPop: true,
           child: RefreshIndicator(
             color: AppLightColorConstants.primaryColor,
             onRefresh: () async {

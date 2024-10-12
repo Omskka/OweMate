@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController resetEmailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   UserCredential? userCredential;
 
@@ -33,6 +34,8 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     on<LoginInitialEvent>(_initial);
     on<LoginSignInEvent>(_loginSignInEvent);
     on<LoginGoogleSignInEvent>(_loginGoogleSignInEvent);
+    on<LoginNavigateToNextPageEvent>(_navigateToNextPage);
+    on<LoginSendResetCodeEvent>(_sendResetCode);
   }
 
   // Initial method to check if user is already logged in
@@ -296,6 +299,83 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       ).flutterToast();
     }
     return null;
+  }
+
+  FutureOr<void> _navigateToNextPage(
+      LoginNavigateToNextPageEvent event, Emitter<LoginState> emit) {
+    // Clear controller
+    if (event.selectedPage == 1) {
+      resetEmailController.clear();
+    }
+    emit(
+      LoginPageIncrementState(
+        selectedPage: event.selectedPage,
+        isConnectedToInternet: state.isConnectedToInternet,
+      ),
+    );
+  }
+
+  FutureOr<void> _sendResetCode(
+      LoginSendResetCodeEvent event, Emitter<LoginState> emit) async {
+    try {
+      // Email exists, send password reset email
+      FirebaseAuth.instance.setLanguageCode('en');
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: resetEmailController.text.trim(),
+      );
+      // Show success dialog
+      showDialog(
+        context: event.context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Recovery Code Sent'),
+            content: const Text(
+                'Password reset link sent!\nPlease check your email.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Continue',
+                  style: TextStyle(
+                    color: ColorThemeUtil.getContentPrimaryColor(
+                      context,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      // Handle other errors (network issues, etc.)
+      showDialog(
+        context: event.context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Continue',
+                  style: TextStyle(
+                    color: ColorThemeUtil.getContentPrimaryColor(
+                      context,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
