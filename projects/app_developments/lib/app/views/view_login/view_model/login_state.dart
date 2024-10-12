@@ -1,14 +1,18 @@
 // ignore: non_constant_identifier_names
 abstract class LoginState {
   final bool? isConnectedToInternet;
+  final int? selectedPage;
   LoginState({
     this.isConnectedToInternet,
+    this.selectedPage,
   });
 }
 
 // Initial state
 class LoginInitialState extends LoginState {
-  LoginInitialState();
+  LoginInitialState():super(
+    selectedPage: 1,
+  );
 }
 
 // Success state
@@ -31,5 +35,15 @@ class LoginInternetState extends LoginState {
     required bool? isConnectedToInternet,
   }) : super(
           isConnectedToInternet: isConnectedToInternet,
+        );
+}
+
+// State for incrementing the selected page
+class LoginPageIncrementState extends LoginState {
+  LoginPageIncrementState({
+    int? selectedPage,
+    required bool? isConnectedToInternet,
+  }) : super(
+          selectedPage: selectedPage,
         );
 }

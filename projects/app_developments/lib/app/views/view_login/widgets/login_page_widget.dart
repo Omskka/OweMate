@@ -41,7 +41,7 @@ class LoginPageWidget extends StatelessWidget {
               containerHeight = context.dynamicHeight(0.12);
             } else if (screenHeight <= 800) {
               // Small screens
-              containerHeight = context.dynamicHeight(0.38);
+              containerHeight = context.dynamicHeight(0.36);
             } else if (screenHeight <= 900) {
               // Medium screens
               containerHeight = context.dynamicHeight(0.33);
@@ -180,12 +180,24 @@ class LoginPageWidget extends StatelessWidget {
                                 viewModel.passwordController,
                               ),
                             ),
-                            context.sizedHeightBoxMedium,
+                            context.sizedHeightBoxLow,
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  viewModel.add(LoginNavigateToNextPageEvent(
+                                      context: context, selectedPage: 2),);
+                                },
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: context.textStyleGrey(context),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-
                     context.sizedHeightBoxLow,
                     // Sign up button
                     Center(

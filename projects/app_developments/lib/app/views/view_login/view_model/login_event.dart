@@ -26,3 +26,23 @@ class LoginGoogleSignInEvent extends LoginEvent {
   // Constructor for the sign-in event, requires a BuildContext
   LoginGoogleSignInEvent({required this.context});
 }
+
+// Event triggered when user resets password
+class LoginSendResetCodeEvent extends LoginEvent {
+  BuildContext context;
+
+  // Constructor for the sign-in event, requires a BuildContext
+  LoginSendResetCodeEvent({required this.context});
+}
+
+// Event to navigate to the next page, holds the context for navigation and the selected page index
+class LoginNavigateToNextPageEvent extends LoginEvent {
+  final int selectedPage; // The index of the page to navigate to
+  final BuildContext context; // The context used for navigation
+
+  // Constructor to initialize the context and selected page index
+  LoginNavigateToNextPageEvent({
+    required this.context,
+    required this.selectedPage,
+  });
+}
