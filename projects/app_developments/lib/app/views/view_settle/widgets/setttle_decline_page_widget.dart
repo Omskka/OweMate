@@ -161,13 +161,17 @@ class SetttleDeclinePageWidget extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: context.onlyTopPaddingLow,
-                                        child: Text(
-                                          date,
-                                          style: context
-                                              .textStyleGrey(context)
-                                              .copyWith(
-                                                fontSize: 12,
-                                              ),
+                                        child: Flexible(
+                                          child: Text(
+                                            date,
+                                            style: context
+                                                .textStyleGrey(context)
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ),
                                     ],

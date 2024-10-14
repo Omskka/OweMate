@@ -63,6 +63,7 @@ class UserMessages extends StatelessWidget {
 
       containerWidth = context.dynamicWidth(0.4);
     }
+
     return Container(
       padding: EdgeInsets.all(context.lowValue),
       height: context.dynamicHeight(0.11),

@@ -9,9 +9,7 @@ class SettingsCard extends StatelessWidget {
   final String description;
   final bool showSwitch;
   final VoidCallback? onPressed;
-
   final bool? switchValue; // Add this to track the switch state
-  final List<String>? panelItems; // Items for the selection panel
   final ValueChanged<bool>? onSwitchChanged; // Callback for the switch
 
   const SettingsCard({
@@ -19,8 +17,7 @@ class SettingsCard extends StatelessWidget {
     required this.description,
     this.showSwitch = false,
     this.onPressed,
-    this.switchValue, // Make this required
-    this.panelItems,
+    this.switchValue,
     this.onSwitchChanged,
     super.key,
   });
@@ -50,53 +47,67 @@ class SettingsCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Title and description
-          Padding(
-            padding: context.onlyLeftPaddingLow,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    title,
-                    style: context.textStyleGreyBarlow(context),
+          Expanded(
+            // Use Expanded to allow flexible sizing
+            child: Padding(
+              padding: context.onlyLeftPaddingLow,
+              child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center the items vertically
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      title,
+                      style: context.textStyleGreyBarlow(context),
+                      maxLines: 1, // Limit title to 1 line
+                      overflow:
+                          TextOverflow.ellipsis, // Ensure ellipsis for overflow
+                    ),
                   ),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    description,
-                    style: context.textStyleGrey(context),
+                  Flexible(
+                    child: Text(
+                      description,
+                      style: context.textStyleGrey(context),
+                      maxLines: 1, // Limit description to 1 line
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
 
           // Switch (if showSwitch is true)
-          showSwitch
-              ? Switch(
-                  activeColor: AppDarkColorConstants.moneyCardColor,
-                  activeTrackColor: AppDarkColorConstants.contentTeritaryColor,
-                  inactiveThumbColor: AppLightColorConstants.infoColor,
-                  inactiveTrackColor:
-                      AppLightColorConstants.contentTeritaryColor,
-                  value: switchValue!, // Use the switchValue variable here
-                  onChanged: (bool value) {
-                    if (onSwitchChanged != null) {
-                      onSwitchChanged!(
-                          value); // Trigger callback when switch is changed
-                    }
-                  },
-                )
-              : GestureDetector(
-                  onTap: onPressed,
-                  child: const FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Icon(Icons.arrow_forward_ios),
-                  ),
-                )
+          if (showSwitch)
+            SizedBox(
+              width: 40, // Set a fixed width for the switch
+              child: Switch(
+                activeColor: AppDarkColorConstants.moneyCardColor,
+                activeTrackColor: AppDarkColorConstants.contentTeritaryColor,
+                inactiveThumbColor: AppLightColorConstants.infoColor,
+                inactiveTrackColor: AppLightColorConstants.contentTeritaryColor,
+                value: switchValue!, // Use the switchValue variable here
+                onChanged: (bool value) {
+                  if (onSwitchChanged != null) {
+                    onSwitchChanged!(
+                        value); // Trigger callback when switch is changed
+                  }
+                },
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: onPressed,
+              child: const SizedBox(
+                width: 30, // Set a fixed size for the icon
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+            ),
         ],
       ),
     );

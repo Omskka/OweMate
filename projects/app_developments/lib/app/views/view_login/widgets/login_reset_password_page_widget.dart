@@ -74,7 +74,12 @@ class LoginResetPasswordPageWidget extends StatelessWidget {
                           child: Text(
                             'Enter your email and we will send\nyou a password reset link.',
                             textAlign: TextAlign.center,
-                            style: context.textStyleTitleBarlow(context),
+                            style: context
+                                .textStyleTitleBarlow(context)
+                                .copyWith(
+                                    color:
+                                        ColorThemeUtil.getContentTeritaryColor(
+                                            context)),
                           ),
                         ),
                         context.sizedHeightBoxNormal,

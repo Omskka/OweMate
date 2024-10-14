@@ -15,6 +15,10 @@ class ProfileUpdateValidation {
       return 'Value Required';
     }
 
+    if (value.length > 7) {
+      return 'Username can\'t be longer than 7 charcters.';
+    }
+
     // Check if name has more than two characters and is valid
     if (!namePattern.hasMatch(value) || value.length < 3) {
       return 'Invalid Name';

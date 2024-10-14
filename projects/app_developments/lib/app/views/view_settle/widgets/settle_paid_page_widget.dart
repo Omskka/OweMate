@@ -100,13 +100,15 @@ class SettlePaidPageWidget extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0), // Added padding
                   height: context.dynamicHeight(0.1),
                   width: context.dynamicWidth(1),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      'Confirm the payment and send a message to let them\nknow the debt is cleared.',
+                      'Confirm the payment and send a message to\nlet them know the debt is cleared.',
                       style:
                           context.textStyleGrey(context).copyWith(fontSize: 15),
                       textAlign: TextAlign.center,
@@ -156,13 +158,17 @@ class SettlePaidPageWidget extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: context.onlyTopPaddingLow,
-                                        child: Text(
-                                          date,
-                                          style: context
-                                              .textStyleGrey(context)
-                                              .copyWith(
-                                                fontSize: 12,
-                                              ),
+                                        child: Flexible(
+                                          child: Text(
+                                            date,
+                                            style: context
+                                                .textStyleGrey(context)
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ),
                                     ],

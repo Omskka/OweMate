@@ -2,7 +2,6 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_event.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_state.dart';
 import 'package:app_developments/app/views/view_profile/view_model/profile_view_model.dart';
-import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/constants/validation/sign_up_validation.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:app_developments/core/widgets/back_button_with_title.dart';
@@ -124,7 +123,7 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                           showVisibilityToggle: true,
                           textInputAction: TextInputAction.next,
                         ),
-                        context.sizedHeightBoxNormal,
+                        context.sizedHeightBoxLower,
                         Padding(
                             padding: context.onlyLeftPaddingLow,
                             child: Text(
@@ -145,7 +144,7 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                           showVisibilityToggle: true,
                           textInputAction: TextInputAction.next,
                         ),
-                        context.sizedHeightBoxNormal,
+                        context.sizedHeightBoxLower,
                         Padding(
                           padding: context.onlyLeftPaddingLow,
                           child: Text(
@@ -175,6 +174,7 @@ class ProfilePasswordPageWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                context.sizedHeightBoxLower,
                 CustomContinueButton(
                   buttonText: 'Confirm',
                   borderRadius: BorderRadius.all(context.normalRadius),

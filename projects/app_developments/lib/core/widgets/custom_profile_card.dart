@@ -88,22 +88,32 @@ class CustomProfileCard extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Padding(
-            padding: context.onlyRightPaddingNormal,
-            child: description != null
-                ? FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      description!,
-                      style: context.textStyleGrey(context),
+          const Spacer(),
+          // Description or Icon section
+          description != null
+              ? Flexible(
+                  flex: 6, // This will allocate space for the description
+                  child: Padding(
+                    padding: context.onlyRightPaddingNormal,
+                    child: Align(
+                      alignment:
+                          Alignment.centerRight, // Aligns the text to the right
+                      child: Text(
+                        description!,
+                        style: context.textStyleGrey(context),
+                        maxLines: 2, // Limit description to two lines
+                        overflow:
+                            TextOverflow.ellipsis, // Show "..." if it overflows
+                      ),
                     ),
-                  )
-                : GestureDetector(
-                    onTap: ontap,
-                    child: const Icon(
-                      Icons.arrow_forward_ios,
-                    )),
-          )
+                  ),
+                )
+              : GestureDetector(
+                  onTap: ontap,
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                ),
         ],
       ),
     );

@@ -85,12 +85,15 @@ class HomeNavbarWidget extends StatelessWidget {
                                     ColorThemeUtil.getBgInverseColor(context),
                               ),
                         ),
-                        accountEmail: Text(
-                          email,
-                          style: context.textStyleGrey(context).copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
+                        accountEmail: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            email,
+                            style: context.textStyleGrey(context).copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                ),
+                          ),
                         ),
                         currentAccountPicture: CircleAvatar(
                           backgroundColor:

@@ -68,9 +68,25 @@ class RecentActivityCard extends StatelessWidget {
       circleAvatarWidth = 0.02;
       containerWidth = context.dynamicWidth(0.4);
     }
+
+    // Get font size
+    double textScaleFactor = MediaQuery.textScalerOf(context).scale(1);
+
+    // Contianer Height
+    double containerHeight;
+
+    if (textScaleFactor <= 1) {
+      containerHeight = context.dynamicHeight(0.12);
+    } else if (textScaleFactor <= 1.15) {
+      containerHeight = context.dynamicHeight(0.13);
+    } else if (textScaleFactor <= 1.3) {
+      containerHeight = context.dynamicHeight(0.14);
+    } else {
+      containerHeight = context.dynamicHeight(0.15);
+    }
     return Container(
       padding: EdgeInsets.all(context.lowValue),
-      height: context.dynamicHeight(0.11),
+      height: containerHeight,
       width: containerWidth,
       decoration: BoxDecoration(
         color: ColorThemeUtil.getDrawerColor(context),

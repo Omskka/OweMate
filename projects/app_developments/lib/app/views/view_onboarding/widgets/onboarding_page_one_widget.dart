@@ -83,7 +83,9 @@ class OnboardingPageOneWidget extends StatelessWidget {
             ),
 
             // Title
-            SizedBox(
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0), // Added padding
               height: context.dynamicHeight(0.1),
               width: context.dynamicWidth(1),
               child: Center(

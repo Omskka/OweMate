@@ -168,7 +168,9 @@ class HomePageWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0), // Added padding
                     height: context.dynamicHeight(0.08),
                     width: context.dynamicWidth(1),
                     child: Center(

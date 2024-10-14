@@ -121,16 +121,21 @@ class SettlePageWidget extends StatelessWidget {
                     context.router.push(const DebtsViewRoute());
                   },
                 ),
-                SizedBox(
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0), // Added padding
                   height: context.dynamicHeight(0.1),
                   width: context.dynamicWidth(1),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Mark requests as paid or decline with a message,\ngiving you control over how you settle up.',
-                      style:
-                          context.textStyleGrey(context).copyWith(fontSize: 15),
-                      textAlign: TextAlign.center,
+                    child: Center(
+                      child: Text(
+                        'Mark requests as paid or decline with a message,\ngiving you control over how you settle up.',
+                        style: context
+                            .textStyleGrey(context)
+                            .copyWith(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
