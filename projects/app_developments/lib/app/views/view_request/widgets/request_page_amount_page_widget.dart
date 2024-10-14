@@ -260,7 +260,7 @@ class RequestPageAmountPageWidget extends StatelessWidget {
                             );
                           },
                           child: Container(
-                            width: textfieldWidth / 2,
+                            width: textfieldWidth / 1.65,
                             padding: context.paddingNormal,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),

@@ -62,6 +62,19 @@ class MessagesViewPageWidget extends StatelessWidget {
           circleAvatarWidth = 0.8;
           cardWidth = context.dynamicWidth(0.4);
         }
+
+        // Get font size
+        double textScaleFactor = MediaQuery.textScalerOf(context).scale(1);
+
+        if (textScaleFactor <= 1) {
+        } else if (textScaleFactor <= 1.15) {
+          cardWidth *= 1.15;
+        } else if (textScaleFactor <= 1.3) {
+          cardWidth *= 1.2;
+        } else {
+          cardWidth *= 1.25;
+        }
+
         return RefreshIndicator(
           color: AppLightColorConstants.primaryColor,
           onRefresh: () async {

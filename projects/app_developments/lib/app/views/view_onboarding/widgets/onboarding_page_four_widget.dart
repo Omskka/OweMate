@@ -100,7 +100,9 @@ class OnboardingPageFourWidget extends StatelessWidget {
               ),
             ),
             // Description
-            SizedBox(
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0), // Added padding
               height: context.dynamicHeight(0.07),
               width: context.dynamicWidth(1),
               child: Center(

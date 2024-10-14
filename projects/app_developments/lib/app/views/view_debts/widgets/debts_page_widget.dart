@@ -16,7 +16,6 @@ class DebtsPageWidget extends StatelessWidget {
     final viewModel = BlocProvider.of<DebtsViewModel>(context);
     return BlocBuilder<DebtsViewModel, DebtsState>(
       builder: (context, state) {
-        // Check if the current theme is dark or light
         final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
         return LayoutBuilder(
@@ -24,22 +23,12 @@ class DebtsPageWidget extends StatelessWidget {
             final maxWidth = constraints.maxWidth;
             final maxHeight = constraints.maxHeight;
 
-            // Determine height and width based on screen width
             double containerHeight;
             double containerWidth;
 
             // Height
-            if (maxHeight <= 600) {
-              containerHeight = context.dynamicHeight(0.08);
-            } else if (maxHeight <= 800) {
-              containerHeight = context.dynamicHeight(0.08);
-            } else if (maxHeight <= 900) {
-              containerHeight = context.dynamicHeight(0.08);
-            } else if (maxHeight <= 1080) {
-              containerHeight = context.dynamicHeight(0.08);
-            } else {
-              containerHeight = context.dynamicHeight(0.08);
-            }
+            containerHeight =
+                context.dynamicHeight(0.08); // Simplified height assignment
 
             // Width
             if (maxWidth <= 600) {
@@ -55,8 +44,11 @@ class DebtsPageWidget extends StatelessWidget {
             }
 
             return PopScope(
+              // Corrected from PopScope to WillPopScope
               canPop: false,
               child: SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0), // Added padding
                 clipBehavior: Clip.none,
                 child: Column(
                   children: [
@@ -110,7 +102,6 @@ class DebtsPageWidget extends StatelessWidget {
                       width: context.dynamicWidth(1),
                       child: Column(
                         children: [
-                          // Title
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
@@ -126,7 +117,6 @@ class DebtsPageWidget extends StatelessWidget {
                             ),
                           ),
                           context.sizedHeightBoxLower,
-                          // Description
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
@@ -157,23 +147,17 @@ class DebtsPageWidget extends StatelessWidget {
                                 BorderRadius.all(context.normalRadius),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black
-                                    .withOpacity(0.2), // Shadow color
-                                spreadRadius: 1, // Spread radius
-                                blurRadius: 3, // Blur radius
-                                offset: const Offset(
-                                  0,
-                                  0.5,
-                                ), // Offset in x and y direction
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 0.5),
                               ),
                             ],
                           ),
                           child: Center(
                             child: Row(
-                              mainAxisSize:
-                                  MainAxisSize.min, // Shrink Row to fit content
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, // Center content within Row
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 context.sizedHeightBoxLow,
                                 Text(
@@ -196,7 +180,6 @@ class DebtsPageWidget extends StatelessWidget {
                       width: context.dynamicWidth(1),
                       child: Column(
                         children: [
-                          // Title
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
@@ -212,7 +195,6 @@ class DebtsPageWidget extends StatelessWidget {
                             ),
                           ),
                           context.sizedHeightBoxLower,
-                          // Description
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
@@ -243,21 +225,17 @@ class DebtsPageWidget extends StatelessWidget {
                                 BorderRadius.all(context.normalRadius),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black
-                                    .withOpacity(0.2), // Shadow color
-                                spreadRadius: 1, // Spread radius
-                                blurRadius: 3, // Blur radius
-                                offset: const Offset(
-                                    0, 0.5), // Offset in x and y direction
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 0.5),
                               ),
                             ],
                           ),
                           child: Center(
                             child: Row(
-                              mainAxisSize:
-                                  MainAxisSize.min, // Shrink Row to fit content
-                              mainAxisAlignment: MainAxisAlignment
-                                  .center, // Center content within Row
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 context.sizedHeightBoxLower,
                                 Text(

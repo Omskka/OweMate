@@ -25,7 +25,7 @@ class IncomingRequestsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(context.lowValue),
-      height: context.dynamicHeight(0.15),
+      height: context.dynamicHeight(0.155),
       width: context.dynamicWidth(0.75),
       decoration: BoxDecoration(
         color: ColorThemeUtil.getDrawerColor(context),
