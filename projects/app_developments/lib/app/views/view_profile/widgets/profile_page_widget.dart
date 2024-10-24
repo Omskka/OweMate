@@ -198,6 +198,7 @@ class ProfilePageWidget extends StatelessWidget {
                               context.sizedHeightBoxLower,
                               CustomProfileCard(
                                 title: 'UserID',
+                                copy: true,
                                 description: AuthenticationRepository()
                                         .getCurrentUserId() ??
                                     '',

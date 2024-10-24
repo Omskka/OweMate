@@ -161,17 +161,15 @@ class SetttleDeclinePageWidget extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: context.onlyTopPaddingLow,
-                                        child: Flexible(
-                                          child: Text(
-                                            date,
-                                            style: context
-                                                .textStyleGrey(context)
-                                                .copyWith(
-                                                  fontSize: 12,
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                        child: Text(
+                                          date,
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                fontSize: 12,
+                                              ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
@@ -182,11 +180,11 @@ class SetttleDeclinePageWidget extends StatelessWidget {
                                 padding: context.onlyRightPaddingMedium,
                                 child: Text(
                                   amount,
-                                  style: context
-                                      .textStyleGrey(context)
-                                      .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
+                                  style:
+                                      context.textStyleGrey(context).copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
                                 ),
                               ),
                             ],

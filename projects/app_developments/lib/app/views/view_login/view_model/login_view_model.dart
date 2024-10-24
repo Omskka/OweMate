@@ -236,7 +236,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _loginSignInEvent(
       LoginSignInEvent event, Emitter<LoginState> emit) async {
     try {
-      // Get current user ID
       // Show loading circle
       showDialog(
         context: event.context,

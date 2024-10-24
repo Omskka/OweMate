@@ -41,12 +41,28 @@ class FirebaseApi {
 
         // Save the token to Firestore if it's not null
         if (fCMToken != null) {
-          await FirebaseFirestore.instance
+          // Fetch existing tokens from Firestore
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
               .collection("users")
               .doc(userId)
-              .update({
-            'token': fCMToken,
-          });
+              .get();
+
+          // Get the existing tokens array or create a new one if it's not present
+          List<dynamic> tokens = userDoc['tokens'] ?? [];
+
+          // Check if the token already exists in the array
+          if (!tokens.contains(fCMToken)) {
+            // Add the new token to the tokens array
+            tokens.add(fCMToken);
+
+            // Update the user's document in Firestore with the new tokens array
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(userId)
+                .update({
+              'tokens': tokens,
+            });
+          }
         }
       } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
         // Handle denied permission (e.g., show a message)
@@ -61,6 +77,48 @@ class FirebaseApi {
     } finally {
       // Set the flag back to false after the request is complete
       isRequestingPermission = false;
+    }
+  }
+
+  // Function to remove the current device's token
+  Future<void> removeCurrentDeviceToken() async {
+    // Check if the user is logged in
+    String? userId = AuthenticationRepository().getCurrentUserId();
+    if (userId == null) {
+      return; // Exit the function if the user is not logged in
+    }
+
+    try {
+      // Fetch the current FCM token for this device
+      final fCMToken = await FirebaseMessaging.instance.getToken();
+
+      // Proceed only if the token is not null
+      if (fCMToken != null) {
+        // Fetch the existing tokens from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .get();
+
+        // Get the existing tokens array or create an empty one if it's not present
+        List<dynamic> tokens = userDoc['tokens'] ?? [];
+
+        // Check if the token exists in the array
+        if (tokens.contains(fCMToken)) {
+          // Remove the token from the array
+          tokens.remove(fCMToken);
+
+          // Update the user's document in Firestore with the new tokens array
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(userId)
+              .update({
+            'tokens': tokens,
+          });
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -107,24 +165,24 @@ class FirebaseApi {
     return credentials.accessToken.data;
   }
 
+  // Send push notifications
   Future<void> sendPushMessage(
-      String userId, String token, String body, String title) async {
+      String userId, List<String> tokens, String body, String title) async {
     try {
-      // Step 1: Check the user's status in Firestore
+      // Step 1: Get the user's document from Firestore
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
 
       if (userDoc.exists) {
-        // Assuming the status field is stored as 'status' in the user document
-        final userStatus = userDoc.get('status');
+        // Fetch the access token (server key)
+        final String serverKey = await getAccessToken();
+        String endPointFirebaseCloudMessaging =
+            'https://fcm.googleapis.com/v1/projects/owemate-41f03/messages:send';
 
-        if (userStatus == 'active') {
-          final String serverKey = await getAccessToken();
-          String endPointFirebaseCloudMessaging =
-              'https://fcm.googleapis.com/v1/projects/owemate-41f03/messages:send';
-
+        // Step 2: Iterate through the list of tokens and send a notification to each
+        for (String token in tokens) {
           final Map<String, dynamic> message = {
             'message': {
               'token': token,
@@ -138,7 +196,7 @@ class FirebaseApi {
           final http.Response response = await http.post(
             Uri.parse(endPointFirebaseCloudMessaging),
             headers: <String, String>{
-              'content-Type': 'application/json',
+              'Content-Type': 'application/json',
               'Authorization': 'Bearer $serverKey',
             },
             body: jsonEncode(message),
@@ -146,11 +204,11 @@ class FirebaseApi {
 
           if (response.statusCode == 200) {
             if (!kReleaseMode) {
-              print('Notification Sent Successfully');
+              print('Notification sent successfully to token: $token');
             }
           } else {
             if (!kReleaseMode) {
-              print('Notification Failed: ${response.body}');
+              print('Notification failed for token $token: ${response.body}');
             }
 
             // Handle specific error codes like UNREGISTERED
@@ -163,17 +221,12 @@ class FirebaseApi {
                   .collection('users')
                   .doc(userId)
                   .update({
-                'fcmToken': FieldValue.delete(),
+                'tokens': FieldValue.arrayRemove([token]),
               });
               if (!kReleaseMode) {
-                print('Token was invalid and removed from Firestore.');
+                print('Token $token was invalid and removed from Firestore.');
               }
             }
-          }
-        } else {
-          // If the user status is not active, don't send the notification
-          if (!kReleaseMode) {
-            print('User is not active, no notification sent.');
           }
         }
       } else {

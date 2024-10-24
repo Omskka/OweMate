@@ -2,15 +2,18 @@ import 'package:app_developments/app/theme/color_theme_util.dart';
 import 'package:app_developments/core/constants/ligth_theme_color_constants.dart';
 import 'package:app_developments/core/extension/context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomProfileCard extends StatelessWidget {
   final String title;
   final String? description;
   final void Function()? ontap;
+  final bool? copy;
   const CustomProfileCard({
     required this.title,
     this.ontap,
     this.description,
+    this.copy,
     super.key,
   });
 
@@ -98,12 +101,28 @@ class CustomProfileCard extends StatelessWidget {
                     child: Align(
                       alignment:
                           Alignment.centerRight, // Aligns the text to the right
-                      child: Text(
-                        description!,
-                        style: context.textStyleGrey(context),
-                        maxLines: 2, // Limit description to two lines
-                        overflow:
-                            TextOverflow.ellipsis, // Show "..." if it overflows
+                      child: GestureDetector(
+                        onTap: () {
+                          if (copy == true) {
+                            // Copy the text to the clipboard
+                            Clipboard.setData(
+                                ClipboardData(text: description!));
+                            // Optionally show a SnackBar or some feedback
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Center(child: Text('Copied to clipboard!')),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          description!,
+                          style: context.textStyleGrey(context),
+                          maxLines: 1, // Limit description to one line
+                          overflow: TextOverflow
+                              .ellipsis, // Show "..." if it overflows
+                        ),
                       ),
                     ),
                   ),

@@ -49,22 +49,7 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-      // Get the current user ID
-      String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
-      // Fetch the user's status from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-
-      if (userDoc.exists) {
-        String status =
-            userDoc['status'] ?? 'inactive'; // Default to 'inactive'
-        if (status == 'active') {
-          return null;
-        }
-      }
       return userCredential.user?.uid;
     } on FirebaseAuthException catch (e) {
       throw LogInWithEmailAndPasswordFailure.fromCode(e.code, context);
@@ -101,23 +86,6 @@ class AuthenticationRepository {
       // Sign in to Firebase with the Google credentials
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-
-      // Get the current user ID
-      String? currentUserId = AuthenticationRepository().getCurrentUserId();
-
-      // Fetch the user's status from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-
-      if (userDoc.exists) {
-        String status =
-            userDoc['status'] ?? 'inactive'; // Default to 'inactive'
-        if (status == 'active') {
-          return null;
-        }
-      }
 
       // Check if the user is new (i.e., first-time sign-in)
       if (userCredential.additionalUserInfo?.isNewUser ?? false) {

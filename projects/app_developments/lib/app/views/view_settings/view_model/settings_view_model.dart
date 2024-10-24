@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:app_developments/app/app.dart';
 import 'package:app_developments/core/auth/authentication_repository.dart';
+import 'package:app_developments/core/auth/firebase_api.dart';
 import 'package:app_developments/core/auth/shared_preferences/preferencesService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_developments/app/views/view_settings/view_model/settings_event.dart';
@@ -125,17 +126,11 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
     String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
     if (currentUserId != null) {
-      // Update user's status to "inactive" in Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId) // Update the document of the current user
-          .update(
-        {
-          'status': 'inactive',
-          'token': 'null',
-        },
-      );
+      // Remove device token before sign out (await for the async operation)
+      await FirebaseApi().removeCurrentDeviceToken();
     }
+
+    // Now proceed with the sign-out
     AuthenticationRepository().signOut(context: event.context);
   }
 }
