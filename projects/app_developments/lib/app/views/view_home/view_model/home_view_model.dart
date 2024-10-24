@@ -108,8 +108,6 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
     try {
       // Initialise notification permission
       FirebaseApi().initNotifications();
-      // Get the current user's ID
-      String? currentUserId = AuthenticationRepository().getCurrentUserId();
 
       emit(HomeLoadingState());
       final isOrderReversed = await preferencesService.loadOrderPreference();
@@ -134,27 +132,6 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
       if (!hasSeenHomeTutorial) {
         createTutorial(event.context);
         prefs.setBool('hasSeenHomeTutorial', true);
-      }
-      // Fetch user's status from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-
-      // Check if the user document exists and if the status is not active
-      if (userDoc.exists) {
-        String status =
-            userDoc['status'] ?? 'inactive'; // default to 'inactive'
-
-        if (status != 'active') {
-          // Update the status to 'active'
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUserId)
-              .update({
-            'status': 'active',
-          });
-        }
       }
 
       emit(HomeDataLoadedState(
@@ -213,7 +190,7 @@ class HomeViewModel extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-//  No internet pop-up
+  // No internet pop-up
   void _showNoInternetDialog(BuildContext context) {
     try {
       showDialog(

@@ -140,7 +140,7 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
       String formattedAmount = '$currencyPrefix$amount';
 
       // Get the current date and format it
-      String formattedDate = DateFormat('MMMM d, yyyy').format(DateTime.now());
+      String formattedDate = DateFormat('MMM d, yyyy').format(DateTime.now());
 
       // Generate a unique request ID
       var uuid = Uuid();
@@ -163,13 +163,20 @@ class RequestViewModel extends Bloc<RequestEvent, RequestState> {
 
       // Check if the user document exists
       if (userDoc.exists) {
-        // Get the token field from the user document
-        String? token = userDoc.get('token');
+        // Get the tokens field from the user document as a list
+        List<dynamic>? tokens = userDoc.get('tokens');
 
-        if (token != null && token.isNotEmpty) {
-          // Send the push message
-          await FirebaseApi().sendPushMessage(friendUserId!, token,
-              '$currentUserName sent you a money request.', 'New Request');
+        // Ensure that the tokens field is not null and contains at least one token
+        if (tokens != null && tokens.isNotEmpty) {
+          // Convert the list of dynamic tokens to a list of strings
+          List<String> tokenList = tokens.cast<String>();
+
+          // Send the push message to all tokens
+          await FirebaseApi().sendPushMessage(
+              friendUserId!,
+              tokenList, // Pass the list of tokens here
+              '$currentUserName sent you a money request.',
+              'New Request');
         } else {
           if (!kReleaseMode) {
             print('No FCM token found for the recipient.');
