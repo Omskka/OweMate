@@ -43,9 +43,6 @@ class PendingViewModel extends Bloc<PendingEvent, PendingState> {
   FutureOr<void> _initial(
       PendingInitialEvent event, Emitter<PendingState> emit) async {
     try {
-      // Get the current user's ID
-      String? currentUserId = AuthenticationRepository().getCurrentUserId();
-
       emit(PendingLoadingState());
       final isOrderReversed = await preferencesService.loadOrderPreference();
 
@@ -59,28 +56,6 @@ class PendingViewModel extends Bloc<PendingEvent, PendingState> {
       requestList = userData['requestList'];
       requestedMoney = List.from(userData['requestedMoney'].reversed);
       owedMoney = List.from(userData['owedMoney'].reversed);
-
-      // Fetch user's status from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-
-      // Check if the user document exists and if the status is not active
-      if (userDoc.exists) {
-        String status =
-            userDoc['status'] ?? 'inactive'; // default to 'inactive'
-
-        if (status != 'active') {
-          // Update the status to 'active'
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUserId)
-              .update({
-            'status': 'active',
-          });
-        }
-      }
 
       emit(PendingDataLoadedState(
         userData: userData,
