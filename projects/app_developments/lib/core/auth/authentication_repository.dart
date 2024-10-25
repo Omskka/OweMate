@@ -7,6 +7,7 @@ import 'package:app_developments/core/constants/ligth_theme_color_constants.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_developments/core/auth/exceptions/sign_up_with_email_and_password_failure.dart';
@@ -162,6 +163,28 @@ class AuthenticationRepository {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null) {
+        // Retrieve profile image URL from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        String? profileImageUrl = userDoc['profile_image_url'];
+
+        // Delete the profile image from Firebase Storage if it exists
+        if (profileImageUrl != null &&
+            profileImageUrl.isNotEmpty &&
+            profileImageUrl !=
+                "https://firebasestorage.googleapis.com/v0/b/owemate-41f03.appspot.com/o/users%2Fblank_profile.jpg?alt=media&token=f04f99b8-10e5-478d-b46e-9e229c7021b5") {
+          try {
+            // Get reference to the image in Firebase Storage
+            FirebaseStorage storage = FirebaseStorage.instance;
+            await storage.refFromURL(profileImageUrl).delete();
+          } catch (e) {
+            // Handle any errors when deleting the image
+            print('Error deleting profile image: $e');
+          }
+        }
+
         // Optionally: delete user data from Firestore or other services here.
         await FirebaseFirestore.instance
             .collection('users')
@@ -170,10 +193,6 @@ class AuthenticationRepository {
 
         // Delete the user account
         await user.delete();
-
-        // Clear any stored preferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.clear();
       } else {
         throw Exception('User not found or email does not match.');
       }

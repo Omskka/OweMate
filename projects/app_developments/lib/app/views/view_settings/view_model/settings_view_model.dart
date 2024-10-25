@@ -106,9 +106,17 @@ class SettingsViewModel extends Bloc<SettingsEvent, SettingsState> {
         AuthenticationRepository(); // Create an instance of AuthenticationRepository
 
     try {
-      // Clear any stored preferences
+      // Retain the `isDarkTheme` and `isOrderReversed` settings
+      bool isDarkTheme = await preferencesService.loadThemePreference();
+      bool isOrderReversed = await preferencesService.loadOrderPreference();
+
+      // Clear all preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
+
+      // Restore the `isDarkTheme` and `isOrderReversed` settings
+      await preferencesService.saveThemePreference(isDarkTheme);
+      await preferencesService.saveOrderPreference(isOrderReversed);
 
       // Attempt to delete the account
       await authRepo.deleteAccount(context: event.context);

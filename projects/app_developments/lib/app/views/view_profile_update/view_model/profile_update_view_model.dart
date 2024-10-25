@@ -114,7 +114,7 @@ class ProfileUpdateViewModel
             .doc(userid)
             .update({
           'profile_image_url':
-              'https://firebasestorage.googleapis.com/v0/b/fintechapp-c4276.appspot.com/o/users%2Fblank_profile.jpg?alt=media&token=cb0df389-81c6-4f7c-9d5b-1c1b37cd5b65',
+              'https://firebasestorage.googleapis.com/v0/b/owemate-41f03.appspot.com/o/users%2Fblank_profile.jpg?alt=media&token=f04f99b8-10e5-478d-b46e-9e229c7021b5',
         });
       }
 

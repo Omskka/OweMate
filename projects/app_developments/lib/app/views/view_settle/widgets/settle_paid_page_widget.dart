@@ -158,17 +158,15 @@ class SettlePaidPageWidget extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: context.onlyTopPaddingLow,
-                                        child: Flexible(
-                                          child: Text(
-                                            date,
-                                            style: context
-                                                .textStyleGrey(context)
-                                                .copyWith(
-                                                  fontSize: 12,
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                        child: Text(
+                                          date,
+                                          style: context
+                                              .textStyleGrey(context)
+                                              .copyWith(
+                                                fontSize: 12,
+                                              ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
@@ -194,11 +192,10 @@ class SettlePaidPageWidget extends StatelessWidget {
                   ),
                 ),
                 context.sizedHeightBoxMedium,
-                Padding(
-                  padding: leftPadding,
+                Center(
                   child: SizedBox(
                     height: context.dynamicHeight(0.13),
-                    width: context.dynamicWidth(1),
+                    width: context.dynamicWidth(0.75),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
