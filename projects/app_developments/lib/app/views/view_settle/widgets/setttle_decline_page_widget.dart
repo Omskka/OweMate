@@ -195,11 +195,10 @@ class SetttleDeclinePageWidget extends StatelessWidget {
                   ),
                 ),
                 context.sizedHeightBoxMedium,
-                Padding(
-                  padding: leftPadding,
+                Center(
                   child: SizedBox(
                     height: context.dynamicHeight(0.13),
-                    width: context.dynamicWidth(1),
+                    width: context.dynamicWidth(0.75),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
