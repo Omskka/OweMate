@@ -10,6 +10,7 @@ import 'package:app_developments/core/widgets/custom_flutter_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore package
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
   final TextEditingController searchFriendsController = TextEditingController();
@@ -23,6 +24,7 @@ class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
     on<AddFriendsInitialEvent>(_initial);
     on<AddFriendsFetchAllUsersEvent>(_fetchAllUsers);
     on<AddFriendsToListEvent>(_sendRequest);
+    on<AddFriendsInviteEvent>(_inviteFriends);
   }
 
   FutureOr<void> _initial(
@@ -111,6 +113,23 @@ class AddFriendsViewModel extends Bloc<AddFriendsEvent, AddFriendsState> {
       return requestList.contains(currentUserId);
     } catch (e) {
       throw Exception('Failed to check request status: $e');
+    }
+  }
+
+  FutureOr<void> _inviteFriends(
+      AddFriendsInviteEvent event, Emitter<AddFriendsState> emit) async {
+    const url =
+        "https://github.com/Omskka/OweMate/releases/download/v1.0.1/OweMate.apk";
+
+    // Show the share dialog
+    try {
+      print('object');
+      await Share.share(
+          'Hey! Check out OweMate – the app that makes tracking debts with friends super easy!\n\nDownload it now and start managing your finances together.\n$url');
+      // If sharing is successful (though the share_plus package does not provide a status)
+    } catch (e) {
+      // Handle the error if the share fails
+      throw Exception('Error while sharing: $e');
     }
   }
 }

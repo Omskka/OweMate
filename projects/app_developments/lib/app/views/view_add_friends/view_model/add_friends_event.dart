@@ -22,3 +22,7 @@ class AddFriendsToListEvent extends AddFriendsEvent {
     required this.userId,
   });
 }
+
+class AddFriendsInviteEvent extends AddFriendsEvent {
+  AddFriendsInviteEvent();
+}

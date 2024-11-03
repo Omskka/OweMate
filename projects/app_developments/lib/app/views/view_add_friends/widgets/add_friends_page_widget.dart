@@ -188,7 +188,11 @@ class AddFriendsPageWidget extends StatelessWidget {
             ),
             CustomContinueButton(
               buttonText: 'Invite Friends',
-              onPressed: () {},
+              onPressed: () {
+                context.read<AddFriendsViewModel>().add(
+                      AddFriendsInviteEvent(),
+                    );
+              },
               icon: const Icon(Icons.mail),
             )
           ],
